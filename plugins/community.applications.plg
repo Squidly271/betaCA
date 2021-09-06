@@ -6,7 +6,7 @@
 <!ENTITY md5       "dcb516be2697022805b53f625a8219b8">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
-<!ENTITY github    "Squidly271/community.applications">
+<!ENTITY github    "Squidly271/betaCA">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
