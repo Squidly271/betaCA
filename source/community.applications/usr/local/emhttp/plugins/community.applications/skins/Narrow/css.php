@@ -86,8 +86,9 @@ switch ($theme) {
 		break;
 }
 ?>
-.sidenav{height:100%;width:0;position:absolute;z-index:9999999;top:4rem;right:0;background-color:#0f0f0f;overflow-x:hidden;transition:0.5s;padding-top:60px;}
-
+.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:#0f0f0f;overflow-x:hidden;transition:0.5s;padding-top:60px;}
+.sidenavShow{width:550px;}
+.sidenavHide{width:0;}
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
 .additionalRequirements {margin-left:2rem;}

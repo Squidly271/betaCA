@@ -715,7 +715,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$installLine .= $template['Support'] ? "<div><a class='appIconsPopUp ca_fa-support' href='{$template['Support']}' target='_blank'> $supportText</a></div>" : "";
 		$installLine .= $template['Project'] ? "<div><a class='appIconsPopUp ca_fa-project' href='{$template['Project']}' target='_blank'> ".tr("Project")."</a></div>" : "";
 	}
-	$installLine .= "<div><a class='appIconsPopUp ca_repository' onclick='showRepo(this);' data-appid='{$template['ID']}'> ".tr("Profile")."</a></div>";
+$installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ".tr("Profile")."</a></div>";
 	$installLine .= "</div>";
 
 	if ( $installLine ) {
