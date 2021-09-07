@@ -592,6 +592,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Plugin'] ) {
 		$templateURL = $template['PluginURL'];
+		file_put_contents("/tmp/blah",$templateURL);
 		download_url($templateURL,$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
@@ -666,7 +667,7 @@ function getPopupDescriptionSkin($appNumber) {
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
-						copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$installLine .= "<div><a class='appIconsPopUp ca_fa-update pluginInstall' data-url='$pluginName' data-update='true'> ".tr("Update")."</a></div>";
 					}
 				}				
@@ -891,7 +892,7 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		$down = is_array($down) ? $down : array();
 	}
-	$templateDescription = "<div class='popUpClose'>".tr("CLOSE")."</div><div class='popupHolder'>$templateDescription</div>";
+	$templateDescription = "<div class='popUpClose'>".tr("CLOSE")."</div><div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>";
 	@unlink($caPaths['pluginTempDownload']);
 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
 }

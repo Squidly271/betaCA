@@ -187,7 +187,7 @@ $(function(){
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
 	$("#title").append("<div class='searchArea onlyShowWithFeed'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sortBy='Name' data-sortDir='Up'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sortBy='Name' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sortBy='downloads' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sortBy='trending' data-sortDir='Down'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sortBy='FirstSeen' data-sortDir='Down'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
-
+	$("#menu").prepend("<div class='sidebar'><div class='sidenav'><div id='sidenavContent'></div></div>");
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -235,6 +235,12 @@ $(function(){
 
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
+
+	$(".mainArea").on("click", function() {
+		if ( popupVisible() ) {
+			$(".sidenav").css("width",0);
+		}
+	});
 
 	$('.mainArea').on("click",".unpinned,.pinned",function() {
 		if ( popupVisible(this) ) return;
@@ -507,7 +513,7 @@ $(function(){
 	});
 
 	$("body").on("click",".popUpClose",function() {
-		$(".tooltipstered").tooltipster("hide");
+		closeSidebar();
 	});
 	
 	$('body').on("click",".deletePrivateApp",function() {
@@ -668,8 +674,21 @@ function setToolTip() {
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
 
-	$(".ca_repoPopup,.ca_repoinfo,.ca_reporeadmore").tooltipster({
-		contentAsHTML:true,
+	$("body").on("click",".ca_repoPopup,.ca_repoinfo,.ca_reporeadmore", function() {
+		if ( $(this).hasClass("ca_repoPopup") && popupVisible() ) {
+			closeSidebar();
+			return;
+		}
+		var repository = $(this).data("repository");
+		$(".sidenav").css("width","550px");
+		$(".sidenav").css("height",$(window).innerHeight() );
+		$("body").css("overflow","hidden");
+		post({action:'getRepoDescription',repository:repository},function(data) {
+			$("#sidenavContent").html(data.description);
+		});		
+	});
+/* 			$(".ca_repoPopup,.ca_repoinfo,.ca_reporeadmore").tooltipster({
+contentAsHTML:true,
 		interactive:true,
 		trigger:'custom',
 		triggerOpen:{click:true,touchstart:true},
@@ -699,9 +718,28 @@ function setToolTip() {
 			var origin = $(helper.origin);
 			origin.tooltipster("hide");
 		}
-	});
+	}); */
 
-	$(".ca_appPopup").tooltipster({
+		$('body').on("click",".ca_appPopup",function() {
+			if ( popupVisible() ) {
+				closeSidebar();
+				return;
+			}
+			$(".sidenav").css("width","550px");
+			$(".sidenav").css("height",$(window).innerHeight() );
+			$("body").css("overflow","hidden");
+			var appnumber = $(this).data("appnumber");
+			var apppath = $(this).data("apppath");
+			var appname = $(this).data("appname");
+			var beta = " "+$(this).data("beta");
+			appname = stripTags(appname);
+			post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
+				$("#sidenavContent").html(result.description);
+				$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("Read more")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'></i>"})
+				popUpChart(result,appnumber);
+			});
+		});
+/* 	$(".ca_appPopup").tooltipster({
 		contentAsHTML:true,
 		interactive:true,
 		trigger:'custom',
@@ -737,7 +775,7 @@ function setToolTip() {
 			var origin = $(helper.origin);
 			origin.tooltipster("hide");
 		}
-	});
+	}); */
 }
 
 function showSpecialCategory(button) {
@@ -1018,10 +1056,15 @@ function clearSearchBox() {
 }
 
 function popupVisible(el) {
-	if ( $(el).hasClass("appIconsPopUp") )
-		return false;
+	var visiblepx = $(".sidenav").css("width");
+	var visible = visiblepx.replace(/[^0-9]/g,'');
+	closeSidebar();
+	return visible > 0;
+}
 
-	return $(".popupHolder").is(":visible");
+function closeSidebar() {
+	$(".sidenav").css("width",0);
+	$("body").css("overflow","auto");
 }
 
 function installPlugin(pluginURL,update=false) {

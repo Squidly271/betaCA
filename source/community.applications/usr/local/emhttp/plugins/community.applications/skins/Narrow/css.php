@@ -86,6 +86,8 @@ switch ($theme) {
 		break;
 }
 ?>
+.sidenav{height:100%;width:0;position:absolute;z-index:9999999;top:4rem;right:0;background-color:#0f0f0f;overflow-x:hidden;transition:0.5s;padding-top:60px;}
+
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
 .additionalRequirements {margin-left:2rem;}
@@ -306,7 +308,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_normal {font-size:1.4rem !important;}
 .ca_readmore {font-size:2rem !important;margin-top:10px;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:#6363ca;}
 .ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
-.popUpClose {font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
+.popUpClose {position:fixed;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 h1 {font-size:1.5rem;} /* override dynamix styling for popup */
