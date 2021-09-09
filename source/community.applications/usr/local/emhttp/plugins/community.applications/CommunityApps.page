@@ -186,8 +186,12 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-	$("#title").append("<div class='searchArea onlyShowWithFeed'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sortBy='Name' data-sortDir='Up'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sortBy='Name' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sortBy='downloads' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sortBy='trending' data-sortDir='Down'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sortBy='FirstSeen' data-sortDir='Down'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("");
+<? if ($theme == "azure" || $theme == "gray"):?>
+	$("#title").prepend("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+<? else:?>
 	$("#menu").prepend("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+<?endif;?>
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -201,13 +205,13 @@ $(function(){
 		delay: [1000,0],
 		animation: 'fade',
 		triggerClose: {mouseleave:true},
-		functionBefore: function(instance,helper){
+/* 		functionBefore: function(instance,helper){
 			if ( isIconEnabled("#sortIcon") ) {
 				instance.content("<?tr("Sorting options")?>");
 			} else {
 				instance.content("<?tr("Sorting options unavailable")?>");
 			}
-		}
+		} */
 	});
 
 	$('.ca_staticTips').tooltipster({
@@ -296,7 +300,7 @@ $(function(){
 	});
 
 	$('body').on("click",".favPopup",function() {
-		if ( popupVisible(this) ) return;
+/* 		if ( popupVisible(this) ) return; */
 		setFavourite(this);
 		$(this).removeClass(".favPopup");
 		$(this).html(" Favourite Repository");
@@ -306,6 +310,7 @@ $(function(){
 		if ( ! $(this).hasClass("ca_repoSearchPopUp") ) {
 			if ( popupVisible(this) ) return;
 		}
+		closeSidebar();
 		var repo = $(this).data("repository");
 		doSearch(false,repo);
 	});
@@ -337,7 +342,7 @@ $(function(){
 	});
 	
 	$('body').on("click",".pluginInstall",function() {
-		if ( popupVisible(this) ) return;
+		if ( !$(this).hasClass("appIconsPopUp") && popupVisible(this) ) return;
 		
 		var plugin = $(this).data("url");
 		var type = $(this).data("update") ? true : false;
@@ -365,6 +370,7 @@ $(function(){
 			closeSidebar();
 			return;
 		}
+		$("#sidenavContent").html("");
 		var repository = $(this).data("repository");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 		$(".sidenav").css("height",$(window).innerHeight() );
@@ -380,9 +386,11 @@ $(function(){
 			closeSidebar();
 			return;
 		}
+		$("#sidenavContent").html("");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 		$(".sidenav").css("height",$(window).innerHeight() );
 		$("body").css("overflow","hidden");
+
 		var appnumber = $(this).data("appnumber");
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
@@ -502,9 +510,9 @@ $(function(){
 	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;updateContent(this); });
 	$("#sortIcon").click(function() {
 		if ( popupVisible(this) ) return;
-		if ( isIconEnabled("#sortIcon") ) {
+/* 		if ( isIconEnabled("#sortIcon") ) {
 			$("#sortIconArea").toggle("slow");
-		}
+		} */
 	});
 	$(".sortIcons").click(function() {
 		if ( popupVisible(this) ) return;
@@ -523,8 +531,8 @@ $(function(){
 		});
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			changeSortOrder();
-			$("#sortIconArea").toggle("slow");
-		});
+/* 			$("#sortIconArea").toggle("slow");
+ */		});
 	});
 
 	$('body').on("click",".languageSwitch",function() {
@@ -643,6 +651,7 @@ function disableSort() {
 	enableIcon("#sortIcon",false);
 }
 function hideSortIcons() {
+	return;
 	$("#sortIconArea").hide("slow");
 }
 
@@ -891,12 +900,14 @@ function doSearch(button,newSearch) {
 
 	scrollToTop();
 	if (filter) {
+		$("#sortIconArea").show();
 		$("#Category").html(sprintf(tr("Search for %s"),filter));
-		$(".clearSearch").removeClass("caMenuDisabled").addClass("caMenuEnabled");
-		enableIcon("#sortIcon",true);
+/* 		$(".clearSearch").removeClass("caMenuDisabled").addClass("caMenuEnabled");
+ */		enableIcon("#sortIcon",true);
 		data.searchFlag = true;
 	} else {
-		updateContent();
+/* 		$("#sortIconArea").hide();
+ */		updateContent();
 		data.searchFlag = false;
 		return;
 	}
@@ -965,15 +976,15 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		}
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
-		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
-		var el_tr = $.find(".sortIcons[data-sortby='trending']");
-		if ( category == "repos" ) {
+/* 		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
+		var el_tr = $.find(".sortIcons[data-sortby='trending']"); */
+/* 		if ( category == "repos" ) {
 			$(el_dl).tooltipster("content","<?=tr("Sort By Number Of Apps")?>");
 			$(el_tr).tooltipster("content","<?=tr("Sort By Average Trend")?>");
 		} else {
 			$(el_dl).tooltipster("content","<?=tr("Sort By Downloads")?>");
 			$(el_tr).tooltipster("content","<?=tr("Sort By Trend")?>");
-		}
+		} */
 
 		var filter = $('#searchBox').val();
 		if ( ! filter ) {
@@ -1019,7 +1030,7 @@ function initDockerSearch() {
 	data.section = "";
 	data.selected_category = "";
 	$(".selectedMenu").removeClass("selectedMenu");
-	hideSortIcons();
+	/* hideSortIcons(); */
 	$(".subCategory").hide();
 }
 
@@ -1056,8 +1067,8 @@ function clearSearchBox() {
 	if ($('#searchButton').hasClass('fa-remove')) {
 		$('#searchButton').toggleClass('fa-remove fa-search');
 	}
-	$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-}
+/* 	$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+ */}
 
 function popupVisible(el) {
 	var visiblepx = $(".sidenav").css("width");
@@ -1789,8 +1800,8 @@ function getCategories() {
 				$(this).addClass("caMenuEnabled").removeClass("caMenuDisabled");
 			}
 		});
-		$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-		setFavRepoSearch();
+/* 		$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+ */		setFavRepoSearch();
 
 		post({action:'areAppsPinned'},function(result) {
 			if (!result.status) {
@@ -1831,11 +1842,11 @@ function getCategories() {
 					$(".allApps").addClass("selectedMenu");
 
 			});
-			if ($("#searchBox").val() ) {
+/* 			if ($("#searchBox").val() ) {
 				$(".clearSearch").removeClass("caMenuDisabled").addClass("caMenuEnabled");
 			} else {
 				$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-			}
+			} */
 		}
 	});
 }
@@ -1899,7 +1910,6 @@ function removeLanguage(language) {
 }
 
 function updateDocker(container) {
-	$(".ca_appPopup").tooltipster("close");
 	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 	<? if ( $translations ): ?>		
 		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");

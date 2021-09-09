@@ -35,6 +35,8 @@ switch ($theme) {
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
 		$aColor = "#00b8d6";
+		$sidebarBackground = "#000000";
+		$sidebarText = "#f2f2f2";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -47,6 +49,8 @@ switch ($theme) {
 		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
 		$aColor = "#486dba";
+		$sidebarBackground = "#777777";
+		$sidebarText = "#f2f2f2";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -59,6 +63,8 @@ switch ($theme) {
 		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
 		$aColor = "#486dba";
+		$sidebarBackground = "#e4e2e4";
+		$sidebarText = "#f2f2f2";		
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -71,6 +77,8 @@ switch ($theme) {
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
 		$aColor = "#00b8d6";
+		$sidebarBackground = "#020202";
+		$sidebarText = "#f2f2f2";				
 		break;
 // Use settings for black as a fallback
 	default:
@@ -86,9 +94,9 @@ switch ($theme) {
 		break;
 }
 ?>
-.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:#0f0f0f;overflow-x:hidden;transition:0.5s;padding-top:60px;}
+.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;}
 .sidenavShow{width:550px;}
-.sidenavHide{width:0;}
+.sidenavHide{width:0px;}
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
 .additionalRequirements {margin-left:2rem;}
@@ -150,9 +158,9 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
 .ca_bottomRight {float:right;margin-right:2rem;padding-top:0.5rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
-.categoryLine {margin-left:10px;margin-top:-15px;font-size:1.5rem;font-weight:normal;color:#6363ca;}
-.searchArea {float:right;z-index:2;width:auto;position:static;}
-.sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
+.categoryLine {margin-left:10px;font-size:1.5rem;font-weight:normal;color:#6363ca;}
+.searchArea {z-index:2;width:auto;position:static;}
+.sortIcons {font-size:1.2rem;margin-right:20px;cursor:pointer;text-decoration:none !important;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
 .caMenuEnabled {cursor:pointer;opacity:1;}
 .caMenuDisabled {cursor:default;opacity:0.5;}
@@ -284,7 +292,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 <?endif;?>
 <?if ( $theme == "black" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;background-color:#262626;}
 <?endif;?>
 <?if ( $theme == "gray" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
@@ -329,7 +337,7 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .caInstallLinePopUp {display:flex;flex-wrap:wrap;justify-content:space-around;}
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
 
-.popupDescriptionArea{display:block;font-size:1.5rem;;}
+.popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;}
 
 .awesomplete [hidden] {display: none;}

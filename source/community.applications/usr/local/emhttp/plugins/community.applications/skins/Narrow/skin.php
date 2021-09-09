@@ -42,8 +42,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 
-	$displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
-
+/* 	$displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
+ */
 	$columnNumber = 0;
 	$appCount = 0;
 	$startingApp = ($pageNumber -1) * $caSettings['maxPerPage'] + 1;
@@ -359,7 +359,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	}
 	$ct .= "</div>";
 
-	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
+	$ct .= getPageNavigation($pageNumber,count($file),false,true)."<br><br><br>";
 
 	if ( $specialCategoryComment ) {
 		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>".tr("This display is informational ONLY.")."</div><br>";
