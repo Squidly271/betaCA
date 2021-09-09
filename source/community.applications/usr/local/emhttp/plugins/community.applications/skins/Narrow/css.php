@@ -94,8 +94,8 @@ switch ($theme) {
 		break;
 }
 ?>
-.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;}
-.sidenavShow{width:550px;}
+.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
+.sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
@@ -306,8 +306,9 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
 .popUpDeprecated {color:#FF8C2F;}
-i.popupIcon {color:#626868;font-size:14.4rem;padding-left:1rem;width:14.4rem}
+i.popupIcon {color:#626868;font-size:14.4rem;padding-left:1rem;}
 img.popupIcon {width:14.4rem;height:14.4rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+.popupIcon {display:inline-block;}
 .display_beta {color:#FF8C2F;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_italic {font-style:italic;}
@@ -315,9 +316,9 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
 .ca_large {font-size:2rem;}
 .ca_normal {font-size:1.4rem !important;}
-.ca_readmore {font-size:2rem !important;margin-top:10px;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:#6363ca;}
+.ca_readmore {font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
 .ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
-.popUpClose {position:fixed;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
+.popUpClose {font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 h1 {font-size:1.5rem;} /* override dynamix styling for popup */
@@ -338,8 +339,15 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
 
 .popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
-.popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;}
+.popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
+.popupName{display:inline-block;font-size:3rem;line-height:3rem;}
+.popupAuthor{;font-size:2rem;line-height:2rem;}
+.popupCategory{font-size:1.2rem;line-height:1.6rem;}
+.popup{margin:1.5rem;}
+.popupInfo{position:absolute;top:120px;left:220px;}
+.popupDescription{font-size:1.5rem;line-height:1.5rem;margin-top:1rem;margin-left:1rem;margin-right:1rem;height:500px;}
 
+#title p{display:block;}
 .awesomplete [hidden] {display: none;}
 .awesomplete .visually-hidden {position: absolute;clip: rect(0, 0, 0, 0);}
 .awesomplete {display: inline-block;position: relative;color: red;}

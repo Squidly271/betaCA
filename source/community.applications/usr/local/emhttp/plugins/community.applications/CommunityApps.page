@@ -377,6 +377,7 @@ $(function(){
 		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
+			$('.popup_readmore').readmore({maxHeight:200,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
 		});		
 	});
 	
@@ -398,7 +399,7 @@ $(function(){
 		appname = stripTags(appname);
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
-			$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("Read more")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'></i>"})
+			$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
 			popUpChart(result,appnumber);
 		});
 	});
@@ -1046,6 +1047,7 @@ function dockerSearch(pageNumber) {
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html(sprintf(tr("DockerHub Search for %s"),filter)+" <span id='pageNumber'></span>");
+	$(".categoryMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
 		updateDisplay(result.display);
 	});

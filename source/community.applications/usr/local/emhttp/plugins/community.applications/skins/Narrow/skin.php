@@ -581,13 +581,13 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( ! $ovr )
 		$ovr = $template['OriginalDescription'] ?: $template['Description'];
 	$ovr = html_entity_decode($ovr);
-//	$ovr = str_replace("&#xD","<br>",$ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
-//	$ovr = str_replace("<br>","\n",$ovr);
 	$ovr = str_replace("\n","<br>",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
 
+	$template['display_ovr'] = trim($ovr);
+	
 	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $template['Plugin'] ) {
@@ -607,16 +607,17 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 
-//	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
+/* 	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
 	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
 	$templateDescription .= "<div class='ca_hr'></div>";
-	$templateDescription .= "<div class='ca_center popupIconArea'>";
+	$templateDescription .= "<div class='ca_center popupIconArea'>"; */
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
-		$templateDescription .= "<i class='$templateIcon popupIcon ca_center'></i>";
+		$template['display_icon'] = "<i class='$templateIcon popupIcon ca_center'></i>";
 	} else
-		$templateDescription .= "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
+		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
+
 
 	$templateDescription .= "</div>";
 
@@ -892,10 +893,12 @@ $installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' da
 		}
 		$down = is_array($down) ? $down : array();
 	}
-	$templateDescription = "<div class='popUpClose'>".tr("CLOSE")."</div><div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>";
+	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
 	@unlink($caPaths['pluginTempDownload']);
-	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
-}
+/* 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
+ */
+ return array("description"=>displayPopup($template));
+ }
 
 #####################################
 # Generate the display for the repo #
@@ -1072,4 +1075,29 @@ function displayCard($template) {
 	return str_replace(["\t","\n"],"",$card);
 }
 
+function displayPopup($template) {
+	global $caSettings;
+	
+	extract($template);
+	
+	$card = "
+		<div class='popup'>
+		<div class='popUpClose'>CLOSE</div>
+		<div class='ca_popupIconArea'>
+			<div class='popupIcon'>$display_icon</div>
+			<div class='popupInfo'>
+				<div class='popupName'>$Name</div>
+				<div class='popupAuthor'>$Author</div>
+				<div class='popupCategory'>$Category</div>
+			</div>
+		</div>
+		<div class='ca_hr'></div>
+		<div class='popupDescription'>$display_ovr</div>
+	";
+	if ( $Requires ) {
+		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
+	}
+	$card .= "</div>";
+	return $card;
+}
 ?>
