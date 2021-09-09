@@ -1024,6 +1024,8 @@ function displayCard($template) {
 
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
+	if ( $template['Category'] == "Docker Hub Search" )
+		unset($popupType);
 
 	if ($template['Language']) {
 		$language = "{$template['Language']}";

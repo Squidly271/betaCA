@@ -1035,7 +1035,7 @@ function initDockerSearch() {
 	data.section = "";
 	data.selected_category = "";
 	$(".selectedMenu").removeClass("selectedMenu");
-	/* hideSortIcons(); */
+	hideSortIcons();
 	$(".subCategory").hide();
 }
 
