@@ -21,7 +21,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 	$communityApplications = is_array($file['community']) ? $file['community'] : array();
 	$totalApplications = count($communityApplications);
 
-	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>$('.multi_installDiv').hide();</script>";
+	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>$('.multi_installDiv').hide();hideSortIcons();</script>";
 
 	return $display;
 }
@@ -367,7 +367,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	}
 
 	if ( ! $count )
-		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div>";
+		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
 
 	return "$displayHeader$ct";
 }

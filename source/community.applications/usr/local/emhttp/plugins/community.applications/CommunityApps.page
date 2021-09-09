@@ -416,6 +416,7 @@ $(function(){
 			}
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
+		showSortIcons();
 		scrollToTop();
 		changeCategory(this,false);
 	});
@@ -455,12 +456,14 @@ $(function(){
 			return;
 
 		var section = $(this).attr("data-category");
+		showSortIcons();
 		switch (section) {
 			case "installed_apps":
 				data.previousAppsSection = "";
 				previousApps(true);
 				break;
 			case "inst_docker":
+			
 				data.previousAppsSection = "docker";
 				previousApps(true,false,"docker");
 				break;
@@ -507,7 +510,7 @@ $(function(){
 	$(".multi_installClear").click(function()   { if ( popupVisible(this) ) return;clearMultiInstall(); });
 	$(".multi_deleteButton").click(function()   { if ( popupVisible(this) ) return;deleteMulti(); });
 	$(".multi_installAll").click(function()     { if ( popupVisible(this) ) return;selectAllPrevious(); enableMultiInstall(); });
-	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;updateContent(this); });
+	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;hideSortIcons();updateContent(this); });
 	$("#sortIcon").click(function() {
 		if ( popupVisible(this) ) return;
 /* 		if ( isIconEnabled("#sortIcon") ) {
@@ -651,13 +654,15 @@ function disableSort() {
 	enableIcon("#sortIcon",false);
 }
 function hideSortIcons() {
-	return;
-	$("#sortIconArea").hide("slow");
+	$("#sortIconArea").hide();
+}
+function showSortIcons() {
+	$("#sortIconArea").show();
 }
 
 function updateContent(button) {
-	hideSortIcons();
-	clearSearchBox();
+/* 	hideSortIcons();
+ */	clearSearchBox();
 	clearCategory();
 	$(".caMenuItem").removeClass("selectedMenu");
 	$(".subCategory").hide();
@@ -803,7 +808,7 @@ function changeCategory(button,subSwitch) {
 	var description = $(button).text();
 	var category = $(button).attr("data-category");
 
-	hideSortIcons();
+//	hideSortIcons();
 	$(".multi_installDiv").hide();
 	getContent(false,category,description,false);
 }
@@ -814,7 +819,7 @@ function changePage(pageNumber) {
 
 	var oldHeight = $(".ca_templatesDisplay").height();
 	$(".ca_templatesDisplay").css("height",oldHeight);
-	hideSortIcons();
+//	hideSortIcons();
 	post({action:'display_content',pageNumber:pageNumber,selected:selected},function(result) {
 		updateDisplay(result.display);
 		$(".ca_templatesDisplay").css("height","auto");
@@ -875,7 +880,7 @@ function myCloseAlert() {
 }
 
 function doSearch(button,newSearch) {
-	hideSortIcons();
+//	hideSortIcons();
 
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
@@ -974,8 +979,8 @@ function getContent(init,category,description,newApp,startupDisplay) {
 			initialize = true;
 			enableButtons();
 		}
-		if ( (category == "New") || (category == "All") ) { category = ""; }
 
+		if ( (category == "New") || (category == "All") ) { category = ""; }
 /* 		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
 		var el_tr = $.find(".sortIcons[data-sortby='trending']"); */
 /* 		if ( category == "repos" ) {
@@ -1114,7 +1119,7 @@ function showModeration(script,title) {
 }
 
 function previousApps(installed,dontClear=false,filter="") {
-	hideSortIcons();
+//	hideSortIcons();
 	clearCategory();
 	setPageOne();
 	data.docker = "";
@@ -1303,7 +1308,7 @@ function clearCategory() {
 
 function pinnedApps() {
 	setPageOne();
-	hideSortIcons();
+//	hideSortIcons();
 	data.docker = "";
 	clearSearchBox();
 	clearCategory();

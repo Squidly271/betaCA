@@ -928,7 +928,7 @@ function search_dockerhub() {
 
 	if ($pageresults['num_results'] == 0) {
 		$o['display'] = "<div class='ca_NoDockerAppsFound'>".tr("No Matching Applications Found On Docker Hub")."</div>";
-		$o['script'] = "$('#dockerSearch').hide();";
+		$o['script'] = "$('#dockerSearch').hide();hideSortIcons();";
 		postReturn($o);
 		@unlink($caPaths['dockerSerchResults']);
 		return;
