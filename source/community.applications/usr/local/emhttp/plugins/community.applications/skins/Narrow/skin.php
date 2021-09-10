@@ -83,7 +83,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				}
 			}
 
-
 			$template['icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
 			$template['display_infoIcon'] = "<a class='appIcons ca_repoinfo ca_tooltip' title='".tr("Click for more information")."' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></a>";
@@ -586,7 +585,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
 
-	$template['display_ovr'] = trim($ovr);
+	$template['display_ovr'] = preg_replace('#(\s*<br\s*/?>)*\s*$#i', '', trim($ovr)); # remove trailing <br>
 	
 	$template['ModeratorComment'] .= $template['CAComment'];
 
@@ -606,11 +605,9 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
-
-/* 	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
-	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
-	$templateDescription .= "<div class='ca_hr'></div>";
-	$templateDescription .= "<div class='ca_center popupIconArea'>"; */
+	if ( trim($template['Changes']) )
+		$template['display_changes'] = trim($template['Changes']);
+	
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
@@ -618,8 +615,6 @@ function getPopupDescriptionSkin($appNumber) {
 	} else
 		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
 
-
-	$templateDescription .= "</div>";
 
 	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
 	$templateDescription .= "<div class='readmore'>$ovr</div>";
@@ -849,27 +844,9 @@ $installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' da
 		$changeLogMessage = "Note: not all ";
 		$changeLogMessage .= $template['PluginURL'] || $template['Language'] ? "authors" : "maintainers";
 		$changeLogMessage .= " keep up to date on change logs<br>";
-		$changeLogMessage = "<div class='ca_center'><font size='0'>".tr($changeLogMessage)."</font></div><br>";
+		$template['display_changelogMessage'] = tr($changeLogMessage);
 	}
-	if ( trim($template['Changes']) ) {
-		if ( $template['Plugin'] ) {
-
-			$appInformation .= $template['Changes'];
-		} elseif ($template['Language']) {
-			$appInformation .= trim($template['Changes']);
-		} else {
-			$appInformation = $template['Changes'];
-		}
-		if ( ! $template['Language'] ) {
-			$templateDescription .= "<div class='ca_center'><br><font size='4'><span class='ca_bold'>".tr("Change Log")."</span></div></font><br>$changeLogMessage$appInformation";
-		} else {
-			$templateDescription .= "<div class='ca_center'><br><font size='4'>$appInformation</font></div>";
-		}
-		if ( $template['Language'] ) {
-			$templateDescription .= "<div class='ca_center'><br><font size='4'><a class='popUpLink' target='_blank' href='{$caPaths['LanguageErrors']}#$countryCode'>".tr("View Missing Translations")."</font></div>";
-		}
-	}
-
+	
 	if (is_array($template['trendsDate']) ) {
 		array_walk($template['trendsDate'],function(&$entry) {
 			$entry = tr(date("M",$entry),0).date(" j",$entry);
@@ -1082,7 +1059,7 @@ function displayPopup($template) {
 	
 	$card = "
 		<div class='popup'>
-		<div class='popUpClose'>CLOSE</div>
+		<div><span class='popUpClose'>".tr("CLOSE")."</span></div>
 		<div class='ca_popupIconArea'>
 			<div class='popupIcon'>$display_icon</div>
 			<div class='popupInfo'>
@@ -1092,10 +1069,17 @@ function displayPopup($template) {
 			</div>
 		</div>
 		<div class='ca_hr'></div>
-		<div class='popupDescription'>$display_ovr</div>
+		<div class='popupDescription popup_readmore'>$display_ovr</div>
 	";
 	if ( $Requires ) {
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
+	}
+	if ( $display_changes ) {
+		$card .= "
+			<div class='changelogTitle'>".tr("Change Log")."</div>
+			<div class='changelogMessage'>$display_changelogMessage</div>
+			<div class='changelog popup_readmore'>$display_changes</div>
+		";
 	}
 	$card .= "</div>";
 	return $card;

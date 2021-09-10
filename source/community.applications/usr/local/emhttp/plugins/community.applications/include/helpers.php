@@ -186,9 +186,9 @@ function searchArray($array,$key,$value,$startingIndex=0) {
 #############################
 # Highlights search results #
 #############################
-function highlight($text, $search) {
+/* function highlight($text, $search) {
 	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span class="caHighlight">\\0</span>', $search);
-}
+} */
 ########################################################
 # Fix common problems (maintainer errors) in templates #
 ########################################################

@@ -721,7 +721,7 @@ function get_content() {
 				continue;
 			}
 			if ( filterMatch($filter,array($template['SortName'],$template['RepoName'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
-				$template['Name_highlighted'] = highlight($filter,$template['Name']);
+/* 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
@@ -729,15 +729,15 @@ function get_content() {
 				if ($template['Language']) {
 					$template['Language'] = highlight($filter,$template['Language']);
 					$template['LanguageLocal'] = highlight($filter,$template['LanguageLocal']);
-				}
+				} */
 				if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
 					$searchResults['extraHit'][] = $template;
 				else
 					$searchResults['nameHit'][] = $template;
 			} else if ( filterMatch($filter,array($template['Author'],$template['CardDescription'],$template['translatedCategories'])) ) {
-				$template['Description'] = highlight($filter, $template['Description']);
+/* 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
-				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
+				$template['CardDescription'] = highlight($filter,$template['CardDescription']); */
 				if ( $template['RepoName'] == $caSettings['favourite'] ) {
 					$searchResults['nameHit'][] = $template;
 				} else {

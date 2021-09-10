@@ -35,8 +35,8 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 }
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
-$unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
-$unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">");
+/* $unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">"); */
 $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
 $translations =   is_file("$docroot/plugins/dynamix/include/Translations.php");
 $unRaid69B2 =     version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
@@ -186,7 +186,6 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-	$("#title").append("");
 <? if ($theme == "azure" || $theme == "gray"):?>
 	$("#title").prepend("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
 <? else:?>
@@ -200,37 +199,13 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
-	$('.ca_toolsView').tooltipster({
-		trigger: 'hover',
-		delay: [1000,0],
-		animation: 'fade',
-		triggerClose: {mouseleave:true},
-/* 		functionBefore: function(instance,helper){
-			if ( isIconEnabled("#sortIcon") ) {
-				instance.content("<?tr("Sorting options")?>");
-			} else {
-				instance.content("<?tr("Sorting options unavailable")?>");
-			}
-		} */
-	});
-
-	$('.ca_staticTips').tooltipster({
-		contentAsHTML:true,
-		delay:[1000,1],
-		timer:15000,
-		animation:'none',
-		arrow:true,
-		trigger:'custom',
-		triggerOpen:{mouseenter: true, hover: true},
-		triggerClose:{click:true,scroll:true,mouseleave:true}
-	});
-
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
 			doSearch();
 		}
 	});
+	
 	$('body').keydown(function(e) {
 		if (e.which === 27) {
 			$(".tooltipstered").tooltipster('hide');
@@ -374,7 +349,7 @@ $(function(){
 		var repository = $(this).data("repository");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 		$(".sidenav").css("height",$(window).innerHeight() );
-		$("body").css("overflow","hidden");
+//		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
 			$('.popup_readmore').readmore({maxHeight:200,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
@@ -390,7 +365,7 @@ $(function(){
 		$("#sidenavContent").html("");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 		$(".sidenav").css("height",$(window).innerHeight() );
-		$("body").css("overflow","hidden");
+//		$("body").css("overflow","hidden");
 
 		var appnumber = $(this).data("appnumber");
 		var apppath = $(this).data("apppath");
@@ -399,7 +374,7 @@ $(function(){
 		appname = stripTags(appname);
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
-			$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
+			$('.popup_readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
 			popUpChart(result,appnumber);
 		});
 	});
@@ -512,12 +487,8 @@ $(function(){
 	$(".multi_deleteButton").click(function()   { if ( popupVisible(this) ) return;deleteMulti(); });
 	$(".multi_installAll").click(function()     { if ( popupVisible(this) ) return;selectAllPrevious(); enableMultiInstall(); });
 	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;hideSortIcons();updateContent(this); });
-	$("#sortIcon").click(function() {
-		if ( popupVisible(this) ) return;
-/* 		if ( isIconEnabled("#sortIcon") ) {
-			$("#sortIconArea").toggle("slow");
-		} */
-	});
+	$("#sortIcon").click(function() 						{	if ( popupVisible(this) ) return;	});
+	
 	$(".sortIcons").click(function() {
 		if ( popupVisible(this) ) return;
 		$(".sortIcons").removeClass("enabledIcon");
@@ -535,8 +506,7 @@ $(function(){
 		});
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			changeSortOrder();
-/* 			$("#sortIconArea").toggle("slow");
- */		});
+		});
 	});
 
 	$('body').on("click",".languageSwitch",function() {
@@ -722,79 +692,6 @@ function setToolTip() {
 		triggerOpen:{click: true, mouseenter: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-
-
-/* 			$(".ca_repoPopup,.ca_repoinfo,.ca_reporeadmore").tooltipster({
-contentAsHTML:true,
-		interactive:true,
-		trigger:'custom',
-		triggerOpen:{click:true,touchstart:true},
-		multiple:true,
-		minWidth:unRaidFontSize*70,
-		maxWidth:unRaidFontSize*70,
-		triggerClose:{click:true},
-		onlyOne:true,
-		functionInit: function(instance,helper) {
-			var origin = $(helper.origin);
-			origin.tooltipster("content","<div class='popupHolder' style='height:450px;'>Loading</div>");
-		},
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			var repository = origin.attr("data-repository");
-			if ( ! $(origin).hasClass("ca_repoPopup") && popupVisible() ) {
-				origin.tooltipster("close");
-				return false;
-			}
-			$(".ca_repoPopup").tooltipster("hide");
-
-			post({action:'getRepoDescription',repository:repository},function(data) {
-				origin.tooltipster("content",data.description);
-			});
-		},
-		functionAfter: function(helper) {
-			var origin = $(helper.origin);
-			origin.tooltipster("hide");
-		}
-	}); */
-
-
-/* 	$(".ca_appPopup").tooltipster({
-		contentAsHTML:true,
-		interactive:true,
-		trigger:'custom',
-		triggerOpen:{click:true,touchstart:true},
-		multiple:true,
-		minWidth:unRaidFontSize*70,
-		maxWidth:unRaidFontSize*70,
-		triggerClose:{click:true,tap:true},
-		onlyOne:true,
-		functionInit: function(instance,helper) {
-			var origin = $(helper.origin);
-			origin.tooltipster("content","<div class='popupHolder' style='height:450px;'>Loading</div>");
-		},
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			var appnumber = $(origin).data("appnumber");
-			var apppath = $(origin).data("apppath");
-			var appname = $(origin).data("appname");
-			var beta = " "+$(origin).data("beta");
-			if ( popupVisible() ) {
-				origin.tooltipster("close");
-				return false;
-			}
-			appname = stripTags(appname);
-			post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
-				origin.tooltipster("content",result.description);
-				$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("Read more")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'></i>"})
-				popUpChart(result,appnumber);
-
-			});
-		},
-		functionAfter: function(helper) {
-			var origin = $(helper.origin);
-			origin.tooltipster("hide");
-		}
-	}); */
 }
 
 function showSpecialCategory(button) {
@@ -809,7 +706,6 @@ function changeCategory(button,subSwitch) {
 	var description = $(button).text();
 	var category = $(button).attr("data-category");
 
-//	hideSortIcons();
 	$(".multi_installDiv").hide();
 	getContent(false,category,description,false);
 }
@@ -820,7 +716,6 @@ function changePage(pageNumber) {
 
 	var oldHeight = $(".ca_templatesDisplay").height();
 	$(".ca_templatesDisplay").css("height",oldHeight);
-//	hideSortIcons();
 	post({action:'display_content',pageNumber:pageNumber,selected:selected},function(result) {
 		updateDisplay(result.display);
 		$(".ca_templatesDisplay").css("height","auto");
@@ -908,12 +803,10 @@ function doSearch(button,newSearch) {
 	if (filter) {
 		$("#sortIconArea").show();
 		$("#Category").html(sprintf(tr("Search for %s"),filter));
-/* 		$(".clearSearch").removeClass("caMenuDisabled").addClass("caMenuEnabled");
- */		enableIcon("#sortIcon",true);
+		enableIcon("#sortIcon",true);
 		data.searchFlag = true;
 	} else {
-/* 		$("#sortIconArea").hide();
- */		updateContent();
+		updateContent();
 		data.searchFlag = false;
 		return;
 	}
@@ -982,15 +875,16 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		}
 
 		if ( (category == "New") || (category == "All") ) { category = ""; }
-/* 		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
-		var el_tr = $.find(".sortIcons[data-sortby='trending']"); */
-/* 		if ( category == "repos" ) {
-			$(el_dl).tooltipster("content","<?=tr("Sort By Number Of Apps")?>");
-			$(el_tr).tooltipster("content","<?=tr("Sort By Average Trend")?>");
+ 		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
+		var el_tr = $.find(".sortIcons[data-sortby='trending']"); 
+
+ 		if ( category == "repos" ) {
+			$(el_dl).html("<?=tr("Sort By Number Of Apps")?>");
+			$(el_tr).html("<?=tr("Sort By Average Trend")?>");
 		} else {
-			$(el_dl).tooltipster("content","<?=tr("Sort By Downloads")?>");
-			$(el_tr).tooltipster("content","<?=tr("Sort By Trend")?>");
-		} */
+			$(el_dl).html("<?=tr("Sort By Downloads")?>");
+			$(el_tr).html("<?=tr("Sort By Trend")?>");
+		}
 
 		var filter = $('#searchBox').val();
 		if ( ! filter ) {
@@ -1071,6 +965,7 @@ function openNewWindow(newURL) {
 function clearSearchBox() {
 	$(".categoryMenu").removeClass("caMenuDisabled").addClass("caMenuEnabled");
 	$("#searchBox").val("");
+	hideSortIcons();
 	if ($('#searchButton').hasClass('fa-remove')) {
 		$('#searchButton').toggleClass('fa-remove fa-search');
 	}

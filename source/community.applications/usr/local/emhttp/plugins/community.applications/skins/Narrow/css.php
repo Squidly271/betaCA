@@ -46,8 +46,6 @@ switch ($theme) {
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
-		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
-		$tooltipsterContent = "#101010";
 		$aColor = "#486dba";
 		$sidebarBackground = "#777777";
 		$sidebarText = "#f2f2f2";
@@ -60,8 +58,6 @@ switch ($theme) {
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
-		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
-		$tooltipsterContent = "#101010";
 		$aColor = "#486dba";
 		$sidebarBackground = "#e4e2e4";
 		$sidebarText = "#f2f2f2";		
@@ -74,8 +70,6 @@ switch ($theme) {
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
-		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
-		$tooltipsterContent = "#f2f2f2";
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#020202";
 		$sidebarText = "#f2f2f2";				
@@ -89,20 +83,21 @@ switch ($theme) {
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
-		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
-		$tooltipsterContent = "#f2f2f2";
+		$aColor = "#00b8d6";
+		$sidebarBackground = "#000000";
+		$sidebarText = "#f2f2f2";		
 		break;
 }
 ?>
 .sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
-.tooltipster-box{background:<?=$tooltipsterBackground?>!important}
+
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
 .additionalRequirements {margin-left:2rem;}
 .modComment {color:#d67777;}
 a {color:<?=$aColor?>;}
-.tooltipster-content{color:<?=$tooltipsterContent?>!important}
+
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 .sweet-alert table{margin-top:0px}
 .popupHolder,.tooltipster-box {max-height:500px;}
@@ -146,9 +141,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e986';font-size:8rem;color:<?=$watermarkColor?>;}
 <?endif;?>
 
-<?if ( $unRaid67 ):?>
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
-<?endif;?>
 .ca_holderLanguage::before{position:relative;float:right;margin-right:3rem;font-family:'Unraid';content:'\e987';font-size:9rem;color:<?=$watermarkColor?>;}
 .ca_holderRepository::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f2be';font-size:7rem;color:<?=$watermarkColor?>;}
 .ca_holderDriver::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f013';font-size:7rem;color:<?=$watermarkColor?>;}
@@ -215,18 +208,13 @@ a.appIcons {text-decoration:none;}
 .displayBeta {margin-left:2rem;cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
-<?if ($unRaid67):?>
+
 .ca_fa-delete {color:#882626;font-size:1.5rem;cursor:pointer;}
 .ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
 .ca_fa-delete:hover {color:<?=$unRaid66color?>;}
 .ca_fa-project::before {content:"\e953";font-family:Unraid;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
-<?else:?>
-.ca_fa-delete {color:#882626;font-size:2rem;cursor:pointer;}
-.ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
-.ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
-.dockerHubStar:before {content:"\f005";font-family:fontAwesome;}
-<?endif;?>
+
 a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
@@ -283,8 +271,8 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .startupMessage2{font-size:1rem;}
 .donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
 a.donate {text-decoration:none;font-style:italic;color:<?=$donateText?>;}
-.popup-donate {background:black;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
-a.popup-donate {text-decoration:none;font-style:italic;color:white;font-size:1.5rem;}
+.popup-donate {background:white;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
+a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
@@ -318,7 +306,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_normal {font-size:1.4rem !important;}
 .ca_readmore {font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
 .ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
-.popUpClose {font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
+.popUpClose {top:-2rem;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 h1 {font-size:1.5rem;} /* override dynamix styling for popup */
@@ -343,10 +331,12 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .popupName{display:inline-block;font-size:3rem;line-height:3rem;}
 .popupAuthor{;font-size:2rem;line-height:2rem;}
 .popupCategory{font-size:1.2rem;line-height:1.6rem;}
-.popup{margin:1.5rem;}
-.popupInfo{position:absolute;top:120px;left:220px;}
-.popupDescription{font-size:1.5rem;line-height:1.5rem;margin-top:1rem;margin-left:1rem;margin-right:1rem;height:500px;}
-
+.popup{margin:1.5rem;margin-bottom:15rem;margin-top:-2rem;}
+.popupInfo{position:absolute;top:10rem;left:22rem;}
+.popupDescription{font-size:1.5rem;line-height:1.7rem;margin-top:1rem;margin-left:1rem;margin-right:1rem;margin-bottom:0px;}
+.changelog{font-size:1.2rem;line-height:1.4rem;}
+.changelogTitle{text-align:center;font-size:1.5rem;line-height:2rem;}
+.changelogMessage{text-align:center;font-size:1rem;line-height:1rem;}
 #title p{display:block;}
 .awesomplete [hidden] {display: none;}
 .awesomplete .visually-hidden {position: absolute;clip: rect(0, 0, 0, 0);}
