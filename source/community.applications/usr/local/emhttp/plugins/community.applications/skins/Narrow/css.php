@@ -37,6 +37,7 @@ switch ($theme) {
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";
+		$sidebarPos = "4rem;";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -47,8 +48,9 @@ switch ($theme) {
 		$borderColor = "lightgrey";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
 		$aColor = "#486dba";
-		$sidebarBackground = "#777777";
+		$sidebarBackground = "#dddddd";
 		$sidebarText = "#f2f2f2";
+		$sidebarPos = "4rem;";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -59,8 +61,9 @@ switch ($theme) {
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$aColor = "#486dba";
-		$sidebarBackground = "#e4e2e4";
-		$sidebarText = "#f2f2f2";		
+		$sidebarBackground = "#edeaef";
+		$sidebarText = "#f2f2f2";	
+		$sidebarPos = "-1.5rem;";
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -71,8 +74,9 @@ switch ($theme) {
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$aColor = "#00b8d6";
-		$sidebarBackground = "#020202";
-		$sidebarText = "#f2f2f2";				
+		$sidebarBackground = "#0f0f0f";
+		$sidebarText = "#f2f2f2";	
+		$sidebarPos = "-1.5rem;";
 		break;
 // Use settings for black as a fallback
 	default:
@@ -86,10 +90,11 @@ switch ($theme) {
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";		
+		$sidebarPos = "4rem;";
 		break;
 }
 ?>
-.sidenav{height:100%;position:absolute;z-index:9999999;top:4rem;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
+.sidenav{height:100%;position:absolute;z-index:9999999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
 
@@ -314,8 +319,8 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
 #warningNotAccepted {display:none;}
-.menuItems {position:absolute; left:0px;width:14rem;height:auto;}
-.mainArea {position:absolute;left:18.5rem;right:0px; display:block;overflow-x:hidden;min-height:90vh;}
+.menuItems {position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
+.mainArea {position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .ca_toolsView {font-size:2.3rem; position:relative;top:-0.2rem;}
 #templates_content {overflow-x:hidden;}
