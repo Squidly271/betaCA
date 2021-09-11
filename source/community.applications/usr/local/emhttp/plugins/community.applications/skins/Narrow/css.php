@@ -18,8 +18,6 @@ $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
-$unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");
-$unRaid69 = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
@@ -36,6 +34,9 @@ switch ($theme) {
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";
 		$sidebarPos = "4rem;";
+		$supportPopupText = "#000000";
+		$supportPopupBackground = "#ffffff";
+
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -49,6 +50,9 @@ switch ($theme) {
 		$sidebarBackground = "#dddddd";
 		$sidebarText = "#f2f2f2";
 		$sidebarPos = "4rem;";
+		$supportPopupText = "#f2f2f2";
+		$supportPopupBackground = "#ffffff";
+
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -62,6 +66,9 @@ switch ($theme) {
 		$sidebarBackground = "#edeaef";
 		$sidebarText = "#f2f2f2";	
 		$sidebarPos = "-1.5rem;";
+		$supportPopupText = "#e4e2e4";
+		$supportPopupBackground = "#ffffff";
+
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -75,6 +82,9 @@ switch ($theme) {
 		$sidebarBackground = "#0f0f0f";
 		$sidebarText = "#f2f2f2";	
 		$sidebarPos = "-1.5rem;";
+		$supportPopupText = "#1b1d1b";
+		$supportPopupBackground = "#ffffff";
+		
 		break;
 // Use settings for black as a fallback
 	default:
@@ -89,6 +99,8 @@ switch ($theme) {
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";		
 		$sidebarPos = "4rem;";
+		$supportPopupText = "#000000";
+		$supportPopupBackground = "#ffffff";
 		break;
 }
 ?>
@@ -137,11 +149,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_holderRepository {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderDriver {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 
-<?if (! $unRaid69 ):?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;}
-<?else:?>
 .ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e986';font-size:8rem;color:<?=$watermarkColor?>;}
-<?endif;?>
 
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
 .ca_holderLanguage::before{position:relative;float:right;margin-right:3rem;font-family:'Unraid';content:'\e987';font-size:9rem;color:<?=$watermarkColor?>;}
@@ -233,12 +241,8 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_facebook::before {content:"\f09a";font-family:fontAwesome;}
 .ca_showRepo::before {content:"\f002";font-family:fontAwesome;}
 .ca_repository::before {content:"\f2be";font-family:fontAwesome;}
-<?if (version_compare($unRaidSettings['version'],"6.9.0-beta37",">")):?>
 .ca_discord::before{content:"\e988";font-family:Unraid;font-size:2.8rem;vertical-align:bottom;}
 .ca_discord_popup::before{content:"\e988";font-family:Unraid;font-size:2.2rem;vertical-align:middle;}
-<?else:?>
-.ca_discord {height:2.9rem; margin-top:-8px;cursor:pointer;}
-<?endif;?>
 .ca_forum::before {content:"\f1cd";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .ca_profile::before {content:"\f2bb";font-family:fontAwesome;}
@@ -249,6 +253,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .warning-red {color:#882626;}
 .warning-yellow {color:#FF8C2F;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
+.ca_fa-uninstall::before {content:"\e92f";font-family:Unraid;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;padding-right:5rem;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
@@ -330,6 +335,12 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
 .showCharts{cursor:pointer;}
 .showCharts:hover{color:<?=$unRaid66color?>;}
+.supportPopup {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
+.supportPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
+.supportPopup:hover{background-color:<?=$unRaid66color?>;}
+.actionsPopup {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
+.actionsPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
+.actionsPopup:hover{background-color:<?=$unRaid66color?>;}
 
 .popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}

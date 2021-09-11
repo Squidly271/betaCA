@@ -1475,8 +1475,7 @@ function populateAutoComplete() {
 			}
 		}
 	}
-	if ( version_compare("6.9.0-beta1",$caSettings['unRaidVersion'],"<") )
-		$autoComplete[tr("language")] = tr("Language");
+	$autoComplete[tr("language")] = tr("Language");
 
 	postReturn(['autocomplete'=>array_values(array_filter(array_unique($autoComplete)))]);
 }

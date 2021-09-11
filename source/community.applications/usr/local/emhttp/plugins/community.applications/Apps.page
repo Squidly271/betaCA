@@ -38,41 +38,39 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 /* $unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">"); */
-$unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
-$translations =   is_file("$docroot/plugins/dynamix/include/Translations.php");
-$unRaid69B2 =     version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
-$unRaid610 =      version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
+/* $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
+ */
+/*  $translations =   is_file("$docroot/plugins/dynamix/include/Translations.php");
+ *//* $unRaid69B2 =     version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+ */
+ $unRaid610 =      version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
 
 // Check md5's of files
 exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
 
 $previousLocale = $_COOKIE["locale"];
 
-if ( $unRaid69B2 ) {
-	switch ($theme) {
-		case 'black':
-			$swalBackground = "black";
-			$tooltipsterContent = "#f2f2f2";
-			break;
-		case 'azure':
-			$swalBackground = "white";
-			$tooltipsterContent = "#101010";
-			break;
-		case 'gray':
-			$swalBackground = "black";
-			$tooltipsterContent = "#f2f2f2";
-			break;
-		case 'white':
-			$swalBackground = "white";
-			$tooltipsterContent = "#101010";
-			break;
-		default:
-			$swalBackground = "black"; // default to black.  This should only be when someone adds a new theme.  It is NOT the default that the OS uses
-			$tooltipsterContent = "#f2f2f2";
-			break;
-	}
-}	else {
-	$swalBackground = "white";
+switch ($theme) {
+	case 'black':
+		$swalBackground = "black";
+		$tooltipsterContent = "#f2f2f2";
+		break;
+	case 'azure':
+		$swalBackground = "white";
+		$tooltipsterContent = "#101010";
+		break;
+	case 'gray':
+		$swalBackground = "black";
+		$tooltipsterContent = "#f2f2f2";
+		break;
+	case 'white':
+		$swalBackground = "white";
+		$tooltipsterContent = "#101010";
+		break;
+	default:
+		$swalBackground = "black"; // default to black.  This should only be when someone adds a new theme.  It is NOT the default that the OS uses
+		$tooltipsterContent = "#f2f2f2";
+		break;
 }
 
 if ( is_file($caPaths['addConverted']) ) {
@@ -90,8 +88,7 @@ if ( $cfg['updateCheck'] == "yes" ) {
 }
 
 function tr($string,$ret=false) {
-	if ( function_exists("_") )
-		$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+	$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else
@@ -99,9 +96,7 @@ function tr($string,$ret=false) {
 }
 
 ?>
-<? if ( ! $unRaid69 ):?>
-<meta name="referrer" content="same-origin">
-<?endif;?>
+
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
@@ -200,6 +195,9 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
+  context.init({preventDoubleContext:false,left:false,above:false,right:true,bottom:true});
+
+
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
@@ -228,6 +226,11 @@ $(function(){
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
 	});
+	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
+		var repository = $(this).data("repository");
+		var name = $(this).data("name");
+		pinApp(this,repository,name);
+	});		
 
 	$('.mainArea').on("click",".ca_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
@@ -381,9 +384,23 @@ $(function(){
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
 			$('.popup_readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
-			console.log("result:"+result);
-			console.log("appnumber:"+appnumber);
 			popUpChart(result,appnumber);
+			if ( result.supportContext ) {
+				var opts = [];
+				result.supportContext.forEach(function(item,index){
+					opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+				});
+				context.attach('#supportPopup', opts)
+			}
+			if ( result.actionsContext ) {
+				var opts = [];
+				result.actionsContext.forEach(function(item,index){
+					opts.push({text:item.text,icon:item.icon,action:function(){
+						eval(item.action);
+					}});
+				});
+				context.attach("#actionsPopup",opts);
+			}
 		});
 	});
 	
@@ -971,8 +988,8 @@ function dockerConvert(dockerID) {
 	});
 }
 
-function openNewWindow(newURL) {
-	var popUp = window.open(newURL,"_self");
+function openNewWindow(newURL,target='_self') {
+	var popUp = window.open(newURL,target);
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
 		addBannerWarning("<?tr("Popup Blocked.  CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups")?>",true,true);
 	}
@@ -1003,13 +1020,11 @@ function closeSidebar() {
 function installPlugin(pluginURL,update=false) {
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
-	$(".tooltipstered").tooltipster("hide");
+/* 	$(".tooltipstered").tooltipster("hide");
+ */	
+	closeSidebar();
 	disableSearch();
-	<? if ( $translations ): ?>
-		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
-	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
-	<? endif; ?>
+	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
@@ -1098,11 +1113,7 @@ function uninstallApp(application,humanName) {
 	}, function(isConfirm) {
 		if (isConfirm) {
 			application = application.basename();
-			<? if ( $translations ): ?>
-				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
-			<? else: ?>
-				my_openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
-			<? endif; ?>
+			openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
 		} else {
 			enableSearch();
 		}
@@ -1788,7 +1799,7 @@ function feedWarning(currentServer) {
 }
 
 function tr(string) {
-	<?if ( $translations && ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
+	<?if ( ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
 		return _(string);
 	<?else: ?>
 		return string;
@@ -1829,11 +1840,7 @@ function removeLanguage(language) {
 
 function updateDocker(container) {
 	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-	<? if ( $translations ): ?>		
-		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
-	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
-	<? endif; ?>
+	openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
 }	
 
 function setToolTipForFavourite() {
@@ -1871,6 +1878,15 @@ function setFavourite(button) {
 		setFavRepoSearch();
 	});
 	setFavRepoSearch();
+}
+
+function popupInstallXML(xml,type) {
+	saveState();
+	post({action:'createXML',xml:xml},function(result){
+		if ( result.status == "ok" ) {
+			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+		}
+	});	
 }
 
 function popUpChart(descData,appnumber) {
