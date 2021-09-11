@@ -610,8 +610,8 @@ function getPopupDescriptionSkin($appNumber) {
 	
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
-		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
-		$template['display_icon'] = "<i class='$templateIcon popupIcon ca_center'></i>";
+		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon"		: "fa fa-{$template['IconFA']}";
+		$template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
 	} else
 		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
 
@@ -872,9 +872,9 @@ $installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' da
 	}
 	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
 	@unlink($caPaths['pluginTempDownload']);
-/* 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
+/* 	return array("description"=>$templateDescription,;
  */
- return array("description"=>displayPopup($template));
+ return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
  }
 
 #####################################
@@ -1074,6 +1074,18 @@ function displayPopup($template) {
 	if ( $Requires ) {
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 	}
+	if (is_array($trends) && (count($trends) > 1) ){
+		if ( $downloadtrend ) {
+			$card .= "
+				<div><span class='showCharts'>".tr("Show Charts")."</span></div>
+				<div class='charts' style='display:none;'>
+				<div><canvas id='trendChart$ID' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='downloadChart$ID' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='totalDownloadChart$ID' class='caChart' height=1 width=3></canvas></div>
+				</div>
+			";
+		}
+	}
 	if ( $display_changes ) {
 		$card .= "
 			<div class='changelogTitle'>".tr("Change Log")."</div>
@@ -1081,6 +1093,7 @@ function displayPopup($template) {
 			<div class='changelog popup_readmore'>$display_changes</div>
 		";
 	}
+
 	$card .= "</div>";
 	return $card;
 }

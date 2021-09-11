@@ -347,9 +347,11 @@ $(function(){
 			return;
 		}
 		$("#sidenavContent").html("");
+		$(".sidenav").css("height",0);
 		var repository = $(this).data("repository");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-		$(".sidenav").css("height",$(window).innerHeight() );
+		$(".sidenav").css("height",$(window).innerHeight() - 100 );
+
 //		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
@@ -364,8 +366,11 @@ $(function(){
 			return;
 		}
 		$("#sidenavContent").html("");
+		$(".sidenav").css("height",0);
+
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-		$(".sidenav").css("height",$(window).innerHeight() );
+		$(".sidenav").css("height",$(window).innerHeight() - 100 );
+
 //		$("body").css("overflow","hidden");
 
 		var appnumber = $(this).data("appnumber");
@@ -376,6 +381,8 @@ $(function(){
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
 			$('.popup_readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
+			console.log("result:"+result);
+			console.log("appnumber:"+appnumber);
 			popUpChart(result,appnumber);
 		});
 	});
@@ -406,6 +413,14 @@ $(function(){
 
 	$('.menuItems').on("mouseleave",".caMenuItem",function() {
 		$(this).removeClass("hoverMenu");
+	});
+	
+	$(".sidebar").on("click",".showCharts",function() {
+		$(".charts").toggle();
+		if ( $(".charts").is(":visible") ) 
+			$(".showCharts").html("<?=tr("Hide Charts")?>");
+		else
+			$(".showCharts").html("<?=tr("Show Charts")?>");
 	});
 
 	$('.menuItems').on("click",".caMenuItem",function() {

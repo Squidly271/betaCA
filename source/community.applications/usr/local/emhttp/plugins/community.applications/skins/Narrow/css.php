@@ -32,8 +32,6 @@ switch ($theme) {
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
-		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
-		$tooltipsterContent = "#f2f2f2";
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";
@@ -97,7 +95,6 @@ switch ($theme) {
 .sidenav{height:100%;position:absolute;z-index:9999999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
-
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
 .additionalRequirements {margin-left:2rem;}
 .modComment {color:#d67777;}
@@ -300,6 +297,7 @@ a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
 .popUpDeprecated {color:#FF8C2F;}
 i.popupIcon {color:#626868;font-size:14.4rem;padding-left:1rem;}
+.unraidIcon {margin-top:4rem;}
 img.popupIcon {width:14.4rem;height:14.4rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupIcon {display:inline-block;}
 .display_beta {color:#FF8C2F;}
@@ -330,6 +328,8 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .caChangeLog {cursor:pointer;}
 .caInstallLinePopUp {display:flex;flex-wrap:wrap;justify-content:space-around;}
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
+.showCharts{cursor:pointer;}
+.showCharts:hover{color:<?=$unRaid66color?>;}
 
 .popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
