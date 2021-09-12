@@ -104,6 +104,8 @@ switch ($theme) {
 		break;
 }
 ?>
+.betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top: 0;height: 100px;width: 100px;position: absolute;right: 0;}
+.betaPopupText{position:absolute;transform:rotate(45deg);color:white;font-size:2rem;position:absolute;top:1rem;right:1rem;}
 .sidenav{height:100%;position:absolute;z-index:9999999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
@@ -221,7 +223,6 @@ a.appIcons {text-decoration:none;}
 
 .ca_fa-delete {color:#882626;font-size:1.5rem;cursor:pointer;}
 .ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
-.ca_fa-delete:hover {color:<?=$unRaid66color?>;}
 .ca_fa-project::before {content:"\e953";font-family:Unraid;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
 
@@ -252,6 +253,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_private{color:#882626;}
 .warning-red {color:#882626;}
 .warning-yellow {color:#FF8C2F;}
+.ca_red{color:#882626;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
 .ca_fa-uninstall::before {content:"\e92f";font-family:Unraid;}
 .ca_donate {position:relative;margin-left:18rem;}
@@ -344,9 +346,9 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 
 .popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
-.popupName{display:inline-block;font-size:3rem;line-height:3rem;}
-.popupAuthor{;font-size:2rem;line-height:2rem;}
-.popupCategory{font-size:1.2rem;line-height:1.6rem;}
+.popupName{display:inline-block;font-size:2rem;line-height:3rem;}
+.popupAuthor{;font-size:1.2rem;line-height:1.5rem;}
+.popupCategory{font-size:1rem;line-height:1rem;}
 .popup{margin:1.5rem;margin-bottom:15rem;margin-top:-2rem;}
 .popupInfo{position:absolute;top:10rem;left:22rem;}
 .popupDescription{font-size:1.5rem;line-height:1.7rem;margin-top:1rem;margin-left:1rem;margin-right:1rem;margin-bottom:0px;}

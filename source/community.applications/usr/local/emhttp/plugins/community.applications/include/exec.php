@@ -11,11 +11,8 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translationsAllowed = is_file("$docroot/plugins/dynamix/include/Translations.php");
-if ( $translationsAllowed ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps";
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
-}
+$_SERVER['REQUEST_URI'] = "docker/apps";
+require_once("$docroot/plugins/dynamix/include/Translations.php");
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
 require_once "$docroot/plugins/community.applications/include/paths.php";
@@ -189,7 +186,7 @@ switch ($_POST['action']) {
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $caPaths, $caSettings, $statistics, $translationsAllowed;
+	global $caPaths, $caSettings, $statistics;
 
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
@@ -218,10 +215,7 @@ function DownloadApplicationFeed() {
 			$invalidXML[] = $o;
 			continue;
 		}
-		if ( ! $translationsAllowed && $o['Language'] ) {
-			$invalidXML[] = $o;
-			continue;
-		}
+
 		unset($o['Category']);
 		if ( $o['CategoryList'] ) {
 			foreach ($o['CategoryList'] as $cat) {
@@ -1493,16 +1487,15 @@ function caChangeLog() {
 # Populates the category list #
 ###############################
 function get_categories() {
-	global $caPaths, $sortOrder, $translationsAllowed;
+	global $caPaths, $sortOrder;
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
 		postReturn(['categories'=>$cat]);
 		return;
 	} else {
-		if ($translationsAllowed) {
-			$categories[] = array("Des"=>"Language","Cat"=>"Language:");
-		}
+		$categories[] = array("Des"=>"Language","Cat"=>"Language:");
+
 		foreach ($categories as $category) {
 			$category['Des'] = tr($category['Des']);
 			if ( is_array($category['Sub']) ) {
