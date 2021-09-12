@@ -581,7 +581,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$ovr = str_replace("\n","<br>",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
-
+	$ovr = preg_replace('{(<br[^>]*>\s*)+}', '<br><br>', $ovr);
 	$template['display_ovr'] = preg_replace('#(\s*<br\s*/?>)*\s*$#i', '', trim($ovr)); # remove trailing <br>
 	
 	$template['ModeratorComment'] .= $template['CAComment'];
@@ -647,11 +647,13 @@ function getPopupDescriptionSkin($appNumber) {
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
 						}
 						$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
+						$actionsContext[] = array("divider"=>true);
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
 			
 					} else {
 						if ( $template['InstallPath'] ) {
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
+							$actionsContext[] = array("divider"=>true);
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}
 						else {
@@ -673,11 +675,15 @@ function getPopupDescriptionSkin($appNumber) {
 					if ( $pluginSettings ) {
 						$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
 					}
+					if ( ! empty($actionsContext) )
+						$actionsContext[] = array("divider"=>true);
 					$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
 				} else {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
 					if ( $template['InstallPath'] ) {
+						if ( ! empty($actionsContext) )	
+							$actionsContext[] = array("divider"=>true);						
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
 					}
 					if ( count($actionsContext) == 1 ) {
@@ -709,6 +715,8 @@ function getPopupDescriptionSkin($appNumber) {
 				$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
 			}
 			if ( $currentLanguage != $countryCode ) {
+				if ( ! empty($actionsContext) )
+					$actionsContext[] = array("divider"=>true);
 				$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove Language Pack")."</span>","action"=>"removeLanguage('$countryCode');");
 			}
 		}
@@ -1119,9 +1127,9 @@ function displayPopup($template) {
 			$card .= "
 				<div><span class='showCharts'>".tr("Show Charts")."</span></div>
 				<div class='charts' style='display:none;'>
-				<div><canvas id='trendChart$ID' class='caChart' height=1 width=3></canvas></div>
-				<div><canvas id='downloadChart$ID' class='caChart' height=1 width=3></canvas></div>
-				<div><canvas id='totalDownloadChart$ID' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='downloadChart' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='totalDownloadChart' class='caChart' height=1 width=3></canvas></div>
 				</div>
 			";
 		}

@@ -368,15 +368,14 @@ $(function(){
 
 		$("body").css("overflow","hidden");
 
-		var appnumber = $(this).data("appnumber");
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
-		var beta = " "+$(this).data("beta");
 		appname = stripTags(appname);
+		
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
 			$('.popup_readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
-			popUpChart(result,appnumber);
+			popUpChart(result);
 			if ( result.supportContext ) {
 				var opts = [];
 				result.supportContext.forEach(function(item,index){
@@ -387,9 +386,13 @@ $(function(){
 			if ( result.actionsContext ) {
 				var opts = [];
 				result.actionsContext.forEach(function(item,index){
-					opts.push({text:item.text,icon:item.icon,action:function(){
-						eval(item.action);
-					}});
+					if ( item.divider ) {
+						opts.push({divider:true});
+					} else {
+						opts.push({text:item.text,icon:item.icon,action:function(){
+							eval(item.action);
+						}});
+					}
 				});
 				context.attach("#actionsPopup",opts);
 			}
@@ -1866,8 +1869,8 @@ function popupInstallXML(xml,type) {
 	});	
 }
 
-function popUpChart(descData,appnumber) {
-	if ( $("#trendChart"+appnumber).length ) {
+function popUpChart(descData) {
+	if ( $("#trendChart").length ) {
 		var fontSize = 14;
 
 		if (descData.trendLabel.length > 3) {
@@ -1880,7 +1883,7 @@ function popUpChart(descData,appnumber) {
 			var fontSize = 8;
 		}
 
-		var ctx = document.getElementById("trendChart"+appnumber).getContext('2d');
+		var ctx = document.getElementById("trendChart").getContext('2d');
 		let chart = new Chart(ctx, {
 			type: 'line',
 			data: {
@@ -1933,8 +1936,8 @@ function popUpChart(descData,appnumber) {
 			}
 		});
 	}
-	if ( $("#downloadChart"+appnumber).length ) {
-		var ctx = document.getElementById("downloadChart"+appnumber).getContext('2d');
+	if ( $("#downloadChart").length ) {
+		var ctx = document.getElementById("downloadChart").getContext('2d');
 		let chart = new Chart(ctx, {
 			type: 'line',
 			data: {
@@ -1986,8 +1989,8 @@ function popUpChart(descData,appnumber) {
 			}
 		});
 	}
-	if ( $("#totalDownloadChart"+appnumber).length ) {
-		var ctx = document.getElementById("totalDownloadChart"+appnumber).getContext('2d');
+	if ( $("#totalDownloadChart").length ) {
+		var ctx = document.getElementById("totalDownloadChart").getContext('2d');
 		let chart = new Chart(ctx, {
 			type: 'line',
 			data: {
