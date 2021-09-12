@@ -34,6 +34,8 @@ switch ($theme) {
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";
 		$sidebarPos = "4rem;";
+		$sidebarPosition ="absolute";
+		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
 
@@ -50,6 +52,8 @@ switch ($theme) {
 		$sidebarBackground = "#dddddd";
 		$sidebarText = "#f2f2f2";
 		$sidebarPos = "4rem;";
+		$sidebarPosition = "absolute";
+		$betaPopupOffset = "0";
 		$supportPopupText = "#f2f2f2";
 		$supportPopupBackground = "#ffffff";
 
@@ -66,6 +70,8 @@ switch ($theme) {
 		$sidebarBackground = "#edeaef";
 		$sidebarText = "#f2f2f2";	
 		$sidebarPos = "-1.5rem;";
+		$sidebarPosition = "fixed";
+		$betaPopupOffset = "1.5rem;";		
 		$supportPopupText = "#e4e2e4";
 		$supportPopupBackground = "#ffffff";
 
@@ -82,6 +88,8 @@ switch ($theme) {
 		$sidebarBackground = "#0f0f0f";
 		$sidebarText = "#f2f2f2";	
 		$sidebarPos = "-1.5rem;";
+		$sidebarPosition = "fixed";
+		$betaPopupOffset = "1.5rem;";
 		$supportPopupText = "#1b1d1b";
 		$supportPopupBackground = "#ffffff";
 		
@@ -99,14 +107,16 @@ switch ($theme) {
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";		
 		$sidebarPos = "4rem;";
+		$sidebarPosition ="absolute";
+		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
 		break;
 }
 ?>
-.betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top: 0;height: 100px;width: 100px;position: absolute;right: 0;}
-.betaPopupText{position:absolute;transform:rotate(45deg);color:white;font-size:2rem;position:absolute;top:1rem;right:1rem;}
-.sidenav{height:100%;position:absolute;z-index:9999999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
+.betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
+.betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
+.sidenav{position:<?=$sidebarPosition?>;z-index:9999999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sidenavShow{width:700px;}
 .sidenavHide{width:0px;}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
