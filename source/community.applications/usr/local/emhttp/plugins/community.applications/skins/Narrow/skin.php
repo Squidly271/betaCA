@@ -588,7 +588,6 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Plugin'] ) {
 		$templateURL = $template['PluginURL'];
-		file_put_contents("/tmp/blah",$templateURL);
 		download_url($templateURL,$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
@@ -607,24 +606,25 @@ function getPopupDescriptionSkin($appNumber) {
 	
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
-		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon"		: "fa fa-{$template['IconFA']}";
+		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
 		$template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
 	} else
 		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
 
-
+/* 
 	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
-	$templateDescription .= "<div class='readmore'>$ovr</div>";
+	$templateDescription .= "<div class='readmore'>$ovr</div>"; */
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
 	}
-	$templateDescription .= "</div>";
+/* 	$templateDescription .= "</div>";
+ */	
 	if ( $donatelink )
 		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>".tr("Donate")."</a></span><br><br>";
 
-	$templateDescription .= $template['disclaimLine1'] && ! $template['LanguageDefault'] ? "<div class='ca_center'><a class='ca_fa-warning warning-yellow popUpLink' href='{$template['disclaimLineLink']}' target='_blank'>{$template['disclaimLine1']}</a></div>" : "";
+/* 	$templateDescription .= $template['disclaimLine1'] && ! $template['LanguageDefault'] ? "<div class='ca_center'><a class='ca_fa-warning warning-yellow popUpLink' href='{$template['disclaimLineLink']}' target='_blank'>{$template['disclaimLine1']}</a></div>" : "";
 	$templateDescription .= "<div class='ca_hr'></div>";
-	$templateDescription .= "<br>";
+	$templateDescription .= "<br>"; */
 
 	$actionsContext = [];
 	if ( ! $template['Language'] ) {
@@ -727,9 +727,9 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 	}
 
-	$installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ".tr("Profile")."</a></div>";
+/* 	$installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ".tr("Profile")."</a></div>";
 	$installLine .= "</div>";
-
+ */
 	$supportContext = array();
 	if ( $template['Support'] ) 
 		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
@@ -737,11 +737,11 @@ function getPopupDescriptionSkin($appNumber) {
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
-	$templateDescription .= "<tr><td>".tr("Author:")."</td><td>$author</a></td></tr>";
+/* 	$templateDescription .= "<tr><td>".tr("Author:")."</td><td>$author</a></td></tr>";
 	if ( ! $template['Plugin'] && ! $template['Language']) {
 		$templateDescription .= "<tr><td>".tr("DockerHub:")."</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
-	}
-	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
+	} */
+/* 	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
 	$templateDescription .= "<a class='popUpLink ca_repoSearchPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ";
 	$templateDescription .= str_ireplace("Repository","",$template['RepoName']).tr("Repository")."</a>";
 	if ( ($template['Repo'] == str_replace("*","'",$caSettings['favourite'])) && $caSettings['favourite'] )
@@ -787,8 +787,8 @@ function getPopupDescriptionSkin($appNumber) {
 			$templateDescription .= "<tr><td nowrap>".tr("Installed Version:")."</td><td>$installedVersion</td></tr>";
 		}
 	}
-
-	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
+ */
+/* 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
 	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>Unraid v".$template['MinVer']."</td></tr>" : "";
 
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
@@ -827,8 +827,8 @@ function getPopupDescriptionSkin($appNumber) {
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold modComment'>".tr("Moderator Comments:")."</span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
-
-	$templateDescription .= "</div>";
+ */
+/* 	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
 		$dupeList = readJsonFile($caPaths['pluginDupes']);
 		if ( $dupeList[basename($template['Repository'])] == 1 ){
@@ -841,7 +841,7 @@ function getPopupDescriptionSkin($appNumber) {
 			}
 			$templateDescription .= "<br>".sprintf(tr("This plugin has a duplicated name from another plugin %s.  This will impact your ability to install both plugins simultaneously"),$duplicated)."<br>";
 		}
-	}
+	} */
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		if ( $template['downloadtrend'] ) {
 			$templateDescription .= "<div><canvas id='trendChart{$template['ID']}' class='caChart' height=1 width=3></canvas></div>";
@@ -888,8 +888,8 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['pinnedTitle'] = tr("Click to pin this application");
 	}
 	$template['actionsContext'] = $actionsContext;
-	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
-	@unlink($caPaths['pluginTempDownload']);
+/* 	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
+ */	@unlink($caPaths['pluginTempDownload']);
 /* 	return array("description"=>$templateDescription,;
  */
  return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext);
@@ -1009,10 +1009,10 @@ function displayCard($template) {
 
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
-	$holder = $template['Plugin'] ? "ca_holderPlugin" : "ca_holderDocker";
-	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
-	$holder = $template['RepositoryTemplate'] ? "ca_holderRepository" : $holder;
-	$holder = (strpos($template['OriginalCategories'],"Drivers") !== false) && $template['Plugin'] ? "ca_holderDriver" : $holder;
+	$type = $template['Plugin'] ? "plugin" : "docker";
+	$type = $template['Language'] ? "language" : $type;
+	$type = $template['RepositoryTemplate'] ? "repository" : $type;
+	$type = (strpos($template['OriginalCategories'],"Drivers") !== false) && $template['Plugin'] ? "driver" : $type;
 	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 
@@ -1027,6 +1027,7 @@ function displayCard($template) {
 		$language .= $template['LanguageLocal'] ? " - {$template['LanguageLocal']}" : "";
 		$template['Category'] = "";
 	}
+	$template['Category'] = explode(",",$template['Category'])[0];
 	extract($template);
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 	$card = "
@@ -1051,16 +1052,15 @@ function displayCard($template) {
 					</div>
 				</div>
 			</div>
-			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				$display_multi_install$display_dockerUpdate$display_pluginUpdate$display_languageUpdate$display_languageInstallIcon$display_language_switch$display_pluginInstallIcon$display_dockerInstallIcon $dockerReinstall $display_dockerReinstallIcon $display_dockerEditIcon $display_pluginSettingsIcon$display_infoIcon $dockerWebIcon$display_profile$display_webpage$display_faSupport$display_twitter$display_reddit$display_discord$display_facebook $display_faProject $display_pinButton$display_repoSearch$display_faFavourite$display_favouriteButton
+				<div class='infoButton'>".tr("Info")."</div>
 				<span class='ca_bottomRight'>
-					$display_removable $display_Uninstall
+					$display_removable $display_Uninstall <span class='cardType $type'></span>
 				</span>
 			</div>
-			<div class='$descriptionArea cardDescription $popupType' data-appNumber='$ID' data-appPath='$Path' data-appName='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+<!-- 			<div class='$descriptionArea cardDescription $popupType' data-appNumber='$ID' data-appPath='$Path' data-appName='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
 				$CardDescription
-			</div>
+			</div> -->
 		</div>
 		";
 
@@ -1122,14 +1122,18 @@ function displayPopup($template) {
 	if ( $Requires ) {
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 	}
+	if ( $ModeratorComment ) {
+		$card .= "<div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div>";
+	}
 	if (is_array($trends) && (count($trends) > 1) ){
 		if ( $downloadtrend ) {
 			$card .= "
-				<div><span class='showCharts'>".tr("Show Charts")."</span></div>
-				<div class='charts' style='display:none;'>
+				<div class='charts chartTitle'>Trends</div>
+				<div><span class='charts'>Show: <span class='chartMenu selectedMenu' data-chart='trendChart'>".tr("Trend Per Month")."</span><span class='chartMenu' data-chart='downloadChart'>".tr("Downloads Per Month")."</span><span class='chartMenu' data-chart='totalDownloadChart'>".tr("Total Downloads")."</span></div>
+				<div>
 				<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>
-				<div><canvas id='downloadChart' class='caChart' height=1 width=3></canvas></div>
-				<div><canvas id='totalDownloadChart' class='caChart' height=1 width=3></canvas></div>
+				<div><canvas id='downloadChart' class='caChart' style='display:none;' height=1 width=3></canvas></div>
+				<div><canvas id='totalDownloadChart' class='caChart' style='display:none;' height=1 width=3></canvas></div>
 				</div>
 			";
 		}

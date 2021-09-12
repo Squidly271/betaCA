@@ -350,7 +350,7 @@ $(function(){
 		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
-			$('.popup_readmore').readmore({maxHeight:200,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
 		});		
 	});
 	
@@ -374,7 +374,7 @@ $(function(){
 		
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
-			$('.popup_readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("READ MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("READ LESS")?></i>"})
 			popUpChart(result);
 			if ( result.supportContext ) {
 				var opts = [];
@@ -427,13 +427,22 @@ $(function(){
 		$(this).removeClass("hoverMenu");
 	});
 	
-	$(".sidebar").on("click",".showCharts",function() {
+	$(".sidebar").on("click",".chartMenu",function() {
+		if ($(this).hasClass("selectedMenu") )
+			return;
+		$(".chartMenu").removeClass("selectedMenu");
+		$(this).addClass("selectedMenu");
+		$(".caChart").hide();
+		var chart = $(this).data("chart");
+		$("#"+chart).show();
+	});
+/* 	$(".sidebar").on("click",".showCharts",function() {
 		$(".charts").toggle();
 		if ( $(".charts").is(":visible") ) 
 			$(".showCharts").html("<?=tr("Hide Charts")?>");
 		else
 			$(".showCharts").html("<?=tr("Show Charts")?>");
-	});
+	}); */
 
 	$('.menuItems').on("click",".caMenuItem",function() {
 		if ( popupVisible(this) ) return;
@@ -1444,7 +1453,7 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$("#templates_content").html(data);
-	truncateDescriptions();
+//	truncateDescriptions();
 	setToolTip();
 	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
 	enableSearch();
@@ -1457,7 +1466,7 @@ function updateDisplay(data) {
 function isOverflown(element){
 	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
-
+/* 
 function truncateDescriptions() {
 	$(".cardDescription").each(function() {
 		if ( ! $(this).attr("data-originalDescription") )
@@ -1471,7 +1480,7 @@ function truncateDescriptions() {
 			$(this).html(newDescription + " ... <span class='myReadmoreButton'><?=tr("Read more");?></span>");
 		}
 	});
-}
+} */
 
 function saveState() {
 	if ( ! dockerSearchFlag ) {
