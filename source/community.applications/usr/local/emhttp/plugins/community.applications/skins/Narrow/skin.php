@@ -527,6 +527,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$ID = $template['ID'];
 
 	$template['Profile'] = $allRepositories[$template['RepoName']]['profile'];
+	$template['ProfileIcon'] = $allRepositories[$template['RepoName']]['icon'];
 
 	// Hack the system so that language's popups always appear in the appropriate language
 	if ( $template['Language'] ) {
@@ -611,16 +612,10 @@ function getPopupDescriptionSkin($appNumber) {
 	} else
 		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
 
-/* 
-	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
-	$templateDescription .= "<div class='readmore'>$ovr</div>"; */
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
 	}
-/* 	$templateDescription .= "</div>";
- */	
-	if ( $donatelink )
-		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>".tr("Donate")."</a></span><br><br>";
+
 
 /* 	$templateDescription .= $template['disclaimLine1'] && ! $template['LanguageDefault'] ? "<div class='ca_center'><a class='ca_fa-warning warning-yellow popUpLink' href='{$template['disclaimLineLink']}' target='_blank'>{$template['disclaimLine1']}</a></div>" : "";
 	$templateDescription .= "<div class='ca_hr'></div>";
@@ -735,12 +730,12 @@ function getPopupDescriptionSkin($appNumber) {
 		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
 	if ( $template['Project'] )
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+	if ( $template['Registry'] )
+		$supportContext[] = array("icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry"));
+
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
-/* 	$templateDescription .= "<tr><td>".tr("Author:")."</td><td>$author</a></td></tr>";
-	if ( ! $template['Plugin'] && ! $template['Language']) {
-		$templateDescription .= "<tr><td>".tr("DockerHub:")."</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
-	} */
+
 /* 	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
 	$templateDescription .= "<a class='popUpLink ca_repoSearchPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ";
 	$templateDescription .= str_ireplace("Repository","",$template['RepoName']).tr("Repository")."</a>";
@@ -793,9 +788,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>".tr("Max OS:")."</td><td>Unraid v".$template['MaxVer']."</td></tr>" : "";
+
 	$downloads = getDownloads($template['downloads']);
-	if ($downloads)
-		$templateDescription .= "<tr><td>".tr("Total Downloads:")."</td><td>$downloads</td></tr>";
 
 	$templateDescription .= $template['Licence'] ? "<tr><td>".tr("Licence:")."</td><td>".$template['Licence']."</td></tr>" : "";
 	if ( $template['trending'] ) {
@@ -827,7 +821,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold modComment'>".tr("Moderator Comments:")."</span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
- */
+ 
 /* 	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
 		$dupeList = readJsonFile($caPaths['pluginDupes']);
@@ -1069,6 +1063,9 @@ function displayCard($template) {
 
 function displayPopup($template) {
 	extract($template);
+	$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
+	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
+	$DateAdded = date("M j, Y",$FirstSeen);
 	
 	$card = "
 		<div class='popup'>
@@ -1081,9 +1078,6 @@ function displayPopup($template) {
 		if ( ! $Language )
 			$card .= "<div class='popupAuthor'>$Author</div>";
 		
-		$card .= "
-				<div class='popupCategory'>$Category</div>
-		";
 		if ( $actionsContext ) {
 			$card .= "
 				<div class='actionsPopup' id='actionsPopup'>".tr("Actions")."</div>
@@ -1123,8 +1117,46 @@ function displayPopup($template) {
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 	}
 	if ( $ModeratorComment ) {
-		$card .= "<div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div>";
+		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
+	$card .= "
+		<div>
+		<div class='popupInfoSection'>
+			<div class='popupInfoLeft'>
+				<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
+				
+				<div><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
+				<div class='popupAuthor'>$RepoName</div>
+				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("All Apps")."</div>
+				<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
+	";
+
+	if ( $DonateLink ) {
+		$card .= "
+			<div class='donateText'>$DonateText</div>
+			<div><span class='donate'><a href='$DonateLink' target='_blank'>".tr("Donate")."</a></span></div>
+		";
+	}
+	$card .= "
+		</div>
+		<div class='popupInfoRight'>
+			<div class='rightTitle'>".tr("Details")."</div>
+			<table style='display:initial;'>
+				<tr><td style='vertical-align:top;padding-right:15px;'>".tr("Categories")."</td><td>$Category</td></tr>
+				<tr><td>".tr("Added")."</td><td>$DateAdded</td></tr>
+	";
+	$downloadText = getDownloads($downloads);
+	if ($downloadText)
+		$card .= "<tr><td>".tr("Downloads")."</td><td>$downloadText</td></tr>";
+	
+	$card .=
+	"
+				</table>
+			</div>
+		</div>
+		</div>
+	";
+				
 	if (is_array($trends) && (count($trends) > 1) ){
 		if ( $downloadtrend ) {
 			$card .= "

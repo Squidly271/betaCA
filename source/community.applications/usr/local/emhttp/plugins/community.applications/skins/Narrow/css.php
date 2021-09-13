@@ -23,8 +23,8 @@ $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
 switch ($theme) {
 	case 'black':
-		$donateBackground = "#f2f2f2";
-		$donateText = "#1c1b1b";
+		$donateBackground = "#ffffff";
+		$donateText = "#000000";
 		$templateBackground = "#0f0f0f";
 		$templateFavourite = "#333333";
 		$hrColor = "#2b2b2b";
@@ -38,6 +38,7 @@ switch ($theme) {
 		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
+		$modBackground = "#373837";
 
 		break;
 	case 'white':
@@ -56,7 +57,7 @@ switch ($theme) {
 		$betaPopupOffset = "0";
 		$supportPopupText = "#020202";
 		$supportPopupBackground = "#ffffff";
-
+		$modBackground = "#c5c5c5";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -68,12 +69,13 @@ switch ($theme) {
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$aColor = "#486dba";
 		$sidebarBackground = "#edeaef";
-		$sidebarText = "#f2f2f2";	
+		$sidebarText = "#606e7f";	
 		$sidebarPos = "-1.5rem;";
 		$sidebarPosition = "fixed";
 		$betaPopupOffset = "1.5rem;";		
 		$supportPopupText = "#1b1d1b";
 		$supportPopupBackground = "#ffffff";
+		$modBackground = "#c5c5c5";
 
 		break;
 	case 'gray':
@@ -92,6 +94,7 @@ switch ($theme) {
 		$betaPopupOffset = "1.5rem;";
 		$supportPopupText = "#1b1d1b";
 		$supportPopupBackground = "#ffffff";
+		$modBackground = "#373837";
 		
 		break;
 // Use settings for black as a fallback
@@ -111,15 +114,11 @@ switch ($theme) {
 		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
+		$modBackground = "#373837";
 		break;
 }
 ?>
 a {color:<?=$aColor?>;}
-
-
-
-
-
 
 .actionsPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
 .actionsPopup {font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
@@ -176,6 +175,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_fa-delete {color:#882626;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
+.ca_fa-docker::before{font-family:'Unraid';content:'\e90b';}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
@@ -220,13 +220,14 @@ ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
 .ca_private{color:#882626;}
 .ca_profile::before {content:"\f2bb";font-family:fontAwesome;}
-.ca_readmore {font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
-.ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
+.ca_readmore {color:#d67777;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
+.ca_readmore:hover {text-decoration:none;color:inherit;}
 .ca_reddit::before {content:"\f281";font-family:fontAwesome;}
 .ca_red{color:#882626;}
 .ca_repoinfo::before {content:"\f05a";font-family:fontAwesome;}
-.ca_repoPopup {text-decoration:none!important;cursor:pointer;color:inherit;}
+.ca_repoPopup {display:inline-block;text-decoration:none!important;cursor:pointer;color:inherit;}
 a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
+
 .ca_repoSearch {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .ca_repoSearch::after {content:"\f002";font-family:fontAwesome;}
 .ca_repoSearchPopup {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
@@ -262,10 +263,12 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .dockerDisabled {display:none;}
 .dockerHubStar {font-size:1rem;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
-.donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
+.donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
 .donate:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
-a.donate {text-decoration:none;font-style:italic;color:<?=$donateText?>;}
+
+.donate a {text-decoration:none;color:<?=$donateText?>;}
 .donateLink {font-size:1.2rem;}
+.donateText{margin-top:2rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}
 .graphLink {cursor:pointer;text-decoration:none;}
 .hoverMenu {color:<?=$unRaid66color?>;}
@@ -275,7 +278,7 @@ input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem
 .mainArea {position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .menuItems {position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
-.modComment {color:#d67777;}
+.modComment {background-color:<?=$modBackground?>;padding:2rem;}
 .moderatorCommentHeader {color:#d67777;font-size:2rem;font-weight:normal;}
 .moderatorCommentHeader:before{content:"\f071";font-family:fontAwesome;}
 .moderatorComment {font-size:1.2rem;font-style:italic;line-height:1.5rem;}
@@ -298,7 +301,9 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pinned:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 .plugin::after {font-family:'Unraid';content:'\e986';font-size:2.5rem;}
 .popup-donate {background:white;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
-.popupAuthor{;font-size:1.2rem;line-height:1.5rem;}
+.popupAuthor{font-size:1.7rem;line-height:2rem;;margin-bottom:0.5rem;margin-top:0.5rem;}
+.popupAuthorIcon{height:7.2rem;width:7.2rem;border-radius:1rem 1rem 1rem 1rem;}
+.popupAuthorTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .popupCategory{font-size:1rem;line-height:1rem;}
 .popUpClose {top:-2rem;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
@@ -310,10 +315,18 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 i.popupIcon {color:#626868;font-size:14.4rem;padding-left:1rem;}
 img.popupIcon {width:14.4rem;height:14.4rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupInfo{position:absolute;top:10rem;left:22rem;}
+.popupInfoLeft{min-width:30rem;max-width:30rem;float:left;display:inline-block;margin-right:10px;}
+.popupInfoRight{min-width:30rem;max-width:30rem;float:left;display:inline-block;}
+.popupInfoSection{line-height:2rem;font-size:1.5rem;display:inline-block;}
 .popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
-.popupName{display:inline-block;font-size:2rem;line-height:3rem;font-weight:bold;}
+.popupName{display:inline-block;font-size:3rem;line-height:3rem;font-weight:bold;}
+
+.popupProfile {cursor:pointer;margin-top:0.5rem;display:inline-block;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
+.popupProfile:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
+
+
 .popupTable td {width:30%;text-align:left;}
 .popupTable{font-size:1.5rem;width:55rem;margin-top:0px;margin-left:auto;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
@@ -321,6 +334,10 @@ a.popUpLink:hover {color:<?=$unRaid66color?>;}
 a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 .readmore-js-collapsed{-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)));}
+.repoPopup {cursor:pointer;display:inline-block;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
+.repoPopup:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
+
+.rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
