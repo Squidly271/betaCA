@@ -131,6 +131,13 @@ a.appIcons {text-decoration:none;}
 .appIconsPopUp {font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;}
 .appIconsPopUp:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
+.appDocker{float:right;font-size:2rem;}
+.appDocker::before{font-family:'Unraid';content:'\e90b';}
+.appLanguage{float:right;font-size:2rem;}
+.appLanguage::before{font-family:'Unraid';content:'\e987';}
+.appPlugin{float:right;font-size:2rem;}
+.appPlugin::before{font-family:'Unraid';content:'\e986';}
+.betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: relative;left:-10.25rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
@@ -144,13 +151,14 @@ body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing
 .cardDescription {cursor:pointer;}
 .categoryLine {margin-left:10px;font-size:1.5rem;font-weight:normal;color:#6363ca;}
 .ca_applicationInfo {display:inline-block;position:absolute;width:25rem;}
-.ca_applicationName {font-size:1.6rem;font-weight:medium;}
+.ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;}
 a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
-.ca_author {cursor:pointer;font-size:1rem;font-style:italic;}
+.ca_appPopup {cursor:pointer;}
+.ca_author {font-size:1.5rem;font-style:italic;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_bold {font-weight:bold;}
-.ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
+.ca_bottomLine {display:block;position:relative;top:19rem;}
 .ca_bottomRight {float:right;margin-right:2rem;padding-top:0.5rem;}
 .ca_categories {font-size:1rem;font-style:italic;}
 a.ca_categories {text-decoration:none;color:inherit;}
@@ -193,15 +201,15 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_favouriteRepo {font-size:2rem;cursor:pointer;margin-left:2.5rem !important;padding-right:.5rem;cursor:pointer;color:#1fa67a !important;padding:.3rem;}
 .ca_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
 .ca_forum::before {content:"\f1cd";font-family:fontAwesome;}
-.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:23rem;min-width:24rem;max-width:24rem;flex-grow:1;flex-basis:24rem;overflow:hidden;padding:20px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;}
 /* .ca_holder::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
  */.ca_holderFav {background-color:<?=$templateFavourite?> !important;}
 .ca_holderRepository {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 /* .ca_holderRepository::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f2be';font-size:7rem;color:<?=$watermarkColor?>;} */
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 .ca_href {cursor:pointer;}
-.ca_icon {width:6.4rem;height:6.4rem;padding-left:0.5rem;}
-.ca_iconArea {width:100%;height:6.4rem;margin:1rem;}
+.ca_icon {width:6.4rem;height:6.4rem;}
+.ca_iconArea {width:100%;height:6.4rem;margin-top:-2rem;margin-left:1rem;}
 .ca_infoArea {height:10rem;margin:1rem;display:inline-block;position:absolute;width:auto;}
 .ca_italic {font-style:italic;}
 .ca_LanguageDisclaimer {cursor:pointer;font-size:.9rem;}
@@ -245,6 +253,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:1rem;margin-top:1.5rem;width:20rem;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
+.cardCategory{font-size:1rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
 .chartMenu{padding-left:2rem;cursor:pointer;}
@@ -272,8 +281,8 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}
 .graphLink {cursor:pointer;text-decoration:none;}
 .hoverMenu {color:<?=$unRaid66color?>;}
-.infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
-
+.infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.infoButton:hover{background:<?=$unRaid66color?>}
 input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem;margin-left:0rem;}
 .mainArea {position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
@@ -323,7 +332,7 @@ a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
 .popupName{display:inline-block;font-size:3rem;line-height:3rem;font-weight:bold;}
 
-.popupProfile {cursor:pointer;margin-top:0.5rem;display:inline-block;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
+.popupProfile {cursor:pointer;margin-top:0.5rem;display:inline-block;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
 .popupProfile:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 
 
@@ -334,7 +343,7 @@ a.popUpLink:hover {color:<?=$unRaid66color?>;}
 a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 .readmore-js-collapsed{-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)));}
-.repoPopup {cursor:pointer;display:inline-block;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
+.repoPopup {cursor:pointer;display:inline-block;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
 .repoPopup:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
@@ -342,11 +351,11 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 <?if ( $theme == "azure" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;background-color:#262626;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
 <?endif;?>
 <?if ( $theme == "black" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;background-color:#262626;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;background-color:#262626;}
 <?endif;?>
 <?if ( $theme == "gray" ):?>
@@ -355,7 +364,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 <?endif;?>
 <?if ( $theme == "white" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;background:transparent}
 <?endif;?>
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
 .showCharts:hover{color:<?=$unRaid66color?>;}
@@ -365,10 +374,21 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sortIcons {font-size:1.2rem;margin-right:20px;cursor:pointer;text-decoration:none !important;}
 .specialCategory {font-size:1.5rem;}
-.startup-icon {color:lightblue;font-size:1.5rem;cursor:pointer;}
-.startupMessage2{font-size:1rem;}
-.startupMessage{font-size:2.5rem;}
+.spotlightHeader{font-size:2rem;}
+.spotlightIconArea{display:inline-block;float:left;}
+.spotlightIcon{height:4.8rem;margin-top:2rem;}
+.spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
+.spotlightPopup{display:inline-block;}
+.spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.3rem;right:1.5rem;}
+.spotlightPopupText::after{content:"\f005";font-family:fontAwesome;}
+
+.spotlightWho{font-style:italic;}
+.spotlightWhy{font-weight:bold;font-size:1.6rem;line-height:1.8rem;}
+.spotlightMessage{margin-top:0.8rem;line-height:1.5rem;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
+.supportButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;margin-left:1rem;}
+.supportButton a {text-decoration:none;color:<?=$donateText?>!important;}
+.supportButton:hover{background:<?=$unRaid66color?>}
 .supportLink {color:inherit;padding-left:.5rem;padding-right:.5rem;}
 .supportPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
 .supportPopup {font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}

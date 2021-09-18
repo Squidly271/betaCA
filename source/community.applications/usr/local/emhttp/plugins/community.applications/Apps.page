@@ -337,10 +337,9 @@ $(function(){
 	});
 				
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp", function() {
-/* 		if ( $(this).hasClass("ca_repoPopup") && popupVisible() ) {
-			closeSidebar();
-			return;
-		} */
+		context.destroy("#supportPopup");
+		context.destroy("#actionsPopup");
+		
 		$("#sidenavContent").html("");
 		$(".sidenav").css("height",0);
 		var repository = $(this).data("repository");
@@ -1455,8 +1454,8 @@ function updateDisplay(data) {
 	$("#templates_content").html(data);
 //	truncateDescriptions();
 	setToolTip();
-	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
-	enableSearch();
+/* 	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
+ */	enableSearch();
 	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});

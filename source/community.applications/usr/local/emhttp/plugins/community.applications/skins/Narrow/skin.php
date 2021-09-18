@@ -68,21 +68,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	# Create entries for skins.
 	foreach ($displayedTemplates as $template) {
 		if ( $template['RepositoryTemplate'] ) {
-			if ( ! $theme ) {
-				$dynamix = parse_ini_file($caPaths['dynamixSettings'],true);
-				switch ($dynamix['display']['theme']) {
-					case 'white':
-					case 'black':
-					case 'azure':
-					case 'gray':
-						$theme = $dynamix['display']['theme'];
-						break;
-					default:
-						$theme = "black";
-						break;
-				}
-			}
-
 			$template['icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
 			$template['display_infoIcon'] = "<a class='appIcons ca_repoinfo ca_tooltip' title='".tr("Click for more information")."' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></a>";
@@ -125,10 +110,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		} else {
-			if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
-				$template['Icon'] = $template['IconHTTPS'];
-
-			$name = $template['Name'];
+		/* 	$name = $template['Name'];
 			$appName = str_replace(" ","",$template['SortName']);
 			$ID = $template['ID'];
 			
@@ -246,8 +228,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 						}
 					}
-				}
-			} else
+				} */
+/* 			} else
 				$specialCategoryComment = $template['NoInstall'];
 
 			$template['display_beta'] = $template['Beta'] ? "<span class='ca_display_beta'></span>" : "";
@@ -344,7 +326,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$template['ca_LanguageDisclaimer'] = "<a class='ca_LanguageDisclaimer ca_fa-warning warning-yellow ca_href' data-href='{$template['disclaimLineLink']}' data-target='_blank'>&nbsp;{$template['disclaimLanguage']}</a>";
 				}
 				//$template['display_author'] = languageAuthorList($template['Author']);
-			}
+			} */
 
 	# Entries created.  Now display it
 			$ct .= displayCard($template);
@@ -1010,6 +992,7 @@ function displayCard($template) {
 	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 
+	
 
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
@@ -1021,49 +1004,59 @@ function displayCard($template) {
 		$language .= $template['LanguageLocal'] ? " - {$template['LanguageLocal']}" : "";
 		$template['Category'] = "";
 	}
-	$template['Category'] = explode(",",$template['Category'])[0];
+
 	extract($template);
+	$Category = explode(" ",$Category)[0];
+	$Category = explode(":",$Category)[0];
+	$author = $RepoShort ?: $RepoName;
+	if ( $Plugin )
+		$author = $Author;
+	if ( $Language )
+		$author = "Unraid";
+	
+	$appType = $Plugin ? "appPlugin" : "appDocker";
+	$appType = $Language ? "appLanguage": $appType;
+
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
-	$card = "
-		<div class='$holder ca_holder' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
-			<div class='ca_iconArea'>
-				<div class='ca_icon'>
-					$display_iconClickable
+
+	$card .= "
+		<div class='ca_holder'>
+		<div class='ca_bottomLine'>
+				<span class='infoButton ca_appPopup' data-apppath='$Path' data-appname='$Name'>".tr("Info")."</span>
+				<span class='supportButton'><a href='$Support' target='_blank'>".tr("Support")."</a></span>
+				<span class='$appType'></span>
 				</div>
-				<div class='ca_infoArea'>
-					<div class='ca_applicationInfo'>
-						<span class='ca_applicationName'>
-							$appName   $display_faWarning$display_beta
-						</span>
-						$display_Private
-						<br>
-						<span class='ca_author'>$display_repoName</span>$display_author
-						<br>
-						<span class='ca_categories'>
-							$Category$language
-						</span>
-						<br>$display_DonateImage$ca_LanguageDisclaimer
-					</div>
-				</div>
-			</div>
-			<div class='ca_bottomLine'>
-				<div class='infoButton'>".tr("Info")."</div>
-				<span class='ca_bottomRight'>
-					$display_removable $display_Uninstall <span class='cardType $type'></span>
-				</span>
-			</div>
-<!-- 			<div class='$descriptionArea cardDescription $popupType' data-appNumber='$ID' data-appPath='$Path' data-appName='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
-				$CardDescription
-			</div> -->
+
+		<div class='ca_iconArea ca_appPopup' data-apppath='$Path' data-appname='$Name'><img style='height:8rem; width:8rem;' src='$Icon'></img></div>
+	";
+
+	$card .= "
+				<div class='ca_applicationName'>$Name</div>
+				<div class='ca_author'>$author</div>
+				<div class='cardCategory'>$Category</div>
+
+	";
+
+
+	$card .= "
 		</div>
 		";
-
+	if ( $Beta || $Recommended ) {
+		$card .= "<div class='betaCardBackground'>";
+		if ( $Beta ) 
+			$card .= "<div class='betaPopupText'>".tr("BETA")."</div>";
+		else
+			$card .= "<div class='spotlightPopupText'></div>";
+		$card .= "</div>";
+	}
 	return str_replace(["\t","\n"],"",$card);
 }
 
 function displayPopup($template) {
 	extract($template);
 	$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
+	if ( $RepoShort ) $RepoName = $RepoShort;
+	
 	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
 	$DateAdded = date("M j, Y",$FirstSeen);
 	
@@ -1119,6 +1112,23 @@ function displayPopup($template) {
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
+	
+	if ( $Recommended ) {
+		if ( ! $Recommended['Who'] ) $Recommended['Who'] = tr("Unraid Staff");
+		$card .= "
+			<div class='spotlightPopup'>
+				<div class='spotlightIconArea'>
+					<div><img class='spotlightIcon' src='https://craftassets.unraid.net/uploads/logos/unraid-stacked-dark.svg'></img></div>
+				</div>
+				<div class='spotlightInfoArea'>
+					<div class='spotlightHeader'>".tr("Application Spotlight")." {$Recommended['Date']}</div>
+					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
+					<div class='spotlightMessage'>{$Recommended['Reason']}</div>
+					<div class='spotlightWho'>- {$Recommended['Who']}</div>
+				</div>
+			</div>
+		";
+	}
 	$card .= "
 		<div>
 		<div class='popupInfoSection'>
@@ -1127,7 +1137,7 @@ function displayPopup($template) {
 				
 				<div><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
 				<div class='popupAuthor'>$RepoName</div>
-				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("All Apps")."</div>
+				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 				<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
 	";
 
@@ -1148,6 +1158,8 @@ function displayPopup($template) {
 	$downloadText = getDownloads($downloads);
 	if ($downloadText)
 		$card .= "<tr><td>".tr("Downloads")."</td><td>$downloadText</td></tr>";
+	if (!$Plugin && !$LanguagePack)
+		$card .= "<tr><td>".tr("Repository")."</td><td>$Repository</td></tr>";
 	
 	$card .=
 	"
@@ -1177,10 +1189,15 @@ function displayPopup($template) {
 			<div class='changelog popup_readmore'>$display_changes</div>
 		";
 	}
-	if ( $Beta ) {
+	if ( $Beta || $Recommended) {
 		$card .= "
-			<div class='betaPopupBackground'><div class='betaPopupText'>".tr("BETA")."</div></div>
+			<div class='betaPopupBackground'>
 		";
+		if ( $Beta )
+			$card .= "<div class='betaPopupText'>".tr("BETA")."</div></div>";
+		else
+			$card .= "<div class='spotlightPopupText'></div>";
+		
 	}
 	$card .= "</div>";
 	return $card;
