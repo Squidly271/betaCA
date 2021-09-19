@@ -110,6 +110,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		} else {
+			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
+
+			if ( ! $Plugin && ! $Language )
+				$template['DockerInfo'] = $info[$template['Name']];
 		/* 	$name = $template['Name'];
 			$appName = str_replace(" ","",$template['SortName']);
 			$ID = $template['ID'];
@@ -982,20 +986,14 @@ function getRepoDescriptionSkin($repository) {
 # Generate the app's card #
 ###########################
 function displayCard($template) {
-	global $ca_settings;
+	global $caSettings;
 
 	$appName = str_replace("-"," ",$template['display_dockerName']);
-	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
-/* 	$type = $template['Plugin'] ? "plugin" : "docker";
-	$type = $template['Language'] ? "language" : $type;
-	$type = $template['RepositoryTemplate'] ? "repository" : $type;
-	$type = (strpos($template['OriginalCategories'],"Drivers") !== false) && $template['Plugin'] ? "driver" : $type;
- */	if ( $template['ca_fav'] )
+
+	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 
-	
 
-	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
 	if ( $template['Category'] == "Docker Hub Search" )
 		unset($popupType);
@@ -1035,25 +1033,52 @@ function displayCard($template) {
 	}
 
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
-
+	
 	$card .= "
 		<div class='ca_holder'>
 		<div class='ca_bottomLine'>
 				<span class='infoButton ca_appPopup' data-apppath='$Path' data-appname='$Name'>".tr("Info")."</span>
 		";
 		
-		if ( $supportLink )
-			$card .= "<span class='supportButton'><a href='$supportLink' target='_blank'>$supportText</a></span>";
-		else 
-			$card .= "
-				<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
-		
+	if ( $supportLink )
+		$card .= "<span class='supportButton'><a href='$supportLink' target='_blank'>$supportText</a></span>";
+	else 
 		$card .= "
-				<span class='$appType'></span>
-				</div>
-
-		<div class='ca_iconArea ca_appPopup' data-apppath='$Path' data-appname='$Name'><img style='height:8rem; width:8rem;' src='$Icon'></img></div>
+			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
+	
+	$card .= "
+			<span class='$appType'></span>
 	";
+	
+	if ( $Uninstall && $Name != "Community Applications" ) {
+		$card .= "<a class='ca_tooltip ca_fa-delete uninstallApp' title='".tr("Uninstall Application")."' ";
+		$card .= ( $template['Plugin'] ) ? "data-type='plugin' data-app='$InstallPath' data-name='$Name'>" : "data-type='docker' data-app='{$DockerInfo['template']}' data-name='$Name'>";
+		$card .= "</a>";
+	} else {
+		if ( $Removable && ! $DockerInfo) {
+			$card .= "<a class='ca_tooltip ca_fa-delete removeApp' title='".tr("Remove Application From List")."' data-path='$InstallPath' data-name='$Name'></a>";
+		}
+	}
+	
+	if ($Removable) {
+		$previousAppName = $Plugin ? $PluginURL : $Name;
+		$type = ($appType == "appDocker") ? "docker" : "plugin";
+		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
+	}
+	$card .= "</div>";
+	
+	$card .= "<div class='ca_iconArea ca_appPopup' data-apppath='$Path' data-appname='$Name'>";
+	if ( ! $IconFA ) 
+		$card .= "
+			<img style='height:8rem; width:8rem;' src='$Icon'></img>
+		";
+	else {
+		$displayIcon = $template['IconFA'] ?: $template['Icon'];
+		$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
+		$card  .= "<i class='$displayIconClass displayIcon'></i>";
+	}
+	$card .= "</div>";
+
 
 	$card .= "
 				<div class='ca_applicationName'>$Name</div>
@@ -1118,9 +1143,18 @@ function displayPopup($template) {
 		<div class='ca_hr'></div>
 		<div class='popupDescription popup_readmore'>$display_ovr</div>
 	";
-	if ( $Requires ) {
+	if ( $Requires ) 
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
-	}
+	
+	if ( $Deprecated ) 
+		$ModeratorComment .= "<br>".tr("This application template has been deprecated");
+	if ( ! $Compatible && ! $UnknownCompatible )
+		$ModeratorComment .= "<br>".tr("This application is not compatible with your version of Unraid");
+	if ( $Blacklist )
+		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
+	
+	$ModeratorComment .= $caComment;
+
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}

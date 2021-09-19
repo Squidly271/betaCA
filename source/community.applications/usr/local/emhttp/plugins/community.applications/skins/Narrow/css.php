@@ -131,18 +131,19 @@ a.appIcons {text-decoration:none;}
 .appIconsPopUp {font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;}
 .appIconsPopUp:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
-.appDocker{float:right;font-size:2rem;}
+.appDocker{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appDocker::before{font-family:'Unraid';content:'\e90b';}
-.appLanguage{float:right;font-size:2rem;}
+.appLanguage{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appLanguage::before{font-family:'Unraid';content:'\e987';}
-.appDriver{float:right;font-size:1.8rem;}
+.appDriver{float:right;font-size:1.8rem;opacity:0.7;margin-left:1rem;}
 .appDriver::before{content:"\f085";font-family:fontAwesome;}
-.appPlugin{float:right;font-size:2rem;}
+.appPlugin{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appPlugin::before{font-family:'Unraid';content:'\e986';}
 .betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
+body{scrollbar-gutter:stable;}
 .caChangeLog {cursor:pointer;}
 .caChart {display:none;border:none;}
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
@@ -184,7 +185,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_fa-delete {color:#882626;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
-a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
+a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-0.25rem;cursor:pointer;float:right;}
 .ca_fa-docker::before{font-family:'Unraid';content:'\e90b';}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
@@ -220,7 +221,7 @@ a.ca_LanguageDisclaimer {text-decoration:none;}
 .ca_large {font-size:2rem;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
 li.caMenuItem {padding:0px 0px 5px 0px;}
-.ca_multiselect {cursor:pointer;padding-right:5rem;}
+.ca_multiselect {float:right;cursor:pointer;padding-right:1rem;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_non_favouriteRepo {font-size:2rem;cursor:pointer;margin-left:2.5rem !important;padding-right:.5rem;cursor:pointer;padding:.3rem;}
@@ -285,7 +286,7 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .hoverMenu {color:<?=$unRaid66color?>;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
-input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem;margin-left:0rem;}
+input[type=checkbox] {width:2rem;height:2rem;margin-top:-0.25rem;margin-left:0rem;}
 .mainArea {position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .menuItems {position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
@@ -373,7 +374,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .showCharts{cursor:pointer;}
 .sidenavHide{width:0px;}
 .sidenavShow{width:70rem;}
-.sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
+.sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;overflow-y:scroll;}
 .sortIcons {font-size:1.2rem;margin-right:20px;cursor:pointer;text-decoration:none !important;}
 .specialCategory {font-size:1.5rem;}
 .spotlightHeader{font-size:2rem;}
