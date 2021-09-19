@@ -710,8 +710,8 @@ function get_content() {
 				continue;
 			}
 			if ( filterMatch($filter,array($template['SortName'])) && $caSettings['favourite'] == $template['RepoName']) {
-				$template['Name_highlighted'] = highlight($filter,$template['Name']);
-				$searchResults['favNameHit'][] = $template;
+/* 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
+ */				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
 			if ( filterMatch($filter,array($template['SortName'],$template['RepoName'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
