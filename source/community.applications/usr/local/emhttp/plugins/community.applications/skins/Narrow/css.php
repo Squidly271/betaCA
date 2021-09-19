@@ -135,9 +135,11 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appDocker::before{font-family:'Unraid';content:'\e90b';}
 .appLanguage{float:right;font-size:2rem;}
 .appLanguage::before{font-family:'Unraid';content:'\e987';}
+.appDriver{float:right;font-size:1.8rem;}
+.appDriver::before{content:"\f085";font-family:fontAwesome;}
 .appPlugin{float:right;font-size:2rem;}
 .appPlugin::before{font-family:'Unraid';content:'\e986';}
-.betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: relative;left:-10.25rem;margin-right:-9rem;}
+.betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */

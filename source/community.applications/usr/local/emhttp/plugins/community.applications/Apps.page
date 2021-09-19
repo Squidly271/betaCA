@@ -189,7 +189,7 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
-  context.init({preventDoubleContext:false,left:false,above:false,right:true,bottom:true});
+  context.init({preventDoubleContext:false,left:false,above:true,right:true,bottom:true});
 
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
@@ -1452,13 +1452,22 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$("#templates_content").html(data);
-//	truncateDescriptions();
 	setToolTip();
-/* 	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
- */	enableSearch();
+ 	enableSearch();
 	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
+	context.init();
+	$('.supportButtonCardContext').each(function() {
+		var supportContext = $(this).data("context");
+		var ID = $(this).attr("id");
+		var opts = [];
+		supportContext.forEach(function(item,index){
+			opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+		});
+		context.attach('#'+ID, opts);
+	});
+		
 	saveState();
 }
 

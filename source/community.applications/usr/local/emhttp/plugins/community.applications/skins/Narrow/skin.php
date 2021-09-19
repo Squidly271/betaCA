@@ -864,6 +864,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['pinnedTitle'] = tr("Click to pin this application");
 	}
 	$template['actionsContext'] = $actionsContext;
+	$template['supportContext'] = $supportContext;
 /* 	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
  */	@unlink($caPaths['pluginTempDownload']);
 /* 	return array("description"=>$templateDescription,;
@@ -985,11 +986,11 @@ function displayCard($template) {
 
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
-	$type = $template['Plugin'] ? "plugin" : "docker";
+/* 	$type = $template['Plugin'] ? "plugin" : "docker";
 	$type = $template['Language'] ? "language" : $type;
 	$type = $template['RepositoryTemplate'] ? "repository" : $type;
 	$type = (strpos($template['OriginalCategories'],"Drivers") !== false) && $template['Plugin'] ? "driver" : $type;
-	if ( $template['ca_fav'] )
+ */	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 
 	
@@ -1006,16 +1007,32 @@ function displayCard($template) {
 	}
 
 	extract($template);
+	
+	$appType = $Plugin ? "appPlugin" : "appDocker";
+	$appType = $Language ? "appLanguage": $appType;
+	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;	
+	
 	$Category = explode(" ",$Category)[0];
 	$Category = explode(":",$Category)[0];
+
 	$author = $RepoShort ?: $RepoName;
 	if ( $Plugin )
 		$author = $Author;
 	if ( $Language )
 		$author = "Unraid";
 	
-	$appType = $Plugin ? "appPlugin" : "appDocker";
-	$appType = $Language ? "appLanguage": $appType;
+
+	
+	$supportContext = array();
+	if ( $template['Support'] ) 
+		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
+	if ( $template['Project'] )
+		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+
+	if ( $supportContext && count($supportContext) == 1 ) {
+		$supportLink = $supportContext[0]['link'];
+		$supportText = $supportContext[0]['text'];
+	}
 
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
@@ -1023,7 +1040,15 @@ function displayCard($template) {
 		<div class='ca_holder'>
 		<div class='ca_bottomLine'>
 				<span class='infoButton ca_appPopup' data-apppath='$Path' data-appname='$Name'>".tr("Info")."</span>
-				<span class='supportButton'><a href='$Support' target='_blank'>".tr("Support")."</a></span>
+		";
+		
+		if ( $supportLink )
+			$card .= "<span class='supportButton'><a href='$supportLink' target='_blank'>$supportText</a></span>";
+		else 
+			$card .= "
+				<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
+		
+		$card .= "
 				<span class='$appType'></span>
 				</div>
 
@@ -1081,24 +1106,11 @@ function displayPopup($template) {
 				<div class='actionsPopup'><span onclick=$newInstallAction>".tr("Install")."</span></div>
 			";
 		}
-		if ( $Support || $Project ) {
-			if ( $Support && $Project ) {
-				$card .= "
-					<div class='supportPopup' id='supportPopup'>".tr("Support")."</div>
-				";
-			} else {
-				if ( $Support ) {
-					$card .= "
-						<div class='supportPopup'><a href='$Support' target='_blank'>".tr("Support")."</a></div>
-					";
-				}
-				if ( $Project ) {
-					$card .= "
-						<div class='supportPopup'><a href='$Project' target='_blank'>".tr("Project")."</a></div>
-					";
-				}
-			}
-		}
+		if ( count($supportContext) == 1 )
+			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></div>";
+		else
+			$card.= "<div class='supportPopup' id='supportPopup'>".tr("Support")."</div>";
+
 		$card .= $LanguagePack != "en_US" ? "<div class='$pinned' style='display:inline-block' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'></div>" : "";
 		$card .= "
 			</div>
