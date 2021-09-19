@@ -324,8 +324,8 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 i.popupIcon {color:#626868;font-size:14.4rem;padding-left:1rem;}
 img.popupIcon {width:14.4rem;height:14.4rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupInfo{position:absolute;top:10rem;left:22rem;}
-.popupInfoLeft{min-width:30rem;max-width:30rem;float:left;display:inline-block;margin-right:10px;}
-.popupInfoRight{min-width:30rem;max-width:30rem;float:left;display:inline-block;}
+.popupInfoLeft{min-width:45%;max-width:45%;float:left;display:inline-block;margin-right:10px;}
+.popupInfoRight{min-width:45%;max-width:45%;float:left;display:inline-block;}
 .popupInfoSection{line-height:2rem;font-size:1.5rem;display:inline-block;}
 .popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}
@@ -370,7 +370,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .showCharts:hover{color:<?=$unRaid66color?>;}
 .showCharts{cursor:pointer;}
 .sidenavHide{width:0px;}
-.sidenavShow{width:700px;}
+.sidenavShow{width:70rem;}
 .sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;}
 .sortIcons {font-size:1.2rem;margin-right:20px;cursor:pointer;text-decoration:none !important;}
 .specialCategory {font-size:1.5rem;}
