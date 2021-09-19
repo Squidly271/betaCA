@@ -317,7 +317,8 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .popupAuthorIcon{height:7.2rem;width:7.2rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupAuthorTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .popupCategory{font-size:1rem;line-height:1rem;}
-.popUpClose {top:-2rem;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
+.popUpBack{font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;top:-2rem;display:inline-block;float:right;}
+.popUpClose {top:-2rem;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;display:inline-block;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
 .popUpDeprecated {color:#FF8C2F;}
 .popupDescriptionArea{display:block;font-size:1.5rem;color:<?=$sidebarText?>;}
@@ -341,6 +342,7 @@ a.popUpLink:hover {color:<?=$unRaid66color?>;}
 
 .popupTable td {width:30%;text-align:left;}
 .popupTable{font-size:1.5rem;width:55rem;margin-top:0px;margin-left:auto;}
+.popupTableLeft{vertical-align:top;padding-right:15px;font-style:italic;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
 .popup{margin:1.5rem;margin-bottom:15rem;margin-top:-2rem;}
 a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
