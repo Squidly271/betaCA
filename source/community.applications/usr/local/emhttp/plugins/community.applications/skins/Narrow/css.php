@@ -139,6 +139,10 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appDriver::before{content:"\f085";font-family:fontAwesome;}
 .appPlugin{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appPlugin::before{font-family:'Unraid';content:'\e986';}
+.appRepository{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
+.appRepository::before{font-family:'fontAwesome';content:'\f2be';}
+
+
 .betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
@@ -205,10 +209,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
 .ca_forum::before {content:"\f1cd";font-family:fontAwesome;}
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;}
-/* .ca_holder::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
- */.ca_holderFav {background-color:<?=$templateFavourite?> !important;}
-.ca_holderRepository {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
-/* .ca_holderRepository::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f2be';font-size:7rem;color:<?=$watermarkColor?>;} */
+.ca_holderFav {background-color:<?=$templateFavourite?> !important;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 .ca_href {cursor:pointer;}
 .ca_icon {width:6.4rem;height:6.4rem;}

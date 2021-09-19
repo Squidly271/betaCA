@@ -791,6 +791,7 @@ function displayCard($template) {
 	$appType = $Plugin ? "appPlugin" : "appDocker";
 	$appType = $Language ? "appLanguage": $appType;
 	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;	
+	$appType = $RepositoryTemplate ? "appRepository" : $appType;
 	
 	$Category = explode(" ",$Category)[0];
 	$Category = explode(":",$Category)[0];
@@ -969,7 +970,7 @@ function displayPopup($template) {
 					<div><img class='spotlightIcon' src='https://craftassets.unraid.net/uploads/logos/unraid-stacked-dark.svg'></img></div>
 				</div>
 				<div class='spotlightInfoArea'>
-					<div class='spotlightHeader'>".tr("Application Spotlight")." {$Recommended['Date']}</div>
+					<div class='spotlightHeader'>".tr("Application Spotlight")." ".tr($Recommended['Date'],0)."</div>
 					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
 					<div class='spotlightMessage'>{$Recommended['Reason']}</div>
 					<div class='spotlightWho'>- {$Recommended['Who']}</div>
