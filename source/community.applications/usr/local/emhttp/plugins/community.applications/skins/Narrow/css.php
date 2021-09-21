@@ -45,13 +45,14 @@ switch ($theme) {
 	case 'white':
 		$donateBackground = "#1c1b1b";
 		$donateText = "#f2f2f2";
-		$templateBackground = "#ffffff";
+		$templateBackground = "#f5f5f5";
+		$templateHoverBackground = "#ffffff";
 		$templateFavourite = "#d0d0d0";
 		$hrColor = "lightgrey";
-		$borderColor = "lightgrey";
+		$borderColor = "#e3e3e3";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
 		$aColor = "#486dba";
-		$sidebarBackground = "#dddddd";
+		$sidebarBackground = "#ffffff";
 		$sidebarText = "#000000";
 		$sidebarPos = "4rem;";
 		$sidebarPosition = "absolute";
@@ -63,15 +64,16 @@ switch ($theme) {
 	case 'azure':
 		$donateBackground = "#606e7f";
 		$donateText = "#e4e2e4";
-		$templateBackground = "#ffffff";
+		$templateBackground = "transparent";
+		$templateHoverBackground = "#edeaef";
 		$templateFavourite = "#e0e0e0";
 		$hrColor = "#606e7f";
-		$border = "#606e7f";
+		$border = "#9794a7";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$aColor = "#486dba";
 		$sidebarBackground = "#edeaef";
 		$sidebarText = "#606e7f";	
-		$sidebarPos = "-1.5rem;";
+		$sidebarPos = "6rem;";
 		$sidebarPosition = "fixed";
 		$betaPopupOffset = "1.5rem;";		
 		$supportPopupText = "#1b1d1b";
@@ -82,15 +84,16 @@ switch ($theme) {
 	case 'gray':
 		$donateBackground = "#606e7f";
 		$donateText = "#1b1d1b";
-		$templateBackground = "#121212";
+		$templateBackground = "transparent";
+		$templateHoverBackground = "#0c0f0b";
 		$templateFavourite = "#2b2b2b";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$aColor = "#00b8d6";
-		$sidebarBackground = "#0f0f0f";
+		$sidebarBackground = "#121510";
 		$sidebarText = "#f2f2f2";	
-		$sidebarPos = "-1.5rem;";
+		$sidebarPos = "6rem;";
 		$sidebarPosition = "fixed";
 		$betaPopupOffset = "1.5rem;";
 		$supportPopupText = "#1b1d1b";
@@ -241,7 +244,6 @@ ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-
 .ca_readmore:hover {text-decoration:none;color:inherit;}
 .ca_reddit::before {content:"\f281";font-family:fontAwesome;}
 .ca_red{color:#882626;}
-.ca_repoinfo::before {content:"\f05a";font-family:fontAwesome;}
 .ca_repoPopup {display:inline-block;text-decoration:none!important;cursor:pointer;color:inherit;}
 a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 
@@ -254,7 +256,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_stat {color:coral; font-size:1.5rem;line-height:1.7rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
-.ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
+.ca_templatesDisplay {display:flex;flex-wrap:wrap;}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px 0px 0px 0px;height:15rem;padding-top:1rem;}
 .ca_toolsView {font-size:2.3rem; position:relative;top:-0.2rem;}
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
@@ -359,24 +361,11 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
-#searchBox{top:-0.6rem;padding:0.6rem;}
-.searchSubmit{height:3.4rem;}
-<?if ( $theme == "azure" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;background-color:#262626;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
-<?endif;?>
-<?if ( $theme == "black" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;background-color:#262626;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;background-color:#262626;}
-<?endif;?>
-<?if ( $theme == "gray" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
-<?endif;?>
-<?if ( $theme == "white" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;background:transparent}
-<?endif;?>
+
+
+.searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative; top:-6px;padding-top:1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;vertical-align:-50%;}
+#searchBox{margin-left:1rem;margin-right:0;margin-bottom:1rem;top:-.6rem;border:none;padding:0.6rem;background:<?=$templateHoverBackground?>;padding-right:0.5rem;}
+#searchButton:hover{color:<?=$unRaid66color?>;}
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
 .showCharts:hover{color:<?=$unRaid66color?>;}
 .showCharts{cursor:pointer;}

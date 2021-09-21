@@ -432,7 +432,7 @@ function getPopupDescriptionSkin($appNumber) {
 				}
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
-					if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
+					if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] ) {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 					}
@@ -808,6 +808,7 @@ function displayCard($template) {
 	
 
 	if ( !$RepositoryTemplate ) {
+		$cardClass = "ca_appPopup";
 		$supportContext = array();
 		if ( $template['Support'] ) 
 			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
@@ -819,6 +820,7 @@ function displayCard($template) {
 			$supportText = $supportContext[0]['text'];
 		} */
 	} else {
+		$cardClass = "ca_repoinfo";
 		$ID = $RepoName;
 		$supportContext = array();
 		if ( $profile ) 
@@ -842,7 +844,7 @@ function displayCard($template) {
 	$card .= "
 		<div class='ca_holder'>
 		<div class='ca_bottomLine'>
-				<span class='infoButton ca_appPopup' data-apppath='$Path' data-appname='$Name'>".tr("Info")."</span>
+				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</span>
 		";
 	
 	if ( count($supportContext) == 1)
@@ -855,23 +857,13 @@ function displayCard($template) {
 			<span class='$appType'></span>
 	";
 	
-	if ( $Uninstall && $Name != "Community Applications" ) {
-		$card .= "<a class='ca_tooltip ca_fa-delete uninstallApp' title='".tr("Uninstall Application")."' ";
-		$card .= ( $template['Plugin'] ) ? "data-type='plugin' data-app='$InstallPath' data-name='$Name'>" : "data-type='docker' data-app='{$DockerInfo['template']}' data-name='$Name'>";
-		$card .= "</a>";
-	} else {
-		if ( $Removable && ! $DockerInfo) {
-			$card .= "<a class='ca_tooltip ca_fa-delete removeApp' title='".tr("Remove Application From List")."' data-path='$InstallPath' data-name='$Name'></a>";
-		}
-	}
-	
 	if ($Removable && !$DockerInfo) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
 		$type = ($appType == "appDocker") ? "docker" : "plugin";
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	}
 	$card .= "</div>";
-	$card .= "<div class='ca_appPopup ca_backgroundClickable' data-apppath='$Path' data-appname='$Name'>";
+	$card .= "<div class='$cardClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>";
 	$card .= "<div class='ca_iconArea'>";
 	if ( ! $IconFA ) 
 		$card .= "

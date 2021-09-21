@@ -340,6 +340,16 @@ $(function(){
 		context.destroy("#supportPopup");
 		context.destroy("#actionsPopup");
 		
+		if ( !$(this).hasClass("repoPopup") && popupVisible() ) {
+			closeSidebar();
+			return;
+		}
+		if ( ! popupVisible() ) {
+			$.cookie("sidebarAppName","");
+			$.cookie("sidebarAppPath","");
+			var fromCard = true;
+		}
+		
 		$("#sidenavContent").html("");
 		$(".sidenav").css("height",0);
 		var repository = $(this).data("repository");
@@ -349,7 +359,10 @@ $(function(){
 		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
-			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
+			if (fromCard) {
+				$(".popUpBack").hide();
+			}
 		});		
 	});
 	
@@ -359,9 +372,10 @@ $(function(){
 			closeSidebar();
 			return;
 		}
-/* 		if ( $(this).hasClass("supportButton") )
+		if ( $(".dropdown-menu").is(":visible") ) {
+			$(".dropdown-menu").hide();
 			return;
- */
+		}
 
 		$("body").css("overflow","hidden");
 
@@ -1000,7 +1014,17 @@ function installPlugin(pluginURL,update=false) {
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar();
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
+	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+}
+
+function OpenSidebarAndRefreshDisplay() {
+	var apppath = $.cookie("sidebarAppPath");
+	var appname = $.cookie("sidebarAppName");
+	appname = stripTags(appname);
+		
+	refreshDisplay();
+	showSidebarApp(apppath,appname);
+
 }
 
 function showDesc_openBox(cmd,title,height,width,load,func) {
@@ -2035,6 +2059,8 @@ function popUpChart(descData) {
 }
 
 function showSidebarApp(apppath,appname) {
+	console.log(apppath);
+	console.log(appname);
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
 	$("#sidenavContent").html("");
