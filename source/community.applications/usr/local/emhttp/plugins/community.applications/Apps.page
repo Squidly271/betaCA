@@ -191,6 +191,8 @@ $(function(){
 
   context.init({preventDoubleContext:false,left:false,above:true,right:true,bottom:true});
 
+
+	
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
@@ -263,10 +265,11 @@ $(function(){
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
 	});
+
 	$(window).resize(function() {
 		if ( resizeTimer ) return;
 		resizeTimer = setTimeout(function() {
-			truncateDescriptions();
+			$(".sidenav").css("height",$(window).innerHeight() - 100 );
 			resizeTimer = false;
 		},1000);
 	});
@@ -639,13 +642,6 @@ $(function(){
 	}
 });
 
-/* // Shows the repository from the app's popup
-function showRepo(el) {
-	var id = $(el).data("appid");
-	var repo_el = $.find(".tooltipstered[data-appid='"+id+"']");
-	$(".tooltipstered").tooltipster("hide");
-	$(repo_el).tooltipster("open");
-} */
 function disableSort() {
 	hideSortIcons();
 	enableIcon("#sortIcon",false);
@@ -707,8 +703,6 @@ function stripTags(string) {
 }
 
 function setToolTip() {
-//	$('.tooltipstered').tooltipster('destroy');
-// Mod comment CA tooltips have to be tooltipster due to the occasional use of <a href> within them
 	$('.ca_tooltip-warning').tooltipster({
 		contentAsHTML:true,
 		interactive:true,
@@ -1476,21 +1470,6 @@ function updateDisplay(data) {
 function isOverflown(element){
 	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
-/* 
-function truncateDescriptions() {
-	$(".cardDescription").each(function() {
-		if ( ! $(this).attr("data-originalDescription") )
-			$(this).attr("data-originalDescription",$(this).html());
-
-		var newDescription = $(this).attr("data-originalDescription");
-		newDescription = newDescription.slice(0,600); // Chop it off where we know it won't fit - Set very very large to handle tablets that are displaying more info than a desktop
-		$(this).html(newDescription);
-		while ( isOverflown(this) ) {
-			newDescription = newDescription.slice(0,-5);
-			$(this).html(newDescription + " ... <span class='myReadmoreButton'><?=tr("Read more");?></span>");
-		}
-	});
-} */
 
 function saveState() {
 	if ( ! dockerSearchFlag ) {
@@ -2096,6 +2075,8 @@ function showSidebarApp(apppath,appname) {
 	});
 }
 
+
+			
 </script>
 
 > <span class='caHelpIconSpacing'><i class='fa fa-sort-alpha-asc enabledIcon' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("This chooses how to sort the results");?><br>
