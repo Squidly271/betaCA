@@ -362,15 +362,19 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateURL = $template['PluginURL'];
 		download_url($templateURL,$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
+
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
+		
 	} else {
-		if ( ! $template['Changes'] ) {
+		if ( ! $template['Changes'] && $template['ChangeLogPresent']) {
 			$templateURL = $template['caTemplateURL'] ?: $template['TemplateURL'];
 			download_url($templateURL,$caPaths['pluginTempDownload']);
 			$xml = readXmlFile($caPaths['pluginTempDownload']);
 			$template['Changes'] = $xml['Changes'];
+			
 		}
 	}
+	@unlink($caPaths['pluginTempDownload']);
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 	if ( trim($template['Changes']) )
@@ -818,19 +822,19 @@ function displayCard($template) {
 		$ID = $RepoName;
 		$supportContext = array();
 		if ( $profile ) 
-			$supportContext[] = array("icon"=>"ca_profile","link"=>$profile,"text"=>"Profile");
+			$supportContext[] = array("icon"=>"ca_profile","link"=>$profile,"text"=>tr("Profile"));
 		if ( $Forum )
-			$supportContext[] = array("icon"=>"ca_forum","link"=>$Forum,"text"=>"Forum");
+			$supportContext[] = array("icon"=>"ca_forum","link"=>$Forum,"text"=>tr("Forum"));
 		if ( $Twitter )
-			$supportContext[] = array("icon"=>"ca_twitter","link"=>$Twitter,"text"=>"Twitter");
+			$supportContext[] = array("icon"=>"ca_twitter","link"=>$Twitter,"text"=>tr("Twitter"));
 		if ( $Reddit )
-			$supportContext[] = array("icon"=>"ca_reddit","link"=>$Reddit,"text"=>"Reddit");
+			$supportContext[] = array("icon"=>"ca_reddit","link"=>$Reddit,"text"=>tr("Reddit"));
 		if ( $Facebook )
-			$supportContext[] = array("icon"=>"ca_facebook","link"=>$Facebook,"text"=>"Facebook");
+			$supportContext[] = array("icon"=>"ca_facebook","link"=>$Facebook,"text"=>tr("Facebook"));
 		if ( $Discord ) 
-			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>"Discord");
+			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
 		if ( $WebPage )
-			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>"Webpage");
+			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
 	}
 	
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
@@ -840,10 +844,10 @@ function displayCard($template) {
 		<div class='ca_bottomLine'>
 				<span class='infoButton ca_appPopup' data-apppath='$Path' data-appname='$Name'>".tr("Info")."</span>
 		";
-		
+	
 	if ( count($supportContext) == 1)
 		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></span>";
-	else 
+	elseif (!empty($supportContext))
 		$card .= "
 			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
 	
@@ -867,16 +871,16 @@ function displayCard($template) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	}
 	$card .= "</div>";
-	
-	$card .= "<div class='ca_iconArea ca_appPopup' data-apppath='$Path' data-appname='$Name'>";
+	$card .= "<div class='ca_appPopup ca_backgroundClickable' data-apppath='$Path' data-appname='$Name'>";
+	$card .= "<div class='ca_iconArea'>";
 	if ( ! $IconFA ) 
 		$card .= "
-			<img style='height:8rem; width:8rem;' src='$Icon'></img>
+			<img class='ca_displayIcon'src='$Icon'></img>
 		";
 	else {
 		$displayIcon = $template['IconFA'] ?: $template['Icon'];
 		$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-		$card  .= "<i class='$displayIconClass displayIcon'></i>";
+		$card  .= "<i class='ca_appPopup $displayIconClass displayIcon' data-apppath='$Path' data-appname='$Name'></i>";
 	}
 	$card .= "</div>";
 
@@ -890,6 +894,7 @@ function displayCard($template) {
 	$card .= "
 		</div>
 		";
+	$card .= "</div>";
 	if ( $Beta || $Recommended ) {
 		$card .= "<div class='betaCardBackground'>";
 		if ( $Beta ) 
@@ -970,7 +975,7 @@ function displayPopup($template) {
 					<div><img class='spotlightIcon' src='https://craftassets.unraid.net/uploads/logos/unraid-stacked-dark.svg'></img></div>
 				</div>
 				<div class='spotlightInfoArea'>
-					<div class='spotlightHeader'>".tr("Application Spotlight")." ".tr($Recommended['Date'],0)."</div>
+					<div class='spotlightHeader'>".sprintf(tr("Application Spotlight %s"),tr($Recommended['Date'],0))."</div>
 					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
 					<div class='spotlightMessage'>{$Recommended['Reason']}</div>
 					<div class='spotlightWho'>- {$Recommended['Who']}</div>
@@ -1002,7 +1007,7 @@ function displayPopup($template) {
 			<div class='rightTitle'>".tr("Details")."</div>
 			<table style='display:initial;'>
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td>$Category</td></tr>
-				<tr><td>".tr("Added")."</td><td>$DateAdded</td></tr>
+				<tr><td class='popupTableLeft'>".tr("Added")."</td><td>$DateAdded</td></tr>
 	";
 	$downloadText = getDownloads($downloads);
 	if ($downloadText)

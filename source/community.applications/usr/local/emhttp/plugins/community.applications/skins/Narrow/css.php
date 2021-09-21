@@ -25,7 +25,8 @@ switch ($theme) {
 	case 'black':
 		$donateBackground = "#ffffff";
 		$donateText = "#000000";
-		$templateBackground = "#0f0f0f";
+		$templateBackground = "#191818";
+		$templateHoverBackground = "#121212";
 		$templateFavourite = "#333333";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
@@ -162,8 +163,10 @@ body{scrollbar-gutter:stable;}
 a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_appPopup {cursor:pointer;}
+div.ca_appPopup{cursor:pointer;}
 .ca_author {font-size:1.5rem;font-style:italic;}
 a.ca_author {text-decoration:none;color:inherit;}
+.ca_backgroundClickable{height:18.5rem;}
 .ca_bold {font-weight:bold;}
 .ca_bottomLine {display:block;position:relative;top:19rem;}
 .ca_bottomRight {float:right;margin-right:2rem;padding-top:0.5rem;}
@@ -182,10 +185,11 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionAreaRepository {margin:1rem;width:auto;max-height:6rem;position:relative;margin-top:-12rem;}
 .ca_descriptionAreaRepository:hover span {filter: invert(100%);}
 .ca_descriptionAreaRepository:hover {color:<?=$unRaid66color?>;}
-.ca_discord::before{content:"\e988";font-family:Unraid;font-size:2.8rem;vertical-align:bottom;}
+.ca_discord::before{content:"\e988";font-family:Unraid;}
 .ca_discord_popup::before{content:"\e988";font-family:Unraid;font-size:2.2rem;vertical-align:middle;}
 .ca_display_beta {font-size:1rem;color:#FF8C2F;}
 .ca_display_beta::after{content:"(BETA)"}
+img.ca_displayIcon{height:8rem;width:8rem;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_fa-delete {color:#882626;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
@@ -209,6 +213,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
 .ca_forum::before {content:"\f1cd";font-family:fontAwesome;}
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;}
+.ca_holder:hover{background-color:<?=$templateHoverBackground?>;}
 .ca_holderFav {background-color:<?=$templateFavourite?> !important;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 .ca_href {cursor:pointer;}
@@ -375,9 +380,10 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
 .showCharts:hover{color:<?=$unRaid66color?>;}
 .showCharts{cursor:pointer;}
+.sidebarMainDim{opacity:0.25;}
 .sidenavHide{width:0px;}
 .sidenavShow{width:70rem;}
-.sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;opacity:0.95;overflow-y:scroll;}
+.sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
 .sortIcons {font-size:1.2rem;margin-right:20px;cursor:pointer;text-decoration:none !important;}
 .specialCategory {font-size:1.5rem;}
 .spotlightHeader{font-size:2rem;}

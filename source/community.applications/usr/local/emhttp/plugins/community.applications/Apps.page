@@ -200,7 +200,7 @@ $(function(){
 	
 	$('body').keydown(function(e) {
 		if (e.which === 27) {
-			$(".tooltipstered").tooltipster('hide');
+			closeSidebar();
 		}
 	});
 
@@ -359,7 +359,9 @@ $(function(){
 			closeSidebar();
 			return;
 		}
-
+/* 		if ( $(this).hasClass("supportButton") )
+			return;
+ */
 
 		$("body").css("overflow","hidden");
 
@@ -990,6 +992,7 @@ function popupVisible(el) {
 function closeSidebar() {
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("body").css("overflow","auto");
+	$(".mainArea,.menuItems").removeClass("sidebarMainDim");
 }
 
 function installPlugin(pluginURL,update=false) {
@@ -2038,7 +2041,9 @@ function showSidebarApp(apppath,appname) {
 	$(".sidenav").css("height",0);
 
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-	$(".sidenav").css("height",$(window).innerHeight() - 100 );		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
+	$(".sidenav").css("height",$(window).innerHeight() - 100 );
+	$(".mainArea,.menuItems").addClass("sidebarMainDim");
+	post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 		$("#sidenavContent").html(result.description);
 		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
 		popUpChart(result);
