@@ -47,22 +47,27 @@ switch ($theme) {
 	case 'black':
 		$swalBackground = "black";
 		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
 		break;
 	case 'azure':
 		$swalBackground = "white";
 		$tooltipsterContent = "#101010";
+		$chartGrid = "#dddddd";
 		break;
 	case 'gray':
 		$swalBackground = "black";
 		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
 		break;
 	case 'white':
 		$swalBackground = "white";
 		$tooltipsterContent = "#101010";
+		$chartGrid = "#dddddd";
 		break;
 	default:
 		$swalBackground = "black"; // default to black.  This should only be when someone adds a new theme.  It is NOT the default that the OS uses
 		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
 		break;
 }
 
@@ -1908,7 +1913,7 @@ function popUpChart(descData) {
 					display: true,
 					text: "<?tr("Trend Per Month");?>",
 					fontSize: 16,
-					fontColor: '<?=$tooltipsterContent?>'
+					fontColor: '<?=$tooltipsterContent?>',
 				},
 				legend: {
 					display: false
@@ -1916,6 +1921,9 @@ function popUpChart(descData) {
 				events: ["mousemove","mouseout"],
 				scales: {
 					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
 						ticks: {
 							callback: function(label,index,labels) {
 								return label + " %";
@@ -1925,9 +1933,13 @@ function popUpChart(descData) {
 						}
 					}],
 					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
 						ticks: {
 							fontSize: fontSize,
-							fontColor: '<?=$tooltipsterContent?>'
+							fontColor: '<?=$tooltipsterContent?>',
+							color: '#ffffff'
 						}
 					}]
 				}
@@ -1970,6 +1982,9 @@ function popUpChart(descData) {
 				events: ["mousemove","mouseout"],
 				scales: {
 					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
 						ticks: {
 							callback: function(label,index,labels) {
 								return label.toLocaleString();
@@ -1978,6 +1993,9 @@ function popUpChart(descData) {
 						}
 					}],
 					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},						
 						ticks: {
 							fontSize: fontSize,
 							fontColor: '<?=$tooltipsterContent?>'
@@ -2018,6 +2036,9 @@ function popUpChart(descData) {
 				events: ["mousemove","mouseout"],
 				scales: {
 					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},						
 						ticks: {
 							callback: function(label,index,labels) {
 								return label.toLocaleString();
@@ -2026,6 +2047,9 @@ function popUpChart(descData) {
 						}
 					}],
 					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
 						ticks: {
 							fontSize: fontSize,
 							fontColor: '<?=$tooltipsterContent?>'
