@@ -18,6 +18,7 @@
 - Fixed: Disable categories after performing a dockerHub search
 - Fixed: Attmping to display the popup from a dockerHub search would return an error
 - Removed: Compatibility with OS versions prior to 6.9.0
+- Fixed: Attempting to sort a repository display would return errors if only a single repository was present
 
 ###2021.08.31
 - Security updates

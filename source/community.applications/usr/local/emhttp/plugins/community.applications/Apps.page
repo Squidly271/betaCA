@@ -904,11 +904,11 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		var el_tr = $.find(".sortIcons[data-sortby='trending']"); 
 
  		if ( category == "repos" ) {
-			$(el_dl).html("<?=tr("Sort By Number Of Apps")?>");
-			$(el_tr).html("<?=tr("Sort By Average Trend")?>");
+			$(el_dl).html("<?=tr("Number Of Apps")?>");
+			$(el_tr).html("<?=tr("Average Trend")?>");
 		} else {
-			$(el_dl).html("<?=tr("Sort By Downloads")?>");
-			$(el_tr).html("<?=tr("Sort By Trend")?>");
+			$(el_dl).html("<?=tr("Downloads")?>");
+			$(el_tr).html("<?=tr("Trend")?>");
 		}
 
 		var filter = $('#searchBox').val();
@@ -1807,18 +1807,41 @@ function installLanguage(languageURL,language) {
 	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"postLanguageRefresh");
 }
 
 function updateLanguage(language) {
 	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"window.location.reload");
+	$.cookie("updateLanguage",language);
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"postUpdateLanguage");
+}
+
+function postUpdateLanguage() {
+	var languageUpdate = $.cookie("updateLanguage");
+	var currentLanguage = "<?=$_SESSION['locale']?>";
+	
+	if (languageUpdate == currentLanguage) 
+		window.location.reload();
+	else {
+		var apppath = $.cookie("sidebarAppPath");
+		var appname = $.cookie("sidebarAppName");
+		showSidebarApp(apppath,appname);
+		refreshDisplay();
+	}
 }
 function removeLanguage(language) {
 	closeSidebar();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRefresh");
+
+}
+
+function postLanguageRefresh() {
+	var apppath = $.cookie("sidebarAppPath");
+	var appname = $.cookie("sidebarAppName");
+	showSidebarApp(apppath,appname);	
+	refreshDisplay();
 }
 
 function updateDocker(container) {

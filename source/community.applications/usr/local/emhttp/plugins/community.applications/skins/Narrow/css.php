@@ -220,7 +220,7 @@ ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-
 .ca_private{color:#882626;}
 .ca_profile::before {content:"\f2bb";font-family:fontAwesome;}
 .ca_readmore {color:#d67777;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
-.ca_readmore:hover {text-decoration:none;color:inherit;}
+.ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 .ca_reddit::before {content:"\f281";font-family:fontAwesome;}
 .ca_red{color:#882626;}
 .ca_repoPopup {display:inline-block;text-decoration:none!important;cursor:pointer;color:inherit;}

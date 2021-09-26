@@ -474,7 +474,7 @@ function getPopupDescriptionSkin($appNumber) {
 				$actionsContext[] = array("icon"=>"ca_fa-switchto","text"=>$template['SwitchLanguage'],"action"=>"CAswitchLanguage('$countryCode');");
 			}
 		} else {
-			$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$template['InstallLanguage'],"action"=>"languageInstall('{$template['TemplateURL']}','$countryCode');");
+			$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$template['InstallLanguage'],"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');");
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {

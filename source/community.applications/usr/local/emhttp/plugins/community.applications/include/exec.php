@@ -1763,6 +1763,8 @@ function changeSortOrder() {
 	}
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$reposDisplayed = readJsonFile($caPaths['repositoriesDisplayed']);
+		$bio = [];
+		$nonbio = [];
 		foreach ($reposDisplayed['community'] as $repo) {
 			if ($repo['bio'])
 				$bio[] = $repo;
