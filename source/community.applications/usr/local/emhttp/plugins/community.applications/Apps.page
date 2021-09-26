@@ -77,6 +77,8 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
+$startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
+
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( $cfg['updateCheck'] == "yes" ) {
@@ -630,7 +632,7 @@ $(function(){
 			}
 		});
 	} else {
-		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
+		if ( "<?=$startupDisplayed?>" != "true" && (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
 			initialStartup = false;
 			getCategories();
 			restoreState();
@@ -643,6 +645,11 @@ $(function(){
 		} else {
 			post({action:"defaultSortOrder"},function() {
 				updateContent();
+				if ("<?=$startupDisplayed?>" == "true" && (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
+					var apppath = $.cookie("sidebarAppPath");
+					var appname = $.cookie("sidebarAppName");
+					showSidebarApp(apppath,appname);
+				}
 			});
 		}
 	}
