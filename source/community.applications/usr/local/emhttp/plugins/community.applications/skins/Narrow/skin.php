@@ -349,12 +349,13 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( ! $ovr )
 		$ovr = $template['OriginalDescription'] ?: $template['Description'];
 	$ovr = html_entity_decode($ovr);
+//	$ovr = str_replace("&#xD","<br>",$ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
+//	$ovr = str_replace("<br>","\n",$ovr);
 	$ovr = str_replace("\n","<br>",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
-	$ovr = preg_replace('{(<br[^>]*>\s*)+}', '<br><br>', $ovr);
-	$template['display_ovr'] = preg_replace('#(\s*<br\s*/?>)*\s*$#i', '', trim($ovr)); # remove trailing <br>
+	$template['display_ovr'] = $ovr;
 	
 	$template['ModeratorComment'] .= $template['CAComment'];
 
@@ -844,11 +845,11 @@ function displayCard($template) {
 	$card .= "
 		<div class='ca_holder'>
 		<div class='ca_bottomLine'>
-				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</span>
+				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><span class='infoIcon'></span>&nbsp;".tr("Info")."</span>
 		";
 	
 	if ( count($supportContext) == 1)
-		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></span>";
+		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'></span>&nbsp;{$supportContext[0]['text']}</a></span>";
 	elseif (!empty($supportContext))
 		$card .= "
 			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
@@ -916,7 +917,7 @@ function displayPopup($template) {
 				<div class='popupName'>$Name</div>
 		";
 		if ( ! $Language )
-			$card .= "<div class='popupAuthor'>$Author</div>";
+			$card .= "<div class='popupAuthorMain'>$Author</div>";
 		
 		if ( $actionsContext ) {
 			$card .= "
@@ -925,19 +926,18 @@ function displayPopup($template) {
 		}
 		if ( $newInstallAction ) {
 			$card .= "
-				<div class='actionsPopup'><span onclick=$newInstallAction>".tr("Install")."</span></div>
+				<div class='actionsPopup'><span onclick=$newInstallAction><span class='ca_fa-install'> ".tr("Install")."</span></span></div>
 			";
 		}
 		if ( count($supportContext) == 1 )
-			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></div>";
+			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'>{$supportContext[0]['text']}</span></a></div>";
 		else
-			$card.= "<div class='supportPopup' id='supportPopup'>".tr("Support")."</div>";
+			$card.= "<div class='supportPopup' id='supportPopup'><span class='ca_fa-support'> ".tr("Support")."</div>";
 
 		$card .= $LanguagePack != "en_US" ? "<div class='$pinned' style='display:inline-block' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'></div>" : "";
 		$card .= "
 			</div>
 		</div>
-		<div class='ca_hr'></div>
 		<div class='popupDescription popup_readmore'>$display_ovr</div>
 	";
 	if ( $Requires ) 
@@ -979,10 +979,32 @@ function displayPopup($template) {
 		<div>
 		<div class='popupInfoSection'>
 			<div class='popupInfoLeft'>
+			<div class='rightTitle'>".tr("Details")."</div>
+			<table style='display:initial;'>
+				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
+				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
+	";
+	if ($downloadText)
+		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
+	if (!$Plugin && !$LanguagePack)
+		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight'>$Repository</td></tr>";
+	if ( $Plugin ) {
+		if ( $MinVer )
+			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";
+		if ( $MaxVer )
+			$card .= "<tr><td class='popupTableLeft'>".tr("Max OS")."</td><td class='popupTableRight'>$MaxVer</td></tr>";
+	}
+	$card .=
+	"
+				</table>
+	";
+	$card .= "
+		</div>
+		<div class='popupInfoRight'>
 				<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
-				
-				<div><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
-				<div class='popupAuthor'>$RepoName</div>
+				<div><div class='popupAuthor'>$RepoName</div>
+				<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
+				</div>
 				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 				<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
 	";
@@ -990,31 +1012,11 @@ function displayPopup($template) {
 	if ( $DonateLink ) {
 		$card .= "
 			<div class='donateText'>$DonateText</div>
-			<div><span class='donate'><a href='$DonateLink' target='_blank'>".tr("Donate")."</a></span></div>
+			<div class='donateDiv'><span class='donate'><a href='$DonateLink' target='_blank'>".tr("Donate")."</a></span></div>
 		";
 	}
-	$card .= "
-		</div>
-		<div class='popupInfoRight'>
-			<div class='rightTitle'>".tr("Details")."</div>
-			<table style='display:initial;'>
-				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td>$Category</td></tr>
-				<tr><td class='popupTableLeft'>".tr("Added")."</td><td>$DateAdded</td></tr>
-	";
 	$downloadText = getDownloads($downloads);
-	if ($downloadText)
-		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td>$downloadText</td></tr>";
-	if (!$Plugin && !$LanguagePack)
-		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td>$Repository</td></tr>";
-	if ( $Plugin ) {
-		if ( $MinVer )
-			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td>$MinVer</td></tr>";
-		if ( $MaxVer )
-			$card .= "<tr><td class='popupTableLeft'>".tr("Max OS")."</td><td>$MaxVer</td></tr>";
-	}
-	$card .=
-	"
-				</table>
+	$card .= "
 			</div>
 		</div>
 		</div>

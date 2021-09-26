@@ -53,6 +53,7 @@ switch ($theme) {
 		$swalBackground = "white";
 		$tooltipsterContent = "#101010";
 		$chartGrid = "#dddddd";
+		
 		break;
 	case 'gray':
 		$swalBackground = "black";
@@ -2072,31 +2073,33 @@ function showSidebarApp(apppath,appname) {
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 	$(".sidenav").css("height",$(window).innerHeight() - 100 );
 	$(".mainArea,.menuItems").addClass("sidebarMainDim");
-	post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
-		$("#sidenavContent").html(result.description);
-		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
-		popUpChart(result);
-		if ( result.supportContext ) {
-			var opts = [];
-			result.supportContext.forEach(function(item,index){
-				opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
-			});
-			context.attach('#supportPopup', opts)
-		}
-		if ( result.actionsContext ) {
-			var opts = [];
-			result.actionsContext.forEach(function(item,index){
-				if ( item.divider ) {
-					opts.push({divider:true});
-				} else {
-					opts.push({text:item.text,icon:item.icon,action:function(){
-						eval(item.action);
-					}});
-				}
-			});
-			context.attach("#actionsPopup",opts);
-		}
-	});
+	setTimeout(function() {
+		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
+			$("#sidenavContent").html(result.description);
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
+			popUpChart(result);
+			if ( result.supportContext ) {
+				var opts = [];
+				result.supportContext.forEach(function(item,index){
+					opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+				});
+				context.attach('#supportPopup', opts)
+			}
+			if ( result.actionsContext ) {
+				var opts = [];
+				result.actionsContext.forEach(function(item,index){
+					if ( item.divider ) {
+						opts.push({divider:true});
+					} else {
+						opts.push({text:item.text,icon:item.icon,action:function(){
+							eval(item.action);
+						}});
+					}
+				});
+				context.attach("#actionsPopup",opts);
+			}
+		})
+	},500);
 }
 
 
