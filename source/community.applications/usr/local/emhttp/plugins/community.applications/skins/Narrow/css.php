@@ -219,7 +219,7 @@ ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
 .ca_private{color:#882626;}
 .ca_profile::before {content:"\f2bb";font-family:fontAwesome;}
-.ca_readmore {color:#d67777;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;}
+.ca_readmore {color:#d67777;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;display:inline-block;}
 .ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 .ca_reddit::before {content:"\f281";font-family:fontAwesome;}
 .ca_red{color:#882626;}
@@ -331,6 +331,7 @@ a.popUpLink:hover {color:<?=$unRaid66color?>;}
 a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 .readmore-js-collapsed{-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)));}
+.readmore-js-toggle{display:unset !important;}
 .repoPopup {margin-left:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 
 .repoPopup:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}

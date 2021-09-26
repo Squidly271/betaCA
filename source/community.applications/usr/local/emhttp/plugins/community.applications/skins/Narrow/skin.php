@@ -1053,7 +1053,6 @@ function displayPopup($template) {
 		
 	}
 	$card .= "</div>";
-	$card .= "<a href='#' class='back_to_top'><i class='fa fa-arrow-circle-up'></i></a>";
 
 	return $card;
 }
