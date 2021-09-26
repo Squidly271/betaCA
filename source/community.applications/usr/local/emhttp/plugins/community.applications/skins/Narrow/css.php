@@ -236,6 +236,8 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;}
+.ca_homeTemplates{display:flex;flex-wrap:wrap;height:25rem;overflow:hidden;}
+.ca_homeTemplatesHeader{font-size:2rem;}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px 0px 0px 0px;height:15rem;padding-top:1rem;}
 .ca_twitter::before {content:"\f099";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}

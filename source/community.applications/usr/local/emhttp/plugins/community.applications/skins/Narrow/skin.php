@@ -59,7 +59,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayedTemplates[] = $template;
 	}
 
-	$ct .= "<div class='ca_templatesDisplay'>";
+
 
 	$iconClass = "displayIcon";
 
@@ -123,7 +123,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		}
 	}
-	$ct .= "</div>";
 
 	$ct .= getPageNavigation($pageNumber,count($file),false,true)."<br><br><br>";
 
@@ -155,7 +154,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ( $endApp > $totalApps )
 		$endApp = $totalApps;
 
-	$o = "<div class='ca_center'>";
+	$o = "</div><div class='ca_center'>";
 	if ( ! $dockerSearch && $displayCount)
 		$o .= "<span class='pageNavigation'>".sprintf(tr("Displaying %s - %s (of %s)"),$startApp,$endApp,$totalApps)."</span><br>";
 

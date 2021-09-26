@@ -620,43 +620,53 @@ function get_content() {
 
 	if ( $category === "/NONE/i" ) {
 		file_put_contents($caPaths['startupDisplayed'],"startup");
-		$displayApplications = array();
+		$displayApplications = [];
+		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
-			$appsOfDay = appOfDay($file);
+			$startupTypes = [["onlynew","Recently Added"],["trending","Top Trending"],["random","Random Apps"]];
+			foreach ($startupTypes as $type) {
+				$display = [];
+				$caSettings['startup'] = $type[0];
+				$appsOfDay = appOfDay($file);
 
-			$displayApplications['community'] = array();
-			for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
-				if ( ! $appsOfDay[$i]) continue;
-				$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
-				$displayApplications['community'][] = $file[$appsOfDay[$i]];
-			}
-			if ( $displayApplications['community'] ) {
-				writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
-				@unlink($caPaths['community-templates-allSearchResults']);
-				@unlink($caPaths['community-templates-catSearchResults']);
-				$o['display'] = my_display_apps($displayApplications['community'],"1");
-				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
-				postReturn($o);
-				return;
-			} else {
-				switch ($caSettings['startup']) {
-					case "onlynew":
-						$startupType = "New"; break;
-					case "new":
-						$startupType = "Updated"; break;
-					case "trending":
-						$startupType = "Top Performing"; break;
-					case "random":
-						$startupType = "Random"; break;
-					case "upandcoming":
-						$startupType = "Trending"; break;
+				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
+					if ( ! $appsOfDay[$i]) continue;
+					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
+					$displayApplications['community'][] = $file[$appsOfDay[$i]];
+					$display[] = $file[$appsOfDay[$i]];
 				}
+				if ( $displayApplications['community'] ) {
 
-				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
-				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
-				postReturn($o);
-				return;
+					$o['display'] .= "<div class='ca_homeTemplatesHeader'>$type[1]</div>";
+					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
+					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
+
+				} else {
+					switch ($caSettings['startup']) {
+						case "onlynew":
+							$startupType = "New"; break;
+						case "new":
+							$startupType = "Updated"; break;
+						case "trending":
+							$startupType = "Top Performing"; break;
+						case "random":
+							$startupType = "Random"; break;
+						case "upandcoming":
+							$startupType = "Trending"; break;
+					}
+
+					$o['display'] .=  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
+					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
+					@unlink($caPaths['community-templates-allSearchResults']);
+					@unlink($caPaths['community-templates-catSearchResults']);
+					writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
+					postReturn($o);
+					return;
+				}
 			}
+			writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
+			postReturn($o);
+			return;
 		}
 	} else {
 		@unlink($caPaths['startupDisplayed']);
@@ -710,28 +720,16 @@ function get_content() {
 				continue;
 			}
 			if ( filterMatch($filter,array($template['SortName'])) && $caSettings['favourite'] == $template['RepoName']) {
-/* 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
- */				$searchResults['favNameHit'][] = $template;
+				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
 			if ( filterMatch($filter,array($template['SortName'],$template['RepoName'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
-/* 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
-				$template['Description'] = highlight($filter, $template['Description']);
-				$template['Author'] = highlight($filter, $template['Author']);
-				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
-				$template['RepoName_highlighted'] = highlight($filter,$template['RepoName']);
-				if ($template['Language']) {
-					$template['Language'] = highlight($filter,$template['Language']);
-					$template['LanguageLocal'] = highlight($filter,$template['LanguageLocal']);
-				} */
+
 				if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
 					$searchResults['extraHit'][] = $template;
 				else
 					$searchResults['nameHit'][] = $template;
-			} else if ( filterMatch($filter,array($template['Author'],$template['CardDescription'],$template['translatedCategories'])) ) {
-/* 				$template['Description'] = highlight($filter, $template['Description']);
-				$template['Author'] = highlight($filter, $template['Author']);
-				$template['CardDescription'] = highlight($filter,$template['CardDescription']); */
+			} elseif ( filterMatch($filter,array($template['Author'],$template['CardDescription'],$template['translatedCategories'])) ) {
 				if ( $template['RepoName'] == $caSettings['favourite'] ) {
 					$searchResults['nameHit'][] = $template;
 				} else {
@@ -786,7 +784,7 @@ function get_content() {
 		@unlink($caPaths['community-templates-allsearchResults']);
 		@unlink($caPaths['community-templates-catSearchResults']);
 	}
-	$o['display'] = display_apps();
+	$o['display'] = "<div class='ca_templatesDisplay'>".display_apps()."</div>";
 
 	postReturn($o);
 }
@@ -862,7 +860,7 @@ function display_content() {
 
 	$o['display'] = "";
 	if ( file_exists($caPaths['community-templates-displayed']) || file_exists($caPaths['repositoriesDisplayed']) ) {
-		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
+		$o['display'] = "<div class='ca_templatesDisplay'>".display_apps($pageNumber,$selectedApps,$startup)."</div>";
 	}
 
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
