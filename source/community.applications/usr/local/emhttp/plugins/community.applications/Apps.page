@@ -197,7 +197,20 @@ $(function(){
 
   context.init({preventDoubleContext:false,left:false,above:true,right:true,bottom:true});
 
-
+var backtotopoffset = 250;
+var backtotopduration = 500;
+$('.sidenav').scroll(function() {
+  if ($(this).scrollTop() > backtotopoffset) {
+    $('.back_to_top').fadeIn(backtotopduration);
+  } else {
+    $('.back_to_top').fadeOut(backtotopduration);
+  }
+});
+$('.back_to_top').click(function(event) {
+  event.preventDefault();
+  $('.sidenav').animate({scrollTop:0},backtotopduration);
+  return false;
+});
 	
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {

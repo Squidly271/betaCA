@@ -318,7 +318,7 @@ a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
 .popupName{display:block;font-size:3rem;line-height:3rem;font-weight:bold;}
 
-.popupProfile {font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.popupProfile {margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .popupProfile:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 
 
