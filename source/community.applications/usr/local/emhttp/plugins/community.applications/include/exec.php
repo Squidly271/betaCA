@@ -499,6 +499,8 @@ function appOfDay($file) {
 				if ($template['RecommendedDate']) {
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
+				} else {
+					break;
 				}
 			}
 			break;
@@ -638,7 +640,7 @@ function get_content() {
 		$displayApplications = [];
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
-			$startupTypes = [["spotlight","Spotlight Apps"],["onlynew","Recently Added"],["trending","Top Trending Apps"],["topperforming","Top New Installs"],["random","Random Apps"]];
+			$startupTypes = [["spotlight",tr("Spotlight Apps"),tr("Each month we highlight some of the amazing work from our community")],["onlynew",tr("Recently Added"),tr("Check out these newly added applications from our awesome community")],["trending",tr("Top Trending Apps"),tr("Check out these up and coming apps")],["topperforming",tr("Top New Installs"),tr("These apps are what are currently being installed by new users first")],["random",tr("Random Apps"),tr("An assortment of randomly chosen apps")]];
 			foreach ($startupTypes as $type) {
 				$display = [];
 				$caSettings['startup'] = $type[0];
@@ -652,7 +654,8 @@ function get_content() {
 				}
 				if ( $displayApplications['community'] ) {
 
-					$o['display'] .= "<div class='ca_homeTemplatesHeader'>$type[1]</div>";
+					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type[1]}</div>";
+					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type[2]}</div>";
 					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 

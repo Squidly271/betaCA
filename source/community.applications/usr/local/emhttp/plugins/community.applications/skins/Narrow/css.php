@@ -239,6 +239,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 
 .ca_homeTemplates{display:flex;flex-wrap:wrap;height:25rem;overflow:hidden;}
 .ca_homeTemplatesHeader{font-size:2rem;margin-top:1rem;margin-bottom:0.5rem;}
+.ca_homeTemplatesLine2{font-size:1.5rem;margin-bottom:1rem;}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px 0px 0px 0px;height:15rem;padding-top:1rem;}
 .ca_twitter::before {content:"\f099";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
@@ -348,7 +349,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 #searchButton:hover{color:<?=$unRaid66color?>;}
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
 
-.sidebarMainDim{opacity:0.25;}
+.sidebarMainDim{opacity:0.25;transition:0.5s;}
 .sidenavHide{width:0px;}
 .sidenavShow{width:70rem;}
 .sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
