@@ -161,16 +161,16 @@ body{scrollbar-gutter:stable;}
 .caMenuEnabled {cursor:pointer;opacity:1;}
 .cardDescription {cursor:pointer;}
 .ca_applicationInfo {display:inline-block;position:absolute;width:25rem;}
-.ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;}
+.ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;}
 a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_appPopup {cursor:pointer;}
 div.ca_appPopup{cursor:pointer;}
-.ca_author {font-size:1rem;}
+.ca_author {font-size:1rem;margin-left:0.75rem;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_backgroundClickable{height:18.5rem;}
 .ca_bold {font-weight:bold;}
-.ca_bottomLine {display:block;position:relative;top:19rem;}
+.ca_bottomLine {display:block;position:relative;top:18rem;}
 .ca_categories {font-size:1rem;font-style:italic;}
 a.ca_categories {text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
@@ -249,7 +249,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_twitter::before {content:"\f099";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
-.cardCategory{font-size:1rem;}
+.cardCategory{font-size:1rem;margin-left:0.75rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
 .chartMenu{padding-left:2rem;cursor:pointer;}
@@ -288,6 +288,10 @@ input[type=checkbox] {width:2rem;height:2rem;margin-top:-0.25rem;margin-left:0re
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .myReadmoreButton {color:#6363ca;}
 .notice.shift {margin-top:0px;}
+.no_hoverMenu:hover{color:initial !important; cursor:default !important;}
+.no_hover:hover{important;background:<?=$donateBackground?> !important; pointer-events:none;cursor:default !important}
+.no_hover a:hover{background:<?=$donateBackground?> !important;pointer-events:none;cursor:default !important}
+
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
@@ -362,12 +366,15 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .sortIcons {font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}
 .sortIcons:hover{color:<?=$unRaid66color?>;}
 .specialCategory {font-size:1.5rem;}
+.spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
+.spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
+
 .spotlightHeader{font-size:2rem;}
 .spotlightIconArea{display:inline-block;float:left;}
 .spotlightIcon{height:4.8rem;margin-top:2rem;}
 .spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
 .spotlightPopup{display:inline-block;}
-.spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.3rem;right:1.5rem;}
+.spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.2rem;right:2rem;}
 .spotlightPopupText::after{content:"\f005";font-family:fontAwesome;}
 
 .spotlightWho{font-style:italic;}

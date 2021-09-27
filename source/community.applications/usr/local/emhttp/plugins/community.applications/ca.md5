@@ -1,4 +1,4 @@
-5bf4f6d327ddd6883fba783e0df2d835  ./Apps.page
+7957599f9b569eae65c62a7030f9df79  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
 2cdb7da0d67a11278ada7fd029707738  ./ca_settings.page
 7c88ace586933a4a60b0ef2f8a97a662  ./default.cfg
@@ -21,6 +21,6 @@ b398273cf7daa62ab00d2de2336ca25f  ./README.md
 9eba209fba4bbf1a02e57ddafebfdf8c  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 2bd671daecaf01549f8cc0202cb184b3  ./scripts/updatePluginSupport.php
-d9d2453b5239c47e607d36ee2fd22d75  ./skins/Narrow/css.php
+308822667968c299a95eb2742e6a8c3f  ./skins/Narrow/css.php
 ff2898b6f37f69c708e0cc78cb6fbd83  ./skins/Narrow/skin.html
-0083b229835141bd759e21d7fcc1206a  ./skins/Narrow/skin.php
+f2a47b2f4ffdf307270ae31c3e6b9efa  ./skins/Narrow/skin.php

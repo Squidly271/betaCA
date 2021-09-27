@@ -1011,6 +1011,8 @@ function popupVisible(el) {
 }
 
 function closeSidebar() {
+	$(".infoButton .supportButton").removeClass("no_hover");
+	$(".caMenuItem").removeClass("no_hoverMenu");
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("body").css("overflow","auto");
 	$(".mainArea,.menuItems").removeClass("sidebarMainDim");
@@ -2096,13 +2098,12 @@ function popUpChart(descData) {
 }
 
 function showSidebarApp(apppath,appname) {
-	console.log(apppath);
-	console.log(appname);
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
 	$("#sidenavContent").html("");
 	$(".sidenav").css("height",0);
-
+	$(".infoButton,.supportButton").addClass("no_hover");
+	$(".caMenuItem,.mainArea").addClass("no_hoverMenu");
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 	$(".sidenav").css("height",$(window).innerHeight() - 100 );
 	$(".mainArea,.menuItems").addClass("sidebarMainDim");
