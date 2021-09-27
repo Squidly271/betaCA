@@ -226,7 +226,7 @@ function DownloadApplicationFeed() {
 			}
 		}
 		$o['Category'] = trim($o['Category']);
-		if ( $o['Recommended'] )
+		if ( $o['RecommendedDate'] )
 			$o['Category'] .= " spotlight:";
 
 		if ( $o['Language'] ) {
