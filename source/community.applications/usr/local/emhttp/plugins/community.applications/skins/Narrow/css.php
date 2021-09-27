@@ -146,7 +146,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appPlugin::before{font-family:'Unraid';content:'\e986';}
 .appRepository{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appRepository::before{font-family:'fontAwesome';content:'\f2be';}
-
+.back_to_top_hide{z-index:0;}
 
 .betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
@@ -322,7 +322,7 @@ img.popupAuthorIcon{height:7.2rem;width:7.2rem;border-radius:1rem 1rem 1rem 1rem
 .popupIcon {display:inline-block;}
 i.popupIcon {color:#626868;font-size:10rem;padding-left:1rem;padding-top:2.2rem;}
 img.popupIcon {width:10rem;height:10rem;padding:0.3rem;padding-top:2.2rem;border-radius:1rem 1rem 1rem 1rem;}
-.popupInfo{position:absolute;top:10rem;left:22rem;}
+.popupInfo{position:absolute;top:10rem;left:15rem;}
 .popupInfoLeft{min-width:45%;max-width:45%;width:50rem;float:left;display:inline-block;margin-right:10px;}
 .popupInfoRight{min-width:45%;max-width:45%;float:left;display:inline-block;}
 .popupInfoSection{line-height:2rem;font-size:1.5rem;display:inline-block;}
@@ -357,11 +357,10 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 #searchBox{margin-left:0rem;margin-right:0;margin-bottom:1rem;top:-.6rem;border:none;padding:0.6rem;background:<?=$templateHoverBackground?>;padding-right:0.5rem;}
 #searchButton:hover{color:<?=$unRaid66color?>;}
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
-
 .sidebarMainDim{opacity:0.25;transition:0.5s;}
 .sidenavHide{width:0px;}
 .sidenavShow{width:<?=($mobile ? "90rem;" : "70rem;")?> }
-.sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
+.sidenav{position:<?=$sidebarPosition?>;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
 #sortIconArea{padding-bottom:1rem;}
 .sortIcons {font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}
 .sortIcons:hover{color:<?=$unRaid66color?>;}
