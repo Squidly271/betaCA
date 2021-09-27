@@ -11,12 +11,15 @@ header("Content-type: text/css; charset: UTF-8");
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+require_once "$docroot/plugins/community.applications/include/helpers.php";
 
 $dynamix = parse_plugin_cfg("dynamix");
 
 $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
+
+$mobile = isMobile();
 
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
@@ -123,6 +126,7 @@ switch ($theme) {
 }
 ?>
 a {color:<?=$aColor?>;}
+.mobileHolderFix{margin-bottom:2rem !important;}
 
 .actionsPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
 .actionsPopup {font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
@@ -200,6 +204,9 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;}
 .ca_holder:hover{background-color:<?=$templateHoverBackground?>;}
 .ca_holderFav {background-color:<?=$templateFavourite?> !important;}
+.ca_homeTemplates{display:flex;flex-wrap:wrap;height:24.5rem;overflow:hidden;}
+.ca_homeTemplatesHeader{font-size:2rem;margin-top:1rem;margin-bottom:0.5rem;}
+.ca_homeTemplatesLine2{font-size:1.5rem;margin-bottom:1rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 .ca_href {cursor:pointer;}
 .ca_icon {width:6.4rem;height:6.4rem;}
@@ -237,9 +244,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;margin-bottom:5rem;}
 
-.ca_homeTemplates{display:flex;flex-wrap:wrap;height:25rem;overflow:hidden;}
-.ca_homeTemplatesHeader{font-size:2rem;margin-top:1rem;margin-bottom:0.5rem;}
-.ca_homeTemplatesLine2{font-size:1.5rem;margin-bottom:1rem;}
+
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px 0px 0px 0px;height:15rem;padding-top:1rem;}
 .ca_twitter::before {content:"\f099";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
@@ -351,7 +356,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 
 .sidebarMainDim{opacity:0.25;transition:0.5s;}
 .sidenavHide{width:0px;}
-.sidenavShow{width:70rem;}
+.sidenavShow{width:<?=($mobile ? "90rem;" : "70rem;")?> }
 .sidenav{position:<?=$sidebarPosition?>;z-index:999;top:<?=$sidebarPos?>;right:0;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
 #sortIconArea{padding-bottom:1rem;}
 .sortIcons {font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}

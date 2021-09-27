@@ -72,7 +72,6 @@ if ( ! $sortOrder ) {
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
 }
-file_put_contents("/tmp/blah",print_r($_SESSION,true));
 ############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##
@@ -657,7 +656,7 @@ function get_content() {
 					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type[1]}</div>";
 					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type[2]}</div>";
 					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
-					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
+					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);$('.ca_holder').addClass('mobileHolderFix');";
 
 				} else {
 					switch ($caSettings['startup']) {

@@ -1033,9 +1033,9 @@ function displayPopup($template) {
 				<div class='charts chartTitle'>Trends</div>
 				<div><span class='charts'>Show: <span class='chartMenu selectedMenu' data-chart='trendChart'>".tr("Trend Per Month")."</span><span class='chartMenu' data-chart='downloadChart'>".tr("Downloads Per Month")."</span><span class='chartMenu' data-chart='totalDownloadChart'>".tr("Total Downloads")."</span></div>
 				<div>
-				<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>
-				<div><canvas id='downloadChart' class='caChart' style='display:none;' height=1 width=3></canvas></div>
-				<div><canvas id='totalDownloadChart' class='caChart' style='display:none;' height=1 width=3></canvas></div>
+				<div><canvas id='trendChart' class='caChart'></canvas></div>
+				<div><canvas id='downloadChart' class='caChart' style='display:none;'</canvas></div>
+				<div><canvas id='totalDownloadChart' class='caChart' style='display:none;'></canvas></div>
 				</div>
 			";
 		}
