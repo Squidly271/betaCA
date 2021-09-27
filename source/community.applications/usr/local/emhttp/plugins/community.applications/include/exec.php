@@ -6,12 +6,12 @@
 #                                                             #
 ###############################################################
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
-
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $_SERVER['REQUEST_URI'] = "docker/apps";
+
 require_once("$docroot/plugins/dynamix/include/Translations.php");
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
@@ -72,7 +72,7 @@ if ( ! $sortOrder ) {
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
 }
-
+file_put_contents("/tmp/blah",print_r($_SESSION,true));
 ############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##

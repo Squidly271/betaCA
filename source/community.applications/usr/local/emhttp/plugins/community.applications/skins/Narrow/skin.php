@@ -289,6 +289,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$template = $file[$index];
 		$Displayed = false;
 	}
+	$template['Displayed'] = $Displayed;
 	$currentServer = file_get_contents($caPaths['currentServer']);
 
 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
@@ -844,11 +845,11 @@ function displayCard($template) {
 	$card .= "
 		<div class='ca_holder'>
 		<div class='ca_bottomLine'>
-				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><span class='infoIcon'></span>&nbsp;".tr("Info")."</span>
+				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</span>
 		";
 	
 	if ( count($supportContext) == 1)
-		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'></span>&nbsp;{$supportContext[0]['text']}</a></span>";
+		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></span>";
 	elseif (!empty($supportContext))
 		$card .= "
 			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
@@ -948,7 +949,8 @@ function displayPopup($template) {
 		$ModeratorComment .= "<br>".tr("This application is not compatible with your version of Unraid");
 	if ( $Blacklist )
 		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
-	
+	if ( ! $Displayed )
+		$ModeratorComment .= "<br>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available");
 	$ModeratorComment .= $caComment;
 	if ( $Language && $countryCode !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
@@ -959,6 +961,10 @@ function displayPopup($template) {
 	}
 	
 	if ( $RecommendedReason) {
+		$RecommendedLanguage = $_SESSION['locale'] ?: "en_US";
+		if ( ! $RecommendedReason[$RecommendedLanguage] )
+			$RecommendedLanguage = "en_US";
+		
 		if ( ! $RecommendedWho ) $RecommendedWho = tr("Unraid Staff");
 		$card .= "
 			<div class='spotlightPopup'>
@@ -968,7 +974,7 @@ function displayPopup($template) {
 				<div class='spotlightInfoArea'>
 					<div class='spotlightHeader'>".sprintf(tr("Application Spotlight %s"),tr(date("F, Y",$RecommendedDate),0))."</div>
 					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
-					<div class='spotlightMessage'>$RecommendedReason</div>
+					<div class='spotlightMessage'>{$RecommendedReason[$RecommendedLanguage]}</div>
 					<div class='spotlightWho'>- $RecommendedWho</div>
 				</div>
 			</div>
