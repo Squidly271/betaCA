@@ -1572,6 +1572,7 @@ function createXML() {
 	global $caPaths;
 
 	$xmlFile = getPost("xml","");
+	$type = getPost("type","");
 	if ( ! $xmlFile ) {
 		postReturn(["error"=>"CreateXML: XML file was missing"]);
 		return;
@@ -1652,6 +1653,11 @@ function createXML() {
 			$template['Config'] = $testarray;
 		}
 		$template['Name'] = str_replace(" ","-",$template['Name']);
+		for ( ;; ) {
+			if ($type == "second" && is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
+				$template['Name'] .= "-1";
+			} else break;
+		}
 		$xml = makeXML($template);
 		@mkdir(dirname($xmlFile));
 		file_put_contents($xmlFile,$xml);

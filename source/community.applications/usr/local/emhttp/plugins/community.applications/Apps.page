@@ -1896,8 +1896,11 @@ function setFavourite(button) {
 
 function popupInstallXML(xml,type) {
 	saveState();
-	post({action:'createXML',xml:xml},function(result){
+	post({action:'createXML',xml:xml,type:type},function(result){
 		if ( result.status == "ok" ) {
+			if (type == "second")
+				type = "default";
+			
 			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
 	});	

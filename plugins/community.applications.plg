@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.09.27">
-<!ENTITY md5       "7cb310c49c64770c5c394552b6b3b655">
+<!ENTITY version   "2021.09.27a">
+<!ENTITY md5       "7c29acce2548b4d15639b4ed6f6ef1da">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/betaCA">
@@ -19,6 +19,7 @@
 - Fixed: Attmping to display the popup from a dockerHub search would return an error
 - Removed: Compatibility with OS versions prior to 6.9.0
 - Fixed: Attempting to sort a repository display would return errors if only a single repository was present
+- Changed: When installing a second instance, automatically change the app name
 
 ###2021.08.31
 - Security updates
