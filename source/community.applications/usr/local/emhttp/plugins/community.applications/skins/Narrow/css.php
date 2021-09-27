@@ -235,9 +235,10 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_stat {color:coral; font-size:1.5rem;line-height:1.7rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
-.ca_templatesDisplay {display:flex;flex-wrap:wrap;}
+.ca_templatesDisplay {display:flex;flex-wrap:wrap;margin-bottom:5rem;}
+
 .ca_homeTemplates{display:flex;flex-wrap:wrap;height:25rem;overflow:hidden;}
-.ca_homeTemplatesHeader{font-size:2rem;}
+.ca_homeTemplatesHeader{font-size:2rem;margin-top:1rem;margin-bottom:0.5rem;}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px 0px 0px 0px;height:15rem;padding-top:1rem;}
 .ca_twitter::before {content:"\f099";font-family:fontAwesome;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
@@ -378,7 +379,7 @@ ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
 table tbody td {line-height:1.8rem;}
 table {background-color:transparent;}
-#templates_content {overflow-x:hidden;}
+#templates_content {overflow-x:hidden;margin-bottom:5rem;}
 .trendingDown::before {content:"\f063";font-family:fontAwesome;}
 .trendingUp::before {content:"\f062";font-family:fontAwesome;}
 .unpinned {font-size:2rem;cursor:pointer;margin-left:1rem;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}

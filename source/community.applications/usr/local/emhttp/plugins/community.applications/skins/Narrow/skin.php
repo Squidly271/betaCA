@@ -887,7 +887,7 @@ function displayCard($template) {
 		</div>
 		";
 	$card .= "</div>";
-	if ( $Beta || $Recommended ) {
+	if ( $Beta || $RecommendedDate ) {
 		$card .= "<div class='betaCardBackground'>";
 		if ( $Beta ) 
 			$card .= "<div class='betaPopupText'>".tr("BETA")."</div>";
@@ -958,18 +958,18 @@ function displayPopup($template) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
 	
-	if ( $Recommended ) {
-		if ( ! $Recommended['Who'] ) $Recommended['Who'] = tr("Unraid Staff");
+	if ( $RecommendedReason) {
+		if ( ! $RecommendedWho ) $RecommendedWho = tr("Unraid Staff");
 		$card .= "
 			<div class='spotlightPopup'>
 				<div class='spotlightIconArea'>
 					<div><img class='spotlightIcon' src='https://craftassets.unraid.net/uploads/logos/unraid-stacked-dark.svg'></img></div>
 				</div>
 				<div class='spotlightInfoArea'>
-					<div class='spotlightHeader'>".sprintf(tr("Application Spotlight %s"),tr($Recommended['Date'],0))."</div>
+					<div class='spotlightHeader'>".sprintf(tr("Application Spotlight %s"),tr(date("F, Y",$RecommendedDate),0))."</div>
 					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
-					<div class='spotlightMessage'>{$Recommended['Reason']}</div>
-					<div class='spotlightWho'>- {$Recommended['Who']}</div>
+					<div class='spotlightMessage'>$RecommendedReason</div>
+					<div class='spotlightWho'>- $RecommendedWho</div>
 				</div>
 			</div>
 		";

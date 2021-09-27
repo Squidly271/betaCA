@@ -226,6 +226,8 @@ function DownloadApplicationFeed() {
 			}
 		}
 		$o['Category'] = trim($o['Category']);
+		if ( $o['Recommended'] )
+			$o['Category'] .= " spotlight:";
 
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
@@ -345,6 +347,7 @@ function DownloadApplicationFeed() {
 		@unlink($caPaths['invalidXML_txt']);
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+	$ApplicationFeed['categories'][] = ["Cat"=>"spotlight:","Des"=>"Spotlight"];
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
@@ -488,6 +491,18 @@ function appOfDay($file) {
 				}
 			}
 			break;
+		case "spotlight":
+			$sortOrder['sortBy'] = "RecommendedDate";
+			$sortOrder['sortDir'] = "Down";
+			usort($file,"mySort");
+			foreach($file as $template) {
+				if ($template['RecommendedDate']) {
+					$appOfDay[] = $template['ID'];
+					if ( count($appOfDay) == 25 ) break;
+				}
+			}
+			break;
+			
 	}
 	return $appOfDay ?: array();
 }
@@ -623,7 +638,7 @@ function get_content() {
 		$displayApplications = [];
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
-			$startupTypes = [["onlynew","Recently Added"],["trending","Top Trending"],["random","Random Apps"]];
+			$startupTypes = [["spotlight","Spotlight Apps"],["onlynew","Recently Added"],["trending","Top Trending Apps"],["topperforming","Top New Installs"],["random","Random Apps"]];
 			foreach ($startupTypes as $type) {
 				$display = [];
 				$caSettings['startup'] = $type[0];
