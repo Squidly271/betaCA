@@ -498,10 +498,11 @@ function getPopupDescriptionSkin($appNumber) {
 	$installLine .= "</div>";
  */
 	$supportContext = array();
-	if ( $template['Support'] ) 
-		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
 	if ( $template['Project'] )
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+	if ( $template['Support'] ) 
+		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
+
 	if ( $template['Registry'] )
 		$supportContext[] = array("icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry"));
 	if ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes" )
@@ -812,10 +813,10 @@ function displayCard($template) {
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
 		$supportContext = array();
-		if ( $template['Support'] ) 
-			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support"));
 		if ( $template['Project'] )
 			$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+		if ( $template['Support'] ) 
+			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
 /* 		if ( $supportContext && count($supportContext) == 1 ) {
 			$supportLink = $supportContext[0]['link'];

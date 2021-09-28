@@ -240,6 +240,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
 .cardCategory{font-size:1rem;margin-left:0.75rem;}
+#Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
 .chartMenu{padding-left:2rem;cursor:pointer;}

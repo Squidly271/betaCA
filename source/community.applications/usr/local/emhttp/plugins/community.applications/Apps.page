@@ -347,7 +347,6 @@ $(function(){
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp", function() {
 		context.destroy("#supportPopup");
 		context.destroy("#actionsPopup");
-		
 		if ( !$(this).hasClass("repoPopup") && popupVisible() ) {
 			closeSidebar();
 			return;
@@ -359,10 +358,8 @@ $(function(){
 		}
 		
 		$("#sidenavContent").html("");
-		$(".sidenav").css("height",0);
 		var repository = $(this).data("repository");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-		$(".sidenav").css("height",$(window).innerHeight() - 100 );
 
 		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
@@ -577,7 +574,7 @@ $(function(){
 		var name = $(this).data("name");
 		removeApp(path,name);
 	});
-	
+/* 	
 <?if ( version_compare($unRaidSettings['version'],"6.9.0-beta38","<") ):?>
 	$('.mainArea').on("mouseover",".ca_discord",function() {
 		$(this).attr("src","/plugins/community.applications/images/discord-hover.svg");
@@ -586,7 +583,7 @@ $(function(){
 	$('.mainArea').on("mouseleave",".ca_discord",function() {
 		$(this).attr("src","/plugins/community.applications/images/discord-<?=$theme?>.svg");
 	});
-<?endif;?>
+<?endif;?> */
 
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
@@ -921,6 +918,9 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		if ( ! filter ) {
 			$('.dockerSearch').hide();
 		}
+		if ( description && ! filter ) {
+			$("#Category").html(description);
+		}
 		post({action:'get_content',filter:filter,category:category,newApp:newApp,startupDisplay:startupDisplay},function(result) {
 			updateDisplay(result.display);
 			if ( initialize ) {
@@ -1005,7 +1005,7 @@ function clearSearchBox() {
 function popupVisible(el) {
 	var visiblepx = $(".sidenav").css("width");
 	var visible = visiblepx.replace(/[^0-9]/g,'');
-	closeSidebar();
+	closeSidebar(true);
 	return visible > 0;
 }
 
@@ -1060,6 +1060,7 @@ function previousApps(installed,dontClear=false,filter="") {
 	clearSearchBox();
 	$(".dockerSearch").hide();
 	enableIcon("#sortIcon",true);
+	showSortIcons();
 
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed ) {
@@ -1070,6 +1071,8 @@ function previousApps(installed,dontClear=false,filter="") {
 				clearMultiInstall();
 			}
 		}
+		var msg = installed ? "<?tr("Installed Apps");?>" : "<?tr("Previous Apps");?>";
+		$("#Category").html(msg);
 		changeSortOrder(null,null,"true");
 		saveState();
 	});
@@ -1243,6 +1246,8 @@ function pinnedApps() {
 	data.docker = "";
 	clearSearchBox();
 	clearCategory();
+	showSortIcons();
+	$("#Category").html("<?tr("Pinned Apps");?>");
 	$(".dockerSearch,.multi_installDiv").hide();
 	enableIcon("#sortIcon",true);
 	post({action:'pinnedApps'},function(result) {

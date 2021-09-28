@@ -639,7 +639,7 @@ function get_content() {
 		$displayApplications = [];
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
-			$startupTypes = [["spotlight",tr("Spotlight Apps"),tr("Each month we highlight some of the amazing work from our community")],["onlynew",tr("Recently Added"),tr("Check out these newly added applications from our awesome community")],["trending",tr("Top Trending Apps"),tr("Check out these up and coming apps")],["topperforming",tr("Top New Installs"),tr("These apps are what are currently being installed by new users first")],["random",tr("Random Apps"),tr("An assortment of randomly chosen apps")]];
+			$startupTypes = [["spotlight",tr("Spotlight Apps"),tr("Each month we highlight some of the amazing work from our community")],["onlynew",tr("Recently Added"),tr("Check out these newly added applications from our awesome community")],["trending",tr("Top Trending Apps"),tr("Check out these up and coming apps")],["topperforming",tr("Top New Installs"),tr("These apps have the highest number of new installs")],["random",tr("Random Apps"),tr("An assortment of randomly chosen apps")]];
 			foreach ($startupTypes as $type) {
 				$display = [];
 				$caSettings['startup'] = $type[0];
