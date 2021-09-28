@@ -184,11 +184,8 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-<? if ($theme == "azure" || $theme == "gray"):?>
 	$("body").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
-<? else:?>
-	$("body").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
-<?endif;?>
+
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -641,7 +638,9 @@ $(function(){
 			initialStartup = true;
 			var apppath = $.cookie("sidebarAppPath");
 			var appname = $.cookie("sidebarAppName");
-			showSidebarApp(apppath,appname);
+			if ( apppath ) {
+				showSidebarApp(apppath,appname);
+			}
 		} else {
 			post({action:"defaultSortOrder"},function() {
 				updateContent();
@@ -1010,9 +1009,11 @@ function popupVisible(el) {
 	return visible > 0;
 }
 
-function closeSidebar() {
-/* 	$(".infoButton,.supportButton").removeClass("no_hover");
-	$(".caMenuItem").removeClass("no_hoverMenu"); */
+function closeSidebar(cookie=false) {
+	if ( ! cookie ) {
+		$.cookie("sidebarAppPath","");
+		$.cookie("sidebarAppName","");
+	}
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$(".back_to_top").removeClass("back_to_top_hide");	
 	$("body").css("overflow","auto");
@@ -1022,7 +1023,7 @@ function closeSidebar() {
 function installPlugin(pluginURL,update=false) {
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
-	closeSidebar();
+	closeSidebar(true);
 	disableSearch();
 	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
 }
@@ -1033,7 +1034,9 @@ function OpenSidebarAndRefreshDisplay() {
 	appname = stripTags(appname);
 		
 	refreshDisplay();
-	showSidebarApp(apppath,appname);
+	if ( apppath ) {
+		showSidebarApp(apppath,appname);
+	}
 
 }
 

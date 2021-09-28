@@ -37,8 +37,6 @@ switch ($theme) {
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";
-		$sidebarPos = "4rem;";
-		$sidebarPosition ="absolute";
 		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
@@ -57,8 +55,6 @@ switch ($theme) {
 		$aColor = "#486dba";
 		$sidebarBackground = "#ffffff";
 		$sidebarText = "#000000";
-		$sidebarPos = "4rem;";
-		$sidebarPosition = "absolute";
 		$betaPopupOffset = "0";
 		$supportPopupText = "#f2f2f2";
 		$supportPopupBackground = "#1c1b1b";
@@ -76,8 +72,6 @@ switch ($theme) {
 		$aColor = "#486dba";
 		$sidebarBackground = "#edeaef";
 		$sidebarText = "#606e7f";	
-		$sidebarPos = "6rem;";
-		$sidebarPosition = "fixed";
 		$betaPopupOffset = "1.5rem;";		
 		$supportPopupText = "#1b1d1b";
 		$supportPopupBackground = "#ffffff";
@@ -96,8 +90,6 @@ switch ($theme) {
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#121510";
 		$sidebarText = "#f2f2f2";	
-		$sidebarPos = "6rem;";
-		$sidebarPosition = "fixed";
 		$betaPopupOffset = "1.5rem;";
 		$supportPopupText = "#1b1d1b";
 		$supportPopupBackground = "#ffffff";
@@ -116,8 +108,6 @@ switch ($theme) {
 		$aColor = "#00b8d6";
 		$sidebarBackground = "#000000";
 		$sidebarText = "#f2f2f2";		
-		$sidebarPos = "4rem;";
-		$sidebarPosition ="absolute";
 		$betaPopupOffset = "0";
 		$supportPopupText = "#000000";
 		$supportPopupBackground = "#ffffff";
@@ -255,7 +245,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .chartMenu{padding-left:2rem;cursor:pointer;}
 .chartMenu:hover{color:<?=$unRaid66color?>;}
 .charts{font-size:1.5rem;}
-.chartTitle{margin-top:1.5rem;font-size:2rem;font-weight:bold;}
+.chartTitle{margin-top:1.5rem;font-size:2.5rem;}
 li.debugging {cursor:pointer;}
 .disabledIcon {color:#040404;font-size:2.5rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}

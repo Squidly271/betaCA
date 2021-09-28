@@ -57,7 +57,7 @@ function tr($string,$ret=false) {
 
 > <?tr("This setting will hide applications that are listed as being incompatible with your version of Unraid");?>
 
-<?tr("Enable Reinstall Default:");?>
+<?tr("Allow install of second instance:");?>
 : <select name='defaultReinstall' size='1'>
 	<?=mk_option($cfg['defaultReinstall'],'false',tr("No",true))?>
 	<?=mk_option($cfg['defaultReinstall'],'true',tr("Yes",true))?>
