@@ -267,13 +267,14 @@ function getPopupDescriptionSkin($appNumber) {
 	else
 		$displayed = readJsonFile($caPaths['community-templates-displayed']);
 
-	foreach ($displayed as $file) {
+	foreach ($displayed['community'] as $file) {
 		$index = searchArray($file,"Path",$appNumber);
 		if ( $index === false ) {
 			continue;
 		} else {
+
 			$template = $file[$index];
-			$Displayed = true;
+			$Displayed = false;
 			break;
 		}
 	}
@@ -287,7 +288,7 @@ function getPopupDescriptionSkin($appNumber) {
 			return;
 		}
 		$template = $file[$index];
-		$Displayed = false;
+		$Displayed = true;
 	}
 	$template['Displayed'] = $Displayed;
 	$currentServer = file_get_contents($caPaths['currentServer']);

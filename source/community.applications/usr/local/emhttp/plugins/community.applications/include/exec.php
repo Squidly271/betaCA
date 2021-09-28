@@ -674,13 +674,14 @@ function get_content() {
 
 					$o['display'] .=  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
-					@unlink($caPaths['community-templates-allSearchResults']);
-					@unlink($caPaths['community-templates-catSearchResults']);
+
 					writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 					postReturn($o);
 					return;
 				}
 			}
+			@unlink($caPaths['community-templates-allSearchResults']);
+			@unlink($caPaths['community-templates-catSearchResults']);			
 			writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 			postReturn($o);
 			return;

@@ -185,9 +185,9 @@ $(function(){
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
 <? if ($theme == "azure" || $theme == "gray"):?>
-	$(".tabs").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+	$("body").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
 <? else:?>
-	$("#menu").prepend("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+	$("body").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
 <?endif;?>
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -274,13 +274,13 @@ $(function(){
 		setFavourite(this);
 	});
 
-	$(window).resize(function() {
+/* 	$(window).resize(function() {
 		if ( resizeTimer ) return;
 		resizeTimer = setTimeout(function() {
 			$(".sidenav").css("height",$(window).innerHeight() - 100 );
 			resizeTimer = false;
 		},1000);
-	});
+	}); */
 
 	$('body').on("click",".favPopup",function() {
 		setFavourite(this);
@@ -1011,8 +1011,8 @@ function popupVisible(el) {
 }
 
 function closeSidebar() {
-	$(".infoButton,.supportButton").removeClass("no_hover");
-	$(".caMenuItem").removeClass("no_hoverMenu");
+/* 	$(".infoButton,.supportButton").removeClass("no_hover");
+	$(".caMenuItem").removeClass("no_hoverMenu"); */
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$(".back_to_top").removeClass("back_to_top_hide");	
 	$("body").css("overflow","auto");
@@ -2102,12 +2102,12 @@ function showSidebarApp(apppath,appname) {
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
 	$("#sidenavContent").html("");
-	$(".sidenav").css("height",0);
-	$(".infoButton,.supportButton").addClass("no_hover");
-	$(".caMenuItem,.mainArea").addClass("no_hoverMenu");
+//	$(".sidenav").css("height",0);
+/* 	$(".infoButton,.supportButton").addClass("no_hover");
+	$(".caMenuItem,.mainArea").addClass("no_hoverMenu"); */
 	$(".back_to_top").addClass("back_to_top_hide");
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-	$(".sidenav").css("height",$(window).innerHeight() - 100 );
+//	$(".sidenav").css("height",$(window).innerHeight()-50);
 	$(".mainArea,.menuItems").addClass("sidebarMainDim");
 	setTimeout(function() {
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
