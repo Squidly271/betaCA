@@ -851,7 +851,7 @@ function displayCard($template) {
 		";
 	
 	if ( count($supportContext) == 1)
-		$card .= "<span class='supportButton'><a href='{$supportContext[0]['link']}' target='_blank'>{$supportContext[0]['text']}</a></span>";
+		$card .= "<span class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></span>";
 	elseif (!empty($supportContext))
 		$card .= "
 			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
@@ -971,11 +971,12 @@ function displayPopup($template) {
 		if ( ! $RecommendedWho ) $RecommendedWho = tr("Unraid Staff");
 		$card .= "
 			<div class='spotlightPopup'>
-				<div class='spotlightIconArea'>
-					<div><img class='spotlightIcon' src='https://craftassets.unraid.net/uploads/logos/unraid-stacked-dark.svg'></img></div>
+				<div class='spotlightIconArea ca_center'>
+					<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
+					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 				</div>
 				<div class='spotlightInfoArea'>
-					<div class='spotlightHeader'>".sprintf(tr("Application Spotlight %s"),tr(date("F, Y",$RecommendedDate),0))."</div>
+					<div class='spotlightHeader'></div>
 					<div class='spotlightWhy'>".tr("Why we picked it")."</div>
 					<div class='spotlightMessage'>{$RecommendedReason[$RecommendedLanguage]}</div>
 					<div class='spotlightWho'>- $RecommendedWho</div>

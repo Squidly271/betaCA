@@ -263,11 +263,16 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .donateLink {font-size:1.2rem;}
 .donateText{margin-top:2rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?> !important;}
+.homeMore{color:#d67777;cursor:pointer;}
 .hoverMenu {color:<?=$unRaid66color?>;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
 input[type=checkbox] {width:2rem;height:2rem;margin-top:-0.25rem;margin-left:0rem;}
+input[type=button]{background:none;font-size:1.5rem;}
+input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}
+input:hover[type=button][disabled]{background:none !important;color:currentColor !important;font-size:1.5rem;}
+input[type=button][disabled]{background:none;}
 .mainArea {position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .menuItems {position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
@@ -357,13 +362,15 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .sortIcons {font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}
 .sortIcons:hover{color:<?=$unRaid66color?>;}
 .specialCategory {font-size:1.5rem;}
+.spotlightDate{font-size:1.5rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 
 .spotlightHeader{font-size:2rem;}
-.spotlightIconArea{display:inline-block;float:left;}
-.spotlightIcon{height:4.8rem;margin-top:2rem;}
+.spotlightIconArea{display:inline-block;float:left;width:10rem;}
+.spotlightIcon{height:3.6rem;margin-top:1rem;margin-bottom:0.5rem;}
 .spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
+
 .spotlightPopup{display:inline-block;}
 .spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.2rem;right:2rem;}
 .spotlightPopupText::after{content:"\f005";font-family:fontAwesome;}

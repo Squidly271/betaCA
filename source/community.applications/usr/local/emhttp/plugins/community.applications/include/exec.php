@@ -639,10 +639,42 @@ function get_content() {
 		$displayApplications = [];
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
-			$startupTypes = [["spotlight",tr("Spotlight Apps"),tr("Each month we highlight some of the amazing work from our community")],["onlynew",tr("Recently Added"),tr("Check out these newly added applications from our awesome community")],["trending",tr("Top Trending Apps"),tr("Check out these up and coming apps")],["topperforming",tr("Top New Installs"),tr("These apps have the highest number of new installs")],["random",tr("Random Apps"),tr("An assortment of randomly chosen apps")]];
+			$startupTypes = [
+				[
+					"type"=>"spotlight",
+					"text1"=>tr("Spotlight Apps"),
+					"text2"=>tr("Each month we highlight some of the amazing work from our community"),
+					"cat"=>"spotlight:",
+					"des"=>"All spotlighted apps"
+				],
+				[
+					"type"=>"onlynew",
+					"text1"=>tr("Recently Added"),
+					"text2"=>tr("Check out these newly added applications from our awesome community"),
+					"cat"=>"All",
+					"des"=>tr("Recently Added Apps"),
+					"sortby"=>"FirstSeen",
+					"sortdir"=>"Down"
+				],
+				[
+					"type"=>"trending",
+					"text1"=>tr("Top Trending Apps"),
+					"text2"=>tr("Check out these up and coming apps")
+				],
+				[
+					"type"=>"topperforming",
+					"text1"=>tr("Top New Installs"),
+					"text2"=>tr("These apps have the highest number of new installs")
+				],
+				[
+					"type"=>"random",
+					"text1"=>tr("Random Apps"),
+					"text2"=>tr("An assortment of randomly chosen apps")
+				]
+			];
 			foreach ($startupTypes as $type) {
 				$display = [];
-				$caSettings['startup'] = $type[0];
+				$caSettings['startup'] = $type['type'];
 				$appsOfDay = appOfDay($file);
 
 				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
@@ -653,8 +685,11 @@ function get_content() {
 				}
 				if ( $displayApplications['community'] ) {
 
-					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type[1]}</div>";
-					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type[2]}</div>";
+					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type['text1']}</div>";
+					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type['text2']} ";
+					if ( $type['cat'] )
+						$o['display'] .= "<span class='homeMore' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
+					$o['display'] .= "</div>";
 					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);$('.ca_holder').addClass('mobileHolderFix');";
 
