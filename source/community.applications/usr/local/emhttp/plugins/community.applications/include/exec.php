@@ -242,19 +242,22 @@ function DownloadApplicationFeed() {
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
+		$o['random']        = rand();
 
 		$des = $o['OriginalOverview'] ?: $o['Overview'];
 		$des = $o['Language'] ? $o['Description'] : $des;
 		if ( ! $des && $o['Description'] ) $des = $o['Description'];
-		$des = str_replace(["[","]"],["<",">"],$des);
-		$des = str_replace("\n","  ",$des);
-		$des = html_entity_decode($des);
-
-		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
-
-		if ( $o['IconHTTPS'] )
+		if ( ! $Language ) {
+			$des = str_replace(["[","]"],["<",">"],$des);
+			$des = str_replace("\n","  ",$des);
+			$des = html_entity_decode($des);
+		}
+		
+/* 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
+ */
+/* 		if ( $o['IconHTTPS'] )
 			$o['IconHTTPS'] = $caPaths['iconHTTPSbase'] .$o['IconHTTPS'];
-
+ */
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -645,31 +648,40 @@ function get_content() {
 					"text1"=>tr("Spotlight Apps"),
 					"text2"=>tr("Each month we highlight some of the amazing work from our community"),
 					"cat"=>"spotlight:",
-					"des"=>"All spotlighted apps"
+					"sortby"=> "RecommendedDate",
+					"sortdir"=> "Down"
 				],
 				[
 					"type"=>"onlynew",
 					"text1"=>tr("Recently Added"),
 					"text2"=>tr("Check out these newly added applications from our awesome community"),
 					"cat"=>"All",
-					"des"=>tr("Recently Added Apps"),
 					"sortby"=>"FirstSeen",
 					"sortdir"=>"Down"
 				],
 				[
 					"type"=>"trending",
 					"text1"=>tr("Top Trending Apps"),
-					"text2"=>tr("Check out these up and coming apps")
+					"text2"=>tr("Check out these up and coming apps"),
+					"cat"=>"All",
+					"sortby"=>"topTrending",
+					"sortdir"=>"Down"
 				],
 				[
 					"type"=>"topperforming",
 					"text1"=>tr("Top New Installs"),
-					"text2"=>tr("These apps have the highest number of new installs")
+					"text2"=>tr("These apps have the highest number of new installs"),
+					"cat"=>"All",
+					"sortby"=>"topPerforming",
+					"sortdir"=>"Down"
 				],
 				[
 					"type"=>"random",
 					"text1"=>tr("Random Apps"),
-					"text2"=>tr("An assortment of randomly chosen apps")
+					"text2"=>tr("An assortment of randomly chosen apps"),
+					"cat"=>"All",
+					"sortby"=>"random",
+					"sortdir"=>"Down"
 				]
 			];
 			foreach ($startupTypes as $type) {
@@ -688,7 +700,7 @@ function get_content() {
 					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type['text1']}</div>";
 					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type['text2']} ";
 					if ( $type['cat'] )
-						$o['display'] .= "<span class='homeMore' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
+						$o['display'] .= "<span class='homeMore' data-des='{$type['text1']}' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
 					$o['display'] .= "</div>";
 					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);$('.ca_holder').addClass('mobileHolderFix');";
@@ -1833,7 +1845,6 @@ function changeSortOrder() {
 		$reposDisplayed['community'] = array_merge($bio,$nonbio);
 		writeJsonFile($caPaths['repositoriesDisplayed'],$reposDisplayed);
 	}
-
 	postReturn(['status'=>"ok"]);
 }
 ############################################

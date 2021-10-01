@@ -31,6 +31,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	
 	$info = getRunningContainers();
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+	$repositories = readJsonFile($caPaths['repositoryList']);
+
 
 	if ( ! $selectedApps )
 		$selectedApps = array();
@@ -80,25 +82,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			$template['display_dockerName'] = $template['RepoName'];
 
-			$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate ca_href' data-href='{$template['DonateLink']}' data-target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
-
-/* 			$supportContext = array();
-			if ( $template['Forum'] )
-				$supportContext = [
-				$template['display_faSupport'] = "<a class='ca_tooltip ca_forum appIcons ca_href' data-target='_blank' data-href='{$template['Forum']}' title='".tr("Go to the forum")."'></a>";
-			if ( $template['Twitter'] )
-				$template['display_twitter'] = "<a class='ca_tooltip ca_twitter appIcons ca_href' data-target='_blank' data-href='{$template['Twitter']}' title='".tr("Go to twitter")."'></a>";
-			if ( $template['Reddit'] )
-				$template['display_reddit'] = "<a class='ca_tooltip ca_reddit appIcons ca_href' data-target='_blank' data-href='{$template['Reddit']}' title='".tr("Go to reddit")."'></a>";
-			if ( $template['Facebook'] )
-				$template['display_facebook'] = "<a class='ca_tooltip ca_facebook appIcons ca_href' data-target='_blank' data-href='{$template['Facebook']}' title='".tr("Go to facebook")."'></a>";
-			if ( $template['Discord'] ) {
-				$template['display_discord'] = "<a class='ca_tooltip ca_discord appIcons ca_href' data-target='_blank' data-href='{$template['Discord']}' title='".tr("Go to discord")."'></a>";
-			}
-			if ( $template['WebPage'] )
-				$template['display_webpage'] = "<a class='ca_tooltip ca_webpage appIcons ca_href' data-target='_blank' data-href='{$template['WebPage']}' title='".tr("Go to webpage")."'></a>";
-		 */	if ( $template['profile'] )
-				$template['display_profile'] = "<a class='ca_tooltip ca_profile appIcons ca_href' data-target='_blank' data-href='{$template['profile']}' title='".tr("Go to forum profile")."'></a>";
 			$favClass = ( $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']) ) ? "ca_favouriteRepo" : "ca_non_favouriteRepo";
 			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
 			$niceRepoName = str_replace("'s Repository","",$template['RepoName']);
@@ -112,6 +95,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		} else {
+			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
+			$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"];
+			$template['Twitter'] = $repositories[$template['Repo']]['Twitter'];
+			$template['Reddit'] = $repositories[$template['Repo']]['Reddit'];
+			$template['Facebook'] = $repositories[$template['Repo']]['Facebook'];
+			$template['Discord'] = $repositories[$template['RepoName']]['Discord'];
+			
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
 
 			if ( ! $Plugin && ! $Language )
@@ -350,9 +340,7 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( ! $ovr )
 		$ovr = $template['OriginalDescription'] ?: $template['Description'];
 	$ovr = html_entity_decode($ovr);
-//	$ovr = str_replace("&#xD","<br>",$ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
-//	$ovr = str_replace("<br>","\n",$ovr);
 	$ovr = str_replace("\n","<br>",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
@@ -417,7 +405,7 @@ function getPopupDescriptionSkin($appNumber) {
 						$actionsContext[] = array("divider"=>true);
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
 			
-					} else {
+					} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 						if ( $template['InstallPath'] ) {
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
 							$actionsContext[] = array("divider"=>true);
@@ -445,7 +433,7 @@ function getPopupDescriptionSkin($appNumber) {
 					if ( ! empty($actionsContext) )
 						$actionsContext[] = array("divider"=>true);
 					$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
-				} else {
+				} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
 					if ( $template['InstallPath'] ) {
@@ -494,12 +482,11 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 	}
 
-/* 	$installLine .= "<div><a class='appIconsPopUp ca_repository ca_repoFromPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ".tr("Profile")."</a></div>";
-	$installLine .= "</div>";
- */
 	$supportContext = array();
 	if ( $template['Project'] )
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+	if ( $allRepositories[$template['Repo']]['Discord'] )
+		$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
 	if ( $template['Support'] ) 
 		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
@@ -767,7 +754,7 @@ function getRepoDescriptionSkin($repository) {
 
 
 
-	$t = "<div class='popupHolder'>$t</div>";
+	$t = "<div class='popup'>$t</div>";
 	return array("description"=>$t);
 }
 
@@ -776,12 +763,7 @@ function getRepoDescriptionSkin($repository) {
 ###########################
 function displayCard($template) {
 	global $caSettings;
-
 	$appName = str_replace("-"," ",$template['display_dockerName']);
-
-	if ( $template['ca_fav'] )
-		$holder .= " ca_holderFav";
-
 
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
 	if ( $template['Category'] == "Docker Hub Search" )
@@ -815,13 +797,11 @@ function displayCard($template) {
 		$supportContext = array();
 		if ( $template['Project'] )
 			$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+		if ( $Discord ) 
+			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
 		if ( $template['Support'] ) 
 			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
-/* 		if ( $supportContext && count($supportContext) == 1 ) {
-			$supportLink = $supportContext[0]['link'];
-			$supportText = $supportContext[0]['text'];
-		} */
 	} else {
 		$cardClass = "ca_repoinfo";
 		$ID = $RepoName;
@@ -836,10 +816,29 @@ function displayCard($template) {
 			$supportContext[] = array("icon"=>"ca_reddit","link"=>$Reddit,"text"=>tr("Reddit"));
 		if ( $Facebook )
 			$supportContext[] = array("icon"=>"ca_facebook","link"=>$Facebook,"text"=>tr("Facebook"));
-		if ( $Discord ) 
-			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
+
 		if ( $WebPage )
 			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
+
+
+		
+		
+	if ( $repo['WebPage'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
+	if ( $repo['Forum'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a></div>";
+	if ( $repo['profile'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_profile' href='{$repo['profile']}' target='_blank'> ".tr("Forum Profile")."</a></div>";
+	if ( $repo['Facebook'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_facebook' href='{$repo['Facebook']}' target='_blank'> ".tr("Facebook")."</a></div>";
+	if ( $repo['Reddit'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a></div>";
+	if ( $repo['Twitter'] )
+		$installLine .= "<div><a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a></div>";
+	if ( $repo['Discord'] ) {
+			$installLine .= "<div><a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a></div>";
+	}
+		
 	}
 	
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
@@ -898,6 +897,9 @@ function displayCard($template) {
 		$card .= "<div class='spotlightCardBackground'>";
 		$card .= "<div class='spotlightPopupText'></div>";
 		$card .= "</div>";
+	}
+	if ( $ca_fav) {
+		$card .= "<div class='favCardBackground'></div>";
 	}
 	return str_replace(["\t","\n"],"",$card);
 }
@@ -997,6 +999,10 @@ function displayPopup($template) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
 	if (!$Plugin && !$LanguagePack)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight'>$Repository</td></tr>";
+	if ($stars)
+		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
+
+
 	if ( $Plugin ) {
 		if ( $MinVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";

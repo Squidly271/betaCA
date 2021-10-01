@@ -216,8 +216,8 @@ ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
 .ca_private{color:#882626;}
 .ca_profile::before {content:"\f2bb";font-family:fontAwesome;}
-.ca_readmore {color:#d67777;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;display:inline-block;}
-.ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
+.ca_readmore {color:<?=$unRaid66color?>;font-size:1.5rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;padding-top:1rem;display:inline-block;}
+.ca_readmore:hover {text-decoration:none;color:#d67777;}
 .ca_reddit::before {content:"\f281";font-family:fontAwesome;}
 .ca_red{color:#882626;}
 .ca_repoPopup {display:inline-block;text-decoration:none!important;cursor:pointer;color:inherit;}
@@ -247,6 +247,10 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .chartMenu:hover{color:<?=$unRaid66color?>;}
 .charts{font-size:1.5rem;}
 .chartTitle{margin-top:1.5rem;font-size:2.5rem;}
+ul.context{list-style-type:none;padding:0;margin:0;}
+a.context{text-decoration:none;color:currentColor;margin:5px;}
+li.context{margin-top:0.5rem;margin-bottom:0.5rem;font-size:1.5rem;}
+li.context:hover{color:<?=$unRaid66color?>;}
 li.debugging {cursor:pointer;}
 .disabledIcon {color:#040404;font-size:2.5rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
@@ -263,7 +267,10 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .donateLink {font-size:1.2rem;}
 .donateText{margin-top:2rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?> !important;}
-.homeMore{color:#d67777;cursor:pointer;}
+.favCardBackground{clip-path:polygon(16% 0, 0 0, 0 19%);background-color:#c00d0d;width:10rem;height:10rem;top:0;left:-29rem;position:relative;margin-right:-10rem;}
+
+.homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
+.homeMore:hover{color:#d67777;}
 .hoverMenu {color:<?=$unRaid66color?>;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
@@ -308,13 +315,12 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 img.popupAuthorIcon{height:7.2rem;width:7.2rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupAuthorTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .popupCategory{font-size:1rem;line-height:1rem;}
-.popUpBack{font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;top:-2rem;display:inline-block;float:right;}
+.popUpBack{font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;top:-2rem;display:inline-block;padding-left:3rem;}
 .popUpClose {top:-2rem;font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;display:inline-block;}
 .popUpClose:hover {color:<?=$unRaid66color?>;}
 .popUpDeprecated {color:#FF8C2F;}
 .popupDescriptionArea{display:block;font-size:1rem;color:<?=$sidebarText?>;}
 .popupDescription{font-size:1.5rem;line-height:1.7rem !important;margin-top:1rem;margin-left:1rem;margin-right:1rem;margin-bottom:0px;}
-.popupHolder,.tooltipster-box {max-height:500px;}
 .popupIcon {display:inline-block;}
 i.popupIcon {color:#626868;font-size:10rem;padding-left:1rem;padding-top:2.2rem;}
 img.popupIcon {width:10rem;height:10rem;padding:0.3rem;padding-top:2.2rem;border-radius:1rem 1rem 1rem 1rem;}
@@ -362,6 +368,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .sortIcons {font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}
 .sortIcons:hover{color:<?=$unRaid66color?>;}
 .specialCategory {font-size:1.5rem;}
+.spinner{z-index:999999 !important;} /* ensure always ontop */
 .spotlightDate{font-size:1.5rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}

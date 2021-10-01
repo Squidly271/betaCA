@@ -194,10 +194,9 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
-  context.init({preventDoubleContext:false,left:false,above:true,right:true,bottom:true});
+  context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
 
 
-	
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
@@ -219,13 +218,13 @@ $(function(){
 			$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide")
 		}
 	});
-
+/* 
 	$('.mainArea').on("click",".unpinned,.pinned",function() {
 		if ( popupVisible(this) ) return;
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
-	});
+	}); */
 	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
@@ -393,11 +392,12 @@ $(function(){
 	});
 	
 	$('.menuItems').on("click",'.categoryMenu',function() {
-		if ( popupVisible(this) ) return;
-		if ( $(this).hasClass("caMenuDisabled") )
+		if ( popupVisible() ) return;
+		var menu = this;
+		if ( $(menu).hasClass("caMenuDisabled") )
 			return;
-		if ( $(this).hasClass("selectedMenu") ) {
-			if ( $(this).hasClass("caRepositoryMenu") ) {
+		if ( $(menu).hasClass("selectedMenu") ) {
+			if ( $(menu).hasClass("caRepositoryMenu") ) {
 				return;
 			}
 			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
@@ -405,11 +405,12 @@ $(function(){
 			}
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
+		checkSortOrder();
 		showSortIcons();
 		scrollToTop();
-		changeCategory(this,false);
+		changeCategory(menu,false);
 	});
-
+	
 	$('.menuItems').on("mouseover",".caMenuItem",function() {
 		if ( $(this).hasClass("caMenuEnabled") ) {
 			$(this).addClass("hoverMenu");
@@ -511,11 +512,12 @@ $(function(){
 			sortOrder.sortDir = sortDir;
 			$(".sortIcons").each(function() {
 				if ( $(this).data("sortby") == sortBy && $(this).data("sortdir") == sortDir ) {
-					$(this).addClass("enabledIcon");
+					$(this).addClass("enabledIcon").addClass("startupMore");
 				}
 			});
 		}
-					
+		$("#CategoryLine").html($(this).data("des"));
+		scrollToTop();
 		showSortIcons();
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			getContent(false,category,description,false);
@@ -2176,26 +2178,21 @@ function showSidebarApp(apppath,appname) {
 	},500);
 }
 
-
+function checkSortOrder() {
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+		});
+	}
+}
 			
 </script>
-
-> <span class='caHelpIconSpacing'><i class='fa fa-sort-alpha-asc enabledIcon' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("This chooses how to sort the results");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("These icons respectively will **Install or Edit** an application");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("Clicking these icons will take you to an application's GUI or settings");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-cloud-download' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("This will update an application");?><br>
-> <span class='caHelpIconSpacing'><span class='ca_fa-switchto' style='font-size:2rem;'></span></span><?tr("This will immediately switch to the language");?><br>
-> <span class='caHelpIconSpacing'><span class='ca_fa-support' style='font-size:2rem;'></span></span><?tr("This will take you to the appropriate support thread for an application");?><br>
-> <span class='caHelpIconSpacing'><span class='ca_fa-project' style='font-size:2rem;'></span></span><?tr("This will take you to the project page for an application");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i></span><?tr("Clicking this icon will uninstall the application or delete it from the lists depending upon your current section");?><br>
-> <span class='caHelpIconSpacing'><span class='unpinned'> </span><span class='pinned'></span></span><?tr("Clicking these icons will pin or unpin an application for later viewer from the Pinned Apps section");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.");?><br>
-> <span class='caHelpIconSpacing'><i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i></span><?tr("Clicking this will display any warnings or extra comments about the application");?><br>
-> <span class='caHelpIconSpacing'><input type='checkbox' checked></span><?tr("On the previous apps section you can select multiple applications to install simultaneously");?><br>
-> <span class='caHelpIconSpacing'><span class='ca_non_favouriteRepo' style='font-size:2rem;'></span></span><?tr("This sets a favourite repository which will appear first in any search result");?><br>
-> <center><?tr("For support for this plugin visit");?> <a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'><?tr("Click here");?></a></center>
->
-> <?tr("To view the policies Community Applications has");?> <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'><?tr("Click here");?></a>
-
 
 <?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>
