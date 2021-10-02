@@ -264,11 +264,10 @@ $(function(){
 		updateDocker(container);
 	});
 
-
-	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
-		if ( popupVisible(this) ) return;
+/* 
+	$('body').on("click",".nonfav",function() {
 		setFavourite(this);
-	});
+	}); */
 
 /* 	$(window).resize(function() {
 		if ( resizeTimer ) return;
@@ -278,16 +277,11 @@ $(function(){
 		},1000);
 	}); */
 
-	$('body').on("click",".favPopup",function() {
+	$('body').on("click",".fav,.nonfav",function() {
 		setFavourite(this);
-		$(this).removeClass(".favPopup");
-		$(this).html(" Favourite Repository");
 	});
 
 	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
-		if ( ! $(this).hasClass("ca_repoSearchPopUp") ) {
-			if ( popupVisible(this) ) return;
-		}
 		closeSidebar();
 		var repo = $(this).data("repository");
 		doSearch(false,repo);
@@ -450,6 +444,10 @@ $(function(){
 			if ( ! $(this).parent().hasClass("subCategory") ) {
 				$(".subCategory").hide("slow");
 			}
+		}
+		if ( $(this).hasClass("caRepositoryMenu") && $(".startupButton").hasClass("selectedMenu") ) {
+			$(".startupButton").removeClass("selectedMenu");
+			$(".allApps").addClass("selectedMenu");
 		}
 
 		$(this).addClass("selectedMenu");
@@ -1913,7 +1911,36 @@ function setToolTipForFavourite() {
 }
 
 function setFavourite(button) {
-	$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
+	$(button).toggleClass("fav nonfav");
+	var repo = $(button).data("repository");
+	clearTimeout(repoBannerTimer);
+	
+	post({action:'toggleFavourite',repository:repo},function(data) {
+		if ( repoBanner !== false )
+			removeBannerWarning(repoBanner);
+		if ( data.fav ) {
+			var bannerMessage = repo.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
+			repoBanner = addBannerWarning(sprintf("%s set as favourite repository",bannerMessage),false,true);
+		} else {
+			var bannerMessage = repo.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
+			repoBanner = addBannerWarning(sprintf("%s removed as favourite repository",bannerMessage),false,true);
+		}
+		repoBannerTimer = setTimeout(function() {
+			removeBannerWarning(repoBanner);
+			repoBanner = false;
+		},5000);
+		$(".favCardBackground").each(function() {
+			if ( $(this).data("repository") == data.fav ) 
+				$(this).show();
+			else
+				$(this).hide();
+		});
+		setFavRepoSearch();
+	});
+}
+
+
+/* 	$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
 	var repo = $(button).data("repository");
 	var apps = $.find('.ca_non_favouriteRepo[data-repository="'+repo+'"]');
 	$(apps).removeClass("ca_non_favouriteRepo").addClass("ca_favouriteRepo");
@@ -1934,8 +1961,8 @@ function setFavourite(button) {
 		},5000);
 		setFavRepoSearch();
 	});
-	setFavRepoSearch();
-}
+	setFavRepoSearch(); */
+
 
 function popupInstallXML(xml,type) {
 	saveState();

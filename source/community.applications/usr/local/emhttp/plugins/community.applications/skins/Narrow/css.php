@@ -123,7 +123,7 @@ a {color:<?=$aColor?>;}
 .actionsPopup:hover{background-color:<?=$unRaid66color?>;}
 .additionalRequirements {margin-left:2rem;}
 .additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
-.appIconsPopUp {font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;}
+.appIconsPopUp {font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;display:inline-block;margin-right:5rem;}
 .appIconsPopUp:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appDocker{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
@@ -151,12 +151,12 @@ body{scrollbar-gutter:stable;}
 .caMenuEnabled {cursor:pointer;opacity:1;}
 .cardDescription {cursor:pointer;}
 .ca_applicationInfo {display:inline-block;position:absolute;width:25rem;}
-.ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;}
+.ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;overflow-wrap:anywhere;}
 a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_appPopup {cursor:pointer;}
 div.ca_appPopup{cursor:pointer;}
-.ca_author {font-size:1rem;margin-left:0.75rem;}
+.ca_author {font-size:1rem;margin-left:0.75rem;;margin-top:0.75rem;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_backgroundClickable{height:18.5rem;}
 .ca_bold {font-weight:bold;}
@@ -186,10 +186,8 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_fa-update::before {content:"\f0ed";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
 .ca_facebook::before {content:"\f09a";font-family:fontAwesome;}
-.ca_favourite {cursor:default !important;}
-.ca_favourite::before {content:"\f2be";font-family:fontAwesome;color:#1fa67a;}
-.ca_favouriteRepo {font-size:2rem;cursor:pointer;margin-left:2.5rem !important;padding-right:.5rem;cursor:pointer;color:#1fa67a !important;padding:.3rem;}
-.ca_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
+.ca_favouriteRepo {margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.ca_favouriteRepo:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 .ca_forum::before {content:"\f1cd";font-family:fontAwesome;}
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;}
 .ca_holder:hover{background-color:<?=$templateHoverBackground?>;}
@@ -264,9 +262,12 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .donate:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 .donateDiv{margin-top:1rem;}
 .donate a {text-decoration:none;color:<?=$donateText?>;}
+.donateArea{margin-top:2rem;}
 .donateLink {font-size:1.2rem;}
 .donateText{margin-top:2rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?> !important;}
+.fav{background-color:#009900;}
+.nonfav{background-color: <?=$supportPopupBackground?>;}
 .favCardBackground{clip-path:polygon(16% 0, 0 0, 0 19%);background-color:#c00d0d;width:10rem;height:10rem;top:0;left:-29rem;position:relative;margin-right:-10rem;}
 
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
@@ -331,12 +332,12 @@ img.popupIcon {width:10rem;height:10rem;padding:0.3rem;padding-top:2.2rem;border
 .popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
-.popupName{display:block;font-size:3rem;line-height:3rem;font-weight:bold;}
+.popupName{display:block;font-size:3rem;line-height:4rem;font-weight:bold;}
 
 .popupProfile {margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .popupProfile:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 
-
+.popupRepoDescription{font-size:1.5rem;margin-bottom:1rem;}
 .popupTable td {width:30%;text-align:left;}
 .popupTable{font-size:1.5rem;width:55rem;margin-top:0px;margin-left:auto;}
 .popupTableLeft{vertical-align:top;padding-right:15px;}
@@ -347,10 +348,16 @@ a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 .readmore-js-collapsed{-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)));}
 .readmore-js-toggle{display:unset !important;}
+.repoDonateText{margin-bottom:0.5rem;}
+.repoLinks{margin-top:3rem;}
 .repoPopup {margin-left:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 
 .repoPopup:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
-
+.repoStats{font-size:2rem;margin-top:2rem;}
+.repoTable{margin-top:15px;width:70%;}
+.repoLeft{width:50%;}
+.repoLinkArea{margin-top:1.5rem;}
+.repoRight{text-align:right;}
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
 

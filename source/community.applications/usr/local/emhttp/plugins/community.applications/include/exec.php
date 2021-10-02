@@ -670,7 +670,7 @@ function get_content() {
 				[
 					"type"=>"topperforming",
 					"text1"=>tr("Top New Installs"),
-					"text2"=>tr("These apps have the highest number of new installs"),
+					"text2"=>tr("These apps have the highest percentage of new installs"),
 					"cat"=>"All",
 					"sortby"=>"topPerforming",
 					"sortdir"=>"Down"
@@ -1787,12 +1787,15 @@ function getCategoriesPresent() {
 # Set's the favourite repository #
 ##################################
 function toggleFavourite() {
-	global $caPaths;
+	global $caPaths, $caSettings;
 
 	$repository = html_entity_decode(getPost("repository",""),ENT_QUOTES);
+	if ( $caSettings['favourite'] == $repository ) 
+		$repository = "";
+	
 	$caSettings['favourite'] = $repository;
 	write_ini_file($caPaths['pluginSettings'],$caSettings);
-	postReturn(['status'=>"ok"]);
+	postReturn(['status'=>"ok",'fav'=>$repository]);
 }
 
 ####################################

@@ -662,13 +662,114 @@ function getRepoDescriptionSkin($repository) {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-
-	$t .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
-	$t .= "<div class='popUpBack'>".tr("BACK")."</div>";
-	$t .= "<div class='popupTitle'>$repository</div>";
-	$t .= "<div class='ca_hr'></div>";
-	$t .= "<div class='popupIconArea ca_center'><img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></div>";
 	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
+	$favRepoClass = ($caSettings['favourite'] == $repository) ? "fav" : "nonfav";
+
+	$totalApps = $totalPlugins = $totalDocker = $totalDownloads = 0;
+
+	foreach ($templates as $template) {
+		if ( $template['RepoName'] !== $repository ) continue;
+		if ( $template['BranchID'] ) continue;
+
+		if ( $template['Blacklist'] ) continue;
+		if ( $template['Deprecated'] && $caSettings['hideDeprecated'] !== "false" ) continue;
+		if ( ! $template['Compatible'] && $caSettings['hideIncompatible'] !== "false" ) continue;
+
+		if ( $template['Registry'] ) {
+			$totalDocker++;
+			if ( $template['downloads'] ) {
+				$totalDownloads = $totalDownloads + $template['downloads'];
+				$downloadDockerCount++;
+			}
+		}
+		if ( $template['PluginURL'] ) {
+			$totalPlugins++;
+		}
+		if ( $template['Language'] ) {
+			$totalLanguage++;
+		}
+
+		$totalApps++;
+	}
+	
+	$t .= "
+		<div class='popUpClose'>".tr("CLOSE")."</div>
+		<div class='popUpBack'>".tr("BACK")."</div>
+		<div class='ca_popupIconArea'>
+			<div class='popupIcon'>
+				<img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>
+			</div>
+			<div class='popupInfo'>
+				<div class='popupName'>$repository</div>
+				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($repository,ENT_QUOTES)."'>".tr("See All Apps")."</div>
+				<div class='ca_favouriteRepo $favRepoClass' data-repository='".htmlentities($repository,ENT_QUOTES)."'>".tr("Favourite")."</div>
+			</div>
+		</div>
+		<div class='popupRepoDescription'><br>".strip_tags($repo['bio'])."</div>
+	";
+	if ( $repo['DonateLink'] ) {
+		$t .= "
+			<div class='donateArea'>
+				<div class='repoDonateText'>{$repo['DonateText']}</div>
+				<a class='donate' href='{$repo['DonateLink']}' target='_blank'>".tr("Donate")."</a>
+			</div>
+			<div class='repoLinks'>
+		";
+	}
+	$t .= "<div class='repoLinkArea'>";
+	
+	if ( $repo['WebPage'] )
+		$t .= "<a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a>";
+	if ( $repo['Forum'] )
+		$t .= "<a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a>";
+	if ( $repo['profile'] )
+		$t .= "<a class='appIconsPopUp ca_profile' href='{$repo['profile']}' target='_blank'> ".tr("Forum Profile")."</a>";
+	if ( $repo['Facebook'] )
+		$t .= "<a class='appIconsPopUp ca_facebook' href='{$repo['Facebook']}' target='_blank'> ".tr("Facebook")."</a>";
+	if ( $repo['Reddit'] )
+		$t .= "<a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a>";
+	if ( $repo['Twitter'] )
+		$t .= "<a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a>";
+	if ( $repo['Discord'] )
+		$t .= "<a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a>";
+	
+	$t .= "
+		</div>
+	  <div class='repoStats'>Statistics</div>
+			<table class='repoTable'>
+	";
+	if ( $repo['FirstSeen'] > 1 ) 
+		$t .= "<tr><td class='repoLeft'>".tr("Added to CA")."</td><td class='repoRight'>".date("F j, Y",$repo['FirstSeen'])."</td></tr>";
+	
+	$t .= "
+				<tr><td class='repoLeft'>".tr("Total Docker Applications")."</td><td class='repoRight'>$totalDocker</td></tr>
+				<tr><td class='repoLeft'>".tr("Total Plugin Applications")."</td><td class='repoRight'>$totalPlugins</td></tr>
+		";
+		if ( $totalLanguage )
+			$t .= "
+				<tr><td class='repoLeft''>".tr("Total Languages")."</td><td class='repoRight'>$totalLanguage</td></tr>
+			";
+	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes")
+		$t .= "
+				<tr><td class='repoLeft'><a class='popUpLink' href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>
+		";
+
+	$t .= "
+				<tr><td class='repoLeft'>".tr("Total Applications")."</td><td class='repoRight'>$totalApps</td></tr>
+			";
+
+	if ( $downloadDockerCount && $totalDownloads ) {
+		$avgDownloads = intval($totalDownloads / $downloadDockerCount);
+		$t .= "<tr><td class='repoLeft'>".tr("Total Known Downloads")."</td><td class='repoRight'>".number_format($totalDownloads)."</td></tr>";
+		$t .= "<tr><td class='repoLeft'>".tr("Average Downloads Per App")."</td><td class='repoRight'>".number_format($avgDownloads)."</td></tr>";
+	}
+	$t .= "</table>";
+	$t .= "</div>";	
+/* 	$t .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
+	$t .= "<div class='popUpBack'>".tr("BACK")."</div>";
+	$t .= "<div class='popupIconArea'>";
+	$t .= "<div class='popupIcon'><img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></div>";
+	$t .= "<div class='popupTitle'>$repository</div>";
 	$t .= "<div class='popupDescriptionArea ca_center'><br>".strip_tags($repo['bio'])."</div>";
 
 	if ( $repo['DonateLink'] ) {
@@ -753,7 +854,7 @@ function getRepoDescriptionSkin($repository) {
 	$t .= "</div>";
 
 
-
+ */
 	$t = "<div class='popup'>$t</div>";
 	return array("description"=>$t);
 }
@@ -804,7 +905,7 @@ function displayCard($template) {
 
 	} else {
 		$cardClass = "ca_repoinfo";
-		$ID = $RepoName;
+		$ID = str_replace(" ","",$RepoName);
 		$supportContext = array();
 		if ( $profile ) 
 			$supportContext[] = array("icon"=>"ca_profile","link"=>$profile,"text"=>tr("Profile"));
@@ -821,27 +922,34 @@ function displayCard($template) {
 			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
 
 
+		$Name = str_replace("' Repository","",str_replace("'s Repository","",$author));
+		$Name = str_replace(" Repository","",$Name);
+		$author = "";
+/* 		if ( $shortName )
+			$Name = $shortName; */
+
 		
 		
-	if ( $repo['WebPage'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
-	if ( $repo['Forum'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a></div>";
-	if ( $repo['profile'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_profile' href='{$repo['profile']}' target='_blank'> ".tr("Forum Profile")."</a></div>";
-	if ( $repo['Facebook'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_facebook' href='{$repo['Facebook']}' target='_blank'> ".tr("Facebook")."</a></div>";
-	if ( $repo['Reddit'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a></div>";
-	if ( $repo['Twitter'] )
-		$installLine .= "<div><a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a></div>";
-	if ( $repo['Discord'] ) {
+		if ( $repo['WebPage'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
+		if ( $repo['Forum'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a></div>";
+		if ( $repo['profile'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_profile' href='{$repo['profile']}' target='_blank'> ".tr("Forum Profile")."</a></div>";
+		if ( $repo['Facebook'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_facebook' href='{$repo['Facebook']}' target='_blank'> ".tr("Facebook")."</a></div>";
+		if ( $repo['Reddit'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a></div>";
+		if ( $repo['Twitter'] )
+			$installLine .= "<div><a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a></div>";
+		if ( $repo['Discord'] ) {
 			$installLine .= "<div><a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a></div>";
-	}
+		}
 		
 	}
 	
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
+
 	
 	$card .= "
 		<div class='ca_holder'>
@@ -900,6 +1008,8 @@ function displayCard($template) {
 	}
 	if ( $ca_fav) {
 		$card .= "<div class='favCardBackground'></div>";
+	} else {
+		$card .= "<div class='favCardBackground' style='display:none;' data-repository='".htmlentities($Repo,ENT_QUOTES)."'></div>";
 	}
 	return str_replace(["\t","\n"],"",$card);
 }
