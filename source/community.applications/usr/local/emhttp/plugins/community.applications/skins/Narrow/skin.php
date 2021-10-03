@@ -483,8 +483,11 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 
 	$supportContext = array();
+	if ( $template['ReadMe'] )
+		$supportContext[] = array("icon"=>"ca_fa-readme","link"=>$template['ReadMe'],"text"=>tr("Read Me First"));
 	if ( $template['Project'] )
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+
 	if ( $allRepositories[$template['Repo']]['Discord'] )
 		$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
 	if ( $template['Support'] ) 
@@ -492,8 +495,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Registry'] )
 		$supportContext[] = array("icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry"));
-	if ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes" )
-		$supportContext[] = array("link"=> $template['caTemplateURL'] ?: $template['TemplateURL'],"text"=>tr("Application Template"));
+	if ( $caSettings['dev'] == "yes" )
+		$supportContext[] = array("icon"=>"ca_fa-template","link"=> $template['caTemplateURL'] ?: $template['TemplateURL'],"text"=>tr("Application Template"));
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 
@@ -505,7 +508,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><span class='modComment'>Private Repository</span></td></tr>" : "";
-	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $templateURL) ? "<tr><td></td><td><a class='popUpLink' href='$templateURL' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
+	$templateDescription .= ( $caSettings['dev'] == "yes"  && $templateURL) ? "<tr><td></td><td><a class='popUpLink' href='$templateURL' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
 		$templateDescription .= "</td></tr>";
@@ -749,7 +752,7 @@ function getRepoDescriptionSkin($repository) {
 			$t .= "
 				<tr><td class='repoLeft''>".tr("Total Languages")."</td><td class='repoRight'>$totalLanguage</td></tr>
 			";
-	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes")
+	if ( $caSettings['dev'] == "yes")
 		$t .= "
 				<tr><td class='repoLeft'><a class='popUpLink' href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>
 		";
@@ -896,6 +899,8 @@ function displayCard($template) {
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
 		$supportContext = array();
+		if ( $template['ReadMe'] )
+			$supportContext[] = array("icon"=>"ca_fa-readme","link"=>$template['ReadMe'],"text"=>tr("Read Me First"));
 		if ( $template['Project'] )
 			$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
 		if ( $Discord ) 
@@ -1015,6 +1020,8 @@ function displayCard($template) {
 }
 
 function displayPopup($template) {
+	global $caSettings;
+	
 	extract($template);
 		
 	$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
@@ -1022,7 +1029,8 @@ function displayPopup($template) {
 	
 	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
 	$DateAdded = date("M j, Y",$FirstSeen);
-	
+	$favRepoClass = ($caSettings['favourite'] == $Repo) ? "fav" : "nonfav";
+
 	$card = "
 		<div class='popup'>
 		<div><span class='popUpClose'>".tr("CLOSE")."</span></div>
@@ -1132,6 +1140,8 @@ function displayPopup($template) {
 				</div>
 				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 				<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
+				<div class='ca_favouriteRepo $favRepoClass' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Favourite")."</div>
+			
 	";
 
 	if ( $DonateLink ) {

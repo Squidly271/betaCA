@@ -100,6 +100,14 @@ function tr($string,$ret=false) {
 	
 > <?tr("Only enable this when advised to from the author of Community Applications")?>
 
+<?tr("Enable developer mode:");?>
+: <select name='dev' size='1'>
+	<?=mk_option($cfg['dev'],"no",tr("No",true))?>
+	<?=mk_option($cfg['dev'],"yes",tr("Yes",true))?>
+	</select>
+	
+> <?tr("This unlocks some extra features within CA generally only used by developers.  Not recommended to enable")?>
+
 &nbsp;
 : <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">
 

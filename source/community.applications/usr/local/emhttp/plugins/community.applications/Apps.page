@@ -200,6 +200,7 @@ $(function(){
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
+			checkSortOrder();
 			doSearch();
 		}
 	});
@@ -284,6 +285,7 @@ $(function(){
 	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
 		closeSidebar();
 		var repo = $(this).data("repository");
+		checkSortOrder();
 		doSearch(false,repo);
 	});
 
@@ -292,6 +294,7 @@ $(function(){
 		if ( $(this).hasClass("caMenuDisabled") )
 			return;
 		var repo = $(this).attr("data-repository");
+		checkSortOrder();
 		doSearch(false,repo);
 	});
 
@@ -534,6 +537,7 @@ $(function(){
 
 	$(".clearSearch").click(function() {
 		if ( $(this).hasClass("caMenuEnabled") ) {
+			checkSortOrder();
 			doSearch(true);
 		}
 	});
@@ -752,6 +756,8 @@ function setToolTip() {
 }
 
 function showSpecialCategory(button) {
+	checkSortOrder();
+	showSortIcons();
 	$(".caMenuItem").removeClass("selectedMenu");
 	$(".multi_installDiv").hide();
 	data.selected_category = "DOESNTMATTERWHATSHERE";
