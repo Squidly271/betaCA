@@ -304,10 +304,13 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pageDots{color:grey;cursor:default;}
 .pageLeft::after {content:"\f104";font-family:fontAwesome;}
 .pageNavigation {font-size:1.5rem;}
-.pageNavNoClick {font-size:1.5rem;color:grey;cursor:default !important;}
+.pageNavNoClick {font-size:1.5rem;cursor:default !important;}
+.pageNavNoClick:hover{color:initial !important;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
+.pageNumber:hover{color:<?=$unRaid66color?>;}
+
 .pageRight::after {content:"\f105";font-family:fontAwesome;}
-.pageSelected {cursor:default;}
+.pageSelected {cursor:default;color:<?=$unRaid66color?>;}
 .pinned {margin-left:1rem;font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:#1fa67a;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .pinned:hover {text-decoration:none;color:<?=$unRaid66color?>;}

@@ -78,7 +78,11 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
-
+if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
+	$killCookie = "true";
+}
+	
+file_put_contents("/tmp/blah",print_r($_COOKIE,true));
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( $cfg['updateCheck'] == "yes" ) {
@@ -152,6 +156,9 @@ $(function(){
 });
 
 $(function(){
+	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
+		$.cookie("ca_languageSwitch","");
+	}
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 		$(".mainArea,.menuItems").html("");

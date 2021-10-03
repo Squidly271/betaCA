@@ -364,7 +364,7 @@ function getPopupDescriptionSkin($appNumber) {
 			
 		}
 	}
-	@unlink($caPaths['pluginTempDownload']);
+//	@unlink($caPaths['pluginTempDownload']);
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 	if ( trim($template['Changes']) )
