@@ -71,9 +71,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	foreach ($displayedTemplates as $template) {
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
+/* 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
 			$template['display_infoIcon'] = "<a class='appIcons ca_repoinfo ca_tooltip' title='".tr("Click for more information")."' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></a>";
-
+ */
 			if ( ! $template['bio'] )
 				$template['CardDescription'] = tr("No description present");
 			else
@@ -116,10 +116,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$ct .= getPageNavigation($pageNumber,count($file),false,true)."<br><br><br>";
 
-	if ( $specialCategoryComment ) {
+/* 	if ( $specialCategoryComment ) {
 		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>".tr("This display is informational ONLY.")."</div><br>";
 		$displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
-	}
+	} */
 
 	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
@@ -257,31 +257,25 @@ function getPopupDescriptionSkin($appNumber) {
 	else
 		$displayed = readJsonFile($caPaths['community-templates-displayed']);
 
-	foreach ($displayed['community'] as $file) {
-		$index = searchArray($file,"Path",$appNumber);
-		if ( $index === false ) {
-			continue;
-		} else {
-
-			$template = $file[$index];
-			$Displayed = false;
-			break;
-		}
+	$index = searchArray($displayed['community'],"Path",$appNumber);
+	if ( $index !== false ) {
+/* 		$Displayed = true;
+ */		$template = $displayed['community'][$index];
 	}
+
 	# handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 	if ( ! $template ) {
 		$file = readJsonFile($caPaths['community-templates-info']);
 		$index = searchArray($file,"Path",$appNumber);
-
 		if ( $index === false ) {
 			echo json_encode(array("description"=>tr("Something really wrong happened.  Reloading the Apps tab will probably fix the problem")));
 			return;
 		}
 		$template = $file[$index];
-		$Displayed = true;
-	}
-	$template['Displayed'] = $Displayed;
-	$currentServer = file_get_contents($caPaths['currentServer']);
+/* 		$Displayed = true;
+ */	}
+/* 	$template['Displayed'] = $Displayed;
+ */	$currentServer = file_get_contents($caPaths['currentServer']);
 
 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
@@ -364,7 +358,6 @@ function getPopupDescriptionSkin($appNumber) {
 			
 		}
 	}
-//	@unlink($caPaths['pluginTempDownload']);
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 	if ( trim($template['Changes']) )
@@ -383,7 +376,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$actionsContext = [];
 	if ( ! $template['Language'] ) {
-		if ( $Displayed && ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
+		if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 			if ( ! $template['Plugin'] ) {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
@@ -1023,8 +1016,13 @@ function displayPopup($template) {
 	global $caSettings;
 	
 	extract($template);
-		
-	$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
+	
+	if ( !$Private)
+		$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
+	else {
+		$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$RepoName));
+		$Repo = $RepoName;
+	}
 	if ( $RepoShort ) $RepoName = $RepoShort;
 	
 	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
@@ -1053,8 +1051,8 @@ function displayPopup($template) {
 			";
 		}
 		if ( count($supportContext) == 1 )
-			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'>{$supportContext[0]['text']}</span></a></div>";
-		else
+			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'> {$supportContext[0]['text']}</span></a></div>";
+		elseif ( count($supportContext) )
 			$card.= "<div class='supportPopup' id='supportPopup'><span class='ca_fa-support'> ".tr("Support")."</div>";
 
 		$card .= $LanguagePack != "en_US" ? "<div class='$pinned' style='display:inline-block' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'></div>" : "";
@@ -1072,9 +1070,9 @@ function displayPopup($template) {
 		$ModeratorComment .= "<br>".tr("This application is not compatible with your version of Unraid");
 	if ( $Blacklist )
 		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
-	if ( ! $Displayed )
+/* 	if ( ! $Displayed )
 		$ModeratorComment .= "<br>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available");
-	$ModeratorComment .= $caComment;
+ */	$ModeratorComment .= $caComment;
 	if ( $Language && $countryCode !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
@@ -1131,19 +1129,21 @@ function displayPopup($template) {
 	"
 				</table>
 	";
-	$card .= "
-		</div>
-		<div class='popupInfoRight'>
-				<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
-				<div><div class='popupAuthor'>".($Plugin ? $Author : $RepoName)."</div>
-				<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
-				</div>
-				<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
-				<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
-				<div class='ca_favouriteRepo $favRepoClass' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Favourite")."</div>
-			
-	";
-
+	if ( $Repo || $Private ) {
+		$card .= "
+			</div>
+			<div class='popupInfoRight'>
+					<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
+					<div><div class='popupAuthor'>".($Plugin ? $Author : $RepoName)."</div>
+					<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
+					</div>
+					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
+					<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
+					<div class='ca_favouriteRepo $favRepoClass' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Favourite")."</div>
+				
+		";
+	}
+	
 	if ( $DonateLink ) {
 		$card .= "
 			<div class='donateText'>$DonateText</div>

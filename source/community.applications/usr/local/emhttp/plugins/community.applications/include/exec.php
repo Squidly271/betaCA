@@ -1058,7 +1058,6 @@ function previous_apps() {
 	@unlink($caPaths['startupDisplayed']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
-
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
@@ -1074,7 +1073,6 @@ function previous_apps() {
 					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
-
 					$flag = false;
 					$containerID = false;
 					foreach ($file as $templateDocker) {
@@ -1092,8 +1090,8 @@ function previous_apps() {
 						foreach ($info as $installedDocker) {
 							$installedImage = str_replace("library/","",$installedDocker['Image']);
 							$installedName = $installedDocker['Name'];
-							if ( startsWith($installedImage, $o['Repository']) ) {
-								if ( $installedName == $o['Name'] ) {
+							if ( $installedName == $o['Name'] ) {
+								if ( startsWith($installedImage, $o['Repository']) ) {
 									$runningflag = true;
 									$searchResult = searchArray($file,'Repository',$o['Repository']);
 									if ( ! $searchResult ) {
@@ -1124,8 +1122,8 @@ function previous_apps() {
 
 							# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
 							# Without this, an app could appear to be shown in installed apps twice
-							$fat32Fix[$searchResult]++;
-							if ($fat32Fix[$searchResult] > 1) continue;
+/* 							$fat32Fix[$searchResult]++;
+							if ($fat32Fix[$searchResult] > 1) continue; */
 							if ($o['testrepo']) continue;
 							$displayed[] = $o;
 						}

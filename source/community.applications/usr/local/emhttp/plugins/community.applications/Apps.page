@@ -770,6 +770,7 @@ function showSpecialCategory(button) {
 	data.selected_category = "DOESNTMATTERWHATSHERE";
 	data.section = "AppStore";
 	changeCategory(button,false);
+	$("#Category").append(" - <?tr("Installs not allowed from this page");?>");
 }
 
 function changeCategory(button,subSwitch) {
