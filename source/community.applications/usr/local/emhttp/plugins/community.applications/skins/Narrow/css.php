@@ -260,6 +260,7 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .docker::after{font-family:'Unraid';content:'\e90b';font-size:2.5rem;}
 .dockerHubStar {font-size:1rem;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
+.dockerSearch{display:inline-block;float:right;}
 .donate {color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
 
 .donate:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}

@@ -24,6 +24,7 @@ exec("mkdir -p {$caPaths['CA_logs']}");
 $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
 
 $cfg = parse_plugin_cfg($plugin);
+$cfg['dockerSearch'] = "yes";
 if ( ! is_file($caPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
@@ -526,7 +527,7 @@ $(function(){
 		}
 		$("#CategoryLine").html($(this).data("des"));
 		scrollToTop();
-		showSortIcons();
+		//showSortIcons();
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			getContent(false,category,description,false);
 		});
@@ -999,13 +1000,17 @@ function mySearch(filter) {
 }
 
 function initDockerSearch() {
+	var filter = $('#searchBox').val();
+	filter = filter.replace(" ","%20");
+	window.open("https://hub.docker.com/search?q="+filter+"&type=image","_blank");
+/* 	
 	dockerSearch(1);
 	data.docker = "searching docker";
 	data.section = "";
 	data.selected_category = "";
 	$(".selectedMenu").removeClass("selectedMenu");
 	hideSortIcons();
-	$(".subCategory").hide();
+	$(".subCategory").hide(); */
 }
 
 function dockerSearch(pageNumber) {
