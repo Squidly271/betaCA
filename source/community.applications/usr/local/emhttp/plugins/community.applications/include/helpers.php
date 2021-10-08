@@ -541,9 +541,10 @@ function fixDescription($Description) {
 ############################
 # displays the branch tags #
 ############################
-function formatTags($leadTemplate) {
+function formatTags($leadTemplate,$rename="false") {
 	global $caPaths;
 
+	$type = $rename == "true" ? "second" : "default";
 	$file = readJsonFile($caPaths['community-templates-info']);
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
@@ -553,9 +554,9 @@ function formatTags($leadTemplate) {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
 		
 		$o = "<table>";
-		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$template['Path']}'>Default</a></td><td class='appIconsPopUp xml Install ca_normal' data-type='default' data-xml='{$template['Path']}'>".tr("Install Using The Template's Default Tag")." (<span class='ca_bold'>:$defaultTag</span>)</td></tr>";
+		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='$type' data-xml='{$template['Path']}'>Default</a></td><td class='appIconsPopUp xml Install ca_normal' data-type='default' data-xml='{$template['Path']}'>".tr("Install Using The Template's Default Tag")." (<span class='ca_bold'>:$defaultTag</span>)</td></tr>";
 		foreach ($childTemplates as $child) {
-			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchName']}</a></td><td class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchDescription']}</td></tr>";
+			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='$type' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchName']}</a></td><td class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchDescription']}</td></tr>";
 		}
 		$o .= "</table>";
 	}

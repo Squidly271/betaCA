@@ -181,12 +181,12 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	return $o.$swipeScript;
 }
 
-########################################################################################
+/* ########################################################################################
 # function used to display the navigation (page up/down buttons) for dockerHub results #
 ########################################################################################
 function dockerNavigate($num_pages, $pageNumber) {
 	return getPageNavigation($pageNumber,$num_pages * 25, true);
-}
+} */
 
 ##############################################################
 # function that actually displays the results from dockerHub #
@@ -308,13 +308,18 @@ function getPopupDescriptionSkin($appNumber) {
 			$template['Repository'] = "library/{$template['Repository']}";
 		}
 		foreach ($dockerRunning as $testDocker) {
-			$templateRepo = explode(":",$template['Repository']);
+			if ( $template['Repository'] == $testDocker['Image'] || "{$template['Repository']}:latest" == $testDocker['Image'] ) {
+				$selected = true;
+				$name = $testDocker['Name'];
+				break;
+			}
+/* 			$templateRepo = explode(":",$template['Repository']);
 			$testRepo = explode(":",$testDocker['Image']);
 			if ($templateRepo[0] == $testRepo[0]) {
 				$selected = true;
 				$name = $testDocker['Name'];
 				break;
-			}
+			} */
 		}
 	} else
 		$pluginName = basename($template['PluginURL']);
@@ -390,7 +395,7 @@ function getPopupDescriptionSkin($appNumber) {
 						}
 						if ( $caSettings['defaultReinstall'] == "true" ) {
 							if ( $template['BranchID'] )
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}');");
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true);");
 							else
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second');");
 						}
@@ -926,7 +931,7 @@ function displayCard($template) {
 /* 		if ( $shortName )
 			$Name = $shortName; */
 
-		
+/* 		
 		
 		if ( $repo['WebPage'] )
 			$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
@@ -942,7 +947,7 @@ function displayCard($template) {
 			$installLine .= "<div><a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a></div>";
 		if ( $repo['Discord'] ) {
 			$installLine .= "<div><a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a></div>";
-		}
+		} */
 		
 	}
 	
@@ -950,7 +955,7 @@ function displayCard($template) {
 
 	
 	$card .= "
-		<div class='ca_holder'>
+		<div class='ca_holder $class'>
 		<div class='ca_bottomLine'>
 				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</span>
 		";
@@ -994,6 +999,9 @@ function displayCard($template) {
 	$card .= "
 		</div>
 		";
+	if ( $class=='spotlightHome' ) {
+		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+	}
 	$card .= "</div>";
 	if ( $Beta ) {
 		$card .= "<div class='betaCardBackground'>";
@@ -1005,10 +1013,13 @@ function displayCard($template) {
 		$card .= "</div>";
 	}
 	if ( $ca_fav) {
-		$card .= "<div class='favCardBackground'></div>";
+		$card .= "<div class='favCardBackground ";
+		$card .= $class=='spotlightHome' ? "favCardSpotlight" : "";
+		$card .= "'></div>";
 	} else {
 		$card .= "<div class='favCardBackground' style='display:none;' data-repository='".htmlentities($Repo,ENT_QUOTES)."'></div>";
 	}
+
 	return str_replace(["\t","\n"],"",$card);
 }
 

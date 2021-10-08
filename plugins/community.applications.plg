@@ -26,6 +26,7 @@
 - Added: Support ReadMe files on templates
 - Fixed: Multiple instances of apps installed using the same tag would only appear once within installed apps
 - Removed: dockerHub searches (See release post)
+- Fixed: All steamcmd apps would show as being installed if any of them were.
 
 ###2021.08.31
 - Security updates

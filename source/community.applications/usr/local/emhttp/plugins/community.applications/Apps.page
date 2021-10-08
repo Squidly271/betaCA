@@ -310,8 +310,9 @@ $(function(){
 		if ( popupVisible(this) ) return;
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
+
 		saveState();
-		post({action:'createXML',xml:xml},function(result){
+		post({action:'createXML',xml:xml,type:type},function(result){
 			if ( result.status == "ok" ) {
 				openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 			}
@@ -376,7 +377,7 @@ $(function(){
 	});
 	
 		
-	$('body').on("click",".ca_appPopup",function() {
+	$('body').on("click",".ca_appPopup,.cardDescription",function() {
 		if ( popupVisible() ) {
 			closeSidebar();
 			return;
@@ -1013,7 +1014,7 @@ function initDockerSearch() {
 	$(".subCategory").hide(); */
 }
 
-function dockerSearch(pageNumber) {
+/* function dockerSearch(pageNumber) {
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";
@@ -1024,15 +1025,15 @@ function dockerSearch(pageNumber) {
 	post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
 		updateDisplay(result.display);
 	});
-}
+} */
 
-function dockerConvert(dockerID) {
+/* function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
 		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
 		openNewWindow(templateURL);
 	});
-}
+} */
 
 function openNewWindow(newURL,target='_self') {
 	var popUp = window.open(newURL,target);
@@ -1305,9 +1306,9 @@ function pinnedApps() {
 	});
 }
 
-function displayTags(leadTemplate) {
+function displayTags(leadTemplate,rename=false) {
 	closeSidebar();
-	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
+	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
 		disableSearch();
 		swal({
 			title: "<?tr("Choose A Branch To Install")?>",

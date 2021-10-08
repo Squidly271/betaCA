@@ -89,12 +89,12 @@ switch ($_POST['action']) {
 	case 'display_content':
 		display_content();
 		break;
-	case 'convert_docker':
+/* 	case 'convert_docker':
 		convert_docker();
 		break;
 	case 'search_dockerhub':
 		search_dockerhub();
-		break;
+		break; */
 	case 'dismiss_warning':
 		dismiss_warning();
 		break;
@@ -650,7 +650,8 @@ function get_content() {
 					"text2"=>tr("Each month we highlight some of the amazing work from our community"),
 					"cat"=>"spotlight:",
 					"sortby"=> "RecommendedDate",
-					"sortdir"=> "Down"
+					"sortdir"=> "Down",
+					"class"=>"spotlightHome"
 				],
 				[
 					"type"=>"onlynew",
@@ -693,8 +694,11 @@ function get_content() {
 				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
 					if ( ! $appsOfDay[$i]) continue;
 					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
-					$displayApplications['community'][] = $file[$appsOfDay[$i]];
-					$display[] = $file[$appsOfDay[$i]];
+					$spot = $file[$appsOfDay[$i]];
+					$spot['class'] = $type['class'];
+					
+					$displayApplications['community'][] = $spot;
+					$display[] = $spot;
 				}
 				if ( $displayApplications['community'] ) {
 
@@ -774,7 +778,12 @@ function get_content() {
 
 		$template['NewApp'] = $newApp;
 
-		if ( $category && ! preg_match($category,$template['Category'])) continue;
+		if ( $category && ! preg_match($category,$template['Category'])) {
+			continue;
+		}
+		if ( $category == "/spotlight:/i" )
+			$template['class'] = "spotlightHome";
+		
 		if ( $displayPrivates && ! $template['Private'] ) continue;
 
 		if ($filter) {
@@ -935,7 +944,7 @@ function display_content() {
 	postReturn($o);
 }
 
-#######################################################################
+/* #######################################################################
 # convert_docker - called when system adds a container from dockerHub #
 #######################################################################
 function convert_docker() {
@@ -966,9 +975,9 @@ function convert_docker() {
 	file_put_contents($xmlFile,$dockerXML);
 	file_put_contents($caPaths['addConverted'],"Dante");
 	postReturn(['xml'=>$xmlFile]);
-}
+} */
 
-#########################################################
+/* #########################################################
 # search_dockerhub - returns the results from dockerHub #
 #########################################################
 function search_dockerhub() {
@@ -1024,7 +1033,7 @@ function search_dockerhub() {
 
 	writeJsonFile($caPaths['dockerSearchResults'],$dockerFile);
 	postReturn(['display'=>displaySearchResults($pageNumber)]);
-}
+} */
 
 #####################################################################
 # dismiss_warning - dismisses the warning from appearing at startup #
@@ -1361,7 +1370,8 @@ function pinnedApps() {
 ################################################
 function displayTags() {
 	$leadTemplate = getPost("leadTemplate","oops");
-	postReturn(['tags'=>formatTags($leadTemplate)]);
+	$rename = getPost("rename","false");
+	postReturn(['tags'=>formatTags($leadTemplate,$rename)]);
 }
 
 ###########################################

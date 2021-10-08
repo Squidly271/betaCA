@@ -240,6 +240,8 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
 .cardCategory{font-size:1rem;margin-left:0.75rem;}
+.cardDescription{cursor: pointer;display: table-cell;vertical-align:middle;position: relative;top: -18rem;left: 15rem;width: 20rem;max-height: 13.5rem;overflow: hidden;}
+.cardDesc{display:inline-block;max-height:12.25rem;max-width:20rem;overflow:hidden;}
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
@@ -273,7 +275,7 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .fav{background-color:#009900;}
 .nonfav{background-color: <?=$supportPopupBackground?>;}
 .favCardBackground{clip-path:polygon(16% 0, 0 0, 0 19%);background-color:#c00d0d;width:10rem;height:10rem;top:0;left:-29rem;position:relative;margin-right:-10rem;}
-
+.favCardSpotlight{left:-41.25rem !important;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .hoverMenu {color:<?=$unRaid66color?>;}
@@ -385,6 +387,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .spinner{z-index:999999 !important;} /* ensure always ontop */
 .spotlightDate{font-size:1.5rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
+.spotlightHome{min-width:36rem !important;max-width:36rem !important;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 
 .spotlightHeader{font-size:2rem;}
