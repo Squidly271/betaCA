@@ -71,9 +71,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	foreach ($displayedTemplates as $template) {
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-/* 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
-			$template['display_infoIcon'] = "<a class='appIcons ca_repoinfo ca_tooltip' title='".tr("Click for more information")."' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></a>";
- */
+
 			if ( ! $template['bio'] )
 				$template['CardDescription'] = tr("No description present");
 			else
@@ -430,6 +428,7 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 					if ( ! empty($actionsContext) )
 						$actionsContext[] = array("divider"=>true);
+
 					$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
 				} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
@@ -928,47 +927,34 @@ function displayCard($template) {
 		$Name = str_replace("' Repository","",str_replace("'s Repository","",$author));
 		$Name = str_replace(" Repository","",$Name);
 		$author = "";
-/* 		if ( $shortName )
-			$Name = $shortName; */
 
-/* 		
-		
-		if ( $repo['WebPage'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
-		if ( $repo['Forum'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a></div>";
-		if ( $repo['profile'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_profile' href='{$repo['profile']}' target='_blank'> ".tr("Forum Profile")."</a></div>";
-		if ( $repo['Facebook'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_facebook' href='{$repo['Facebook']}' target='_blank'> ".tr("Facebook")."</a></div>";
-		if ( $repo['Reddit'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a></div>";
-		if ( $repo['Twitter'] )
-			$installLine .= "<div><a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a></div>";
-		if ( $repo['Discord'] ) {
-			$installLine .= "<div><a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a></div>";
-		} */
-		
 	}
 	
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
-	
+	$bottomClass = $class ? "ca_bottomLineSpotLight" : "";
 	$card .= "
 		<div class='ca_holder $class'>
-		<div class='ca_bottomLine'>
-				<span class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</span>
+		<div class='ca_bottomLine $bottomClass'>
+				<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
 		";
 	
 	if ( count($supportContext) == 1)
-		$card .= "<span class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></span>";
+		$card .= "<div class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></div>";
 	elseif (!empty($supportContext))
 		$card .= "
-			<span class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</span>";
-	
+			<div class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
+		";
+
 	$card .= "
 			<span class='$appType'></span>
-	";
+	";	
+	if ( $ca_fav ) 
+		$card .= "<span class='favCardBackground' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+	else
+		$card .= "<span class='favCardBackground' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+	
+
 	
 	if ($Removable && !$DockerInfo) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
@@ -1000,7 +986,24 @@ function displayCard($template) {
 		</div>
 		";
 	if ( $class=='spotlightHome' ) {
-		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		
+ 		$ovr = html_entity_decode($Overview);
+		$ovr = trim($ovr);
+		$ovr = str_replace(["[","]"],["<",">"],$ovr);
+		$ovr = str_replace("\n","<br>",$ovr);
+		
+		$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
+		$ovr = markdown(strip_tags($ovr,"<br>"));
+		
+		$ovr = str_replace("\n","<br>",$ovr);
+		$Overview = explode("<br>",$ovr)[0];
+		$card .= "
+			<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>
+			<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+				<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
+				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
+			</div>			
+		";
 	}
 	$card .= "</div>";
 	if ( $Beta ) {
@@ -1012,14 +1015,9 @@ function displayCard($template) {
 		$card .= "<div class='spotlightPopupText'></div>";
 		$card .= "</div>";
 	}
-	if ( $ca_fav) {
-		$card .= "<div class='favCardBackground ";
-		$card .= $class=='spotlightHome' ? "favCardSpotlight" : "";
-		$card .= "'></div>";
-	} else {
-		$card .= "<div class='favCardBackground' style='display:none;' data-repository='".htmlentities($Repo,ENT_QUOTES)."'></div>";
-	}
+	
 
+	
 	return str_replace(["\t","\n"],"",$card);
 }
 

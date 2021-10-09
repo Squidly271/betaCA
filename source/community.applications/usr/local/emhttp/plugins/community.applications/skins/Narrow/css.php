@@ -140,16 +140,16 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 
 .betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
-.betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.3rem;right:1rem;}
+.betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:1.7rem;right:1rem;}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 body{scrollbar-gutter:stable;}
 .caChangeLog {cursor:pointer;}
 .caChart {display:none;border:none;}
 .caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
 .caHighlight {color:#d27676;}
+.caHomeSpotlight{height:29rem !important;}
 .caMenuDisabled {cursor:default;opacity:0.5;}
 .caMenuEnabled {cursor:pointer;opacity:1;}
-.cardDescription {cursor:pointer;}
 .ca_applicationInfo {display:inline-block;position:absolute;width:25rem;}
 .ca_applicationName {font-size:2rem;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;overflow-wrap:anywhere;}
 a.ca_applicationName {text-decoration:none;color:inherit;}
@@ -158,9 +158,10 @@ a.ca_appPopup {text-decoration:none;cursor:pointer;}
 div.ca_appPopup{cursor:pointer;}
 .ca_author {font-size:1rem;margin-left:0.75rem;;margin-top:0.75rem;}
 a.ca_author {text-decoration:none;color:inherit;}
-.ca_backgroundClickable{height:18.5rem;}
+.ca_backgroundClickable{height:18.5rem;cursor:pointer;}
 .ca_bold {font-weight:bold;}
 .ca_bottomLine {display:block;position:relative;top:18rem;}
+.ca_bottomLineSpotLight {top:15rem !important;}
 .ca_categories {font-size:1rem;font-style:italic;}
 a.ca_categories {text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
@@ -240,8 +241,9 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
 .cardCategory{font-size:1rem;margin-left:0.75rem;}
-.cardDescription{cursor: pointer;display: table-cell;vertical-align:middle;position: relative;top: -18rem;left: 15rem;width: 20rem;max-height: 13.5rem;overflow: hidden;}
-.cardDesc{display:inline-block;max-height:12.25rem;max-width:20rem;overflow:hidden;}
+.cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 5rem;overflow: hidden;}
+.cardDesc{display:inline-block;max-height:6rem;overflow:hidden;}
+.card_readmore{color:<?=$unRaid66color?>;}
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
@@ -274,15 +276,16 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?> !important;}
 .fav{background-color:#009900;}
 .nonfav{background-color: <?=$supportPopupBackground?>;}
-.favCardBackground{clip-path:polygon(16% 0, 0 0, 0 19%);background-color:#c00d0d;width:10rem;height:10rem;top:0;left:-29rem;position:relative;margin-right:-10rem;}
-.favCardSpotlight{left:-41.25rem !important;}
+.favCardSpotlight{left:-40.25rem !important;}
+ .favCardBackground{float:right;color:#bb0000;padding-top:.25rem;}
+ .favCardBackground::before{content:"\f004";font-family:fontAwesome;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .hoverMenu {color:<?=$unRaid66color?>;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
-input[type=checkbox] {width:2rem;height:2rem;margin-top:-0.25rem;margin-left:0rem;}
+input[type=checkbox] {width:2rem;height:2rem;margin-left:0rem;}
 input[type=button]{background:none;font-size:1.5rem;}
 input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}
 input:hover[type=button][disabled]{background:none !important;color:currentColor !important;font-size:1.5rem;}
@@ -305,14 +308,14 @@ input[type=button][disabled]{background:none;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
-.pageLeft::after {content:"\f104";font-family:fontAwesome;}
+.pageLeft::after {content:"\f137";font-family:fontAwesome;}
 .pageNavigation {font-size:1.5rem;}
 .pageNavNoClick {font-size:1.5rem;cursor:default !important;}
 .pageNavNoClick:hover{color:initial !important;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
 .pageNumber:hover{color:<?=$unRaid66color?>;}
 
-.pageRight::after {content:"\f105";font-family:fontAwesome;}
+.pageRight::after {content:"\f138";font-family:fontAwesome;}
 .pageSelected {cursor:default;color:<?=$unRaid66color?>;}
 .pinned {margin-left:1rem;font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:#1fa67a;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
@@ -387,11 +390,12 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .spinner{z-index:999999 !important;} /* ensure always ontop */
 .spotlightDate{font-size:1.5rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
-.spotlightHome{min-width:36rem !important;max-width:36rem !important;}
+.spotlightHome{min-width:45rem !important;max-width:45rem !important;height:24rem !important;margin-bottom:1rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 
 .spotlightHeader{font-size:2rem;}
 .spotlightIconArea{display:inline-block;float:left;width:10rem;}
+.homespotlightIconArea{display: inline-block;position: relative;top: -23rem;left: 30rem;cursor:pointer;}
 .spotlightIcon{height:3.6rem;margin-top:1rem;margin-bottom:0.5rem;}
 .spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
 
@@ -403,12 +407,12 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .spotlightWhy{font-weight:bold;font-size:1.6rem;line-height:1.8rem;}
 .spotlightMessage{margin-top:0.8rem;line-height:1.5rem;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
-.supportButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;margin-left:1rem;}
-.supportButton a {text-decoration:none;color:<?=$donateText?>!important;}
-.supportButton:hover{background:<?=$unRaid66color?>}
+.supportButton {line-height:2rem;cursor:pointer;display:inline-block;background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px; ;  padding: 1px 10px 1px 10px;margin-left:1rem;border-style:solid;border-width:1px;}
+.supportButton a {text-decoration:none;}
+.supportButton:hover{background:<?=$unRaid66color?>;border-color:<?=$unRaid66color?>;}
 .supportLink {color:inherit;padding-left:.5rem;padding-right:.5rem;}
-.supportPopup a {text-decoration:none;color:<?=$supportPopupText?>;cursor:pointer;}
-.supportPopup {margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.supportPopup a {text-decoration:none;color:initial;cursor:pointer;}
+.supportPopup {margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  padding: 1px 10px 1px 10px;border-style:solid;border-width:1px;}
 .supportPopup:hover{background-color:<?=$unRaid66color?>;}
 .sweet-alert table{margin-top:0px}
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */

@@ -160,6 +160,10 @@ $(function(){
 	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
 		$.cookie("ca_languageSwitch","");
 	}
+	
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
+	<?endif;?>
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 		$(".mainArea,.menuItems").html("");
@@ -227,13 +231,7 @@ $(function(){
 			$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide")
 		}
 	});
-/* 
-	$('.mainArea').on("click",".unpinned,.pinned",function() {
-		if ( popupVisible(this) ) return;
-		var repository = $(this).data("repository");
-		var name = $(this).data("name");
-		pinApp(this,repository,name);
-	}); */
+
 	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
@@ -273,18 +271,6 @@ $(function(){
 		updateDocker(container);
 	});
 
-/* 
-	$('body').on("click",".nonfav",function() {
-		setFavourite(this);
-	}); */
-
-/* 	$(window).resize(function() {
-		if ( resizeTimer ) return;
-		resizeTimer = setTimeout(function() {
-			$(".sidenav").css("height",$(window).innerHeight() - 100 );
-			resizeTimer = false;
-		},1000);
-	}); */
 
 	$('body').on("click",".fav,.nonfav",function() {
 		setFavourite(this);
@@ -377,7 +363,7 @@ $(function(){
 	});
 	
 		
-	$('body').on("click",".ca_appPopup,.cardDescription",function() {
+	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
 		if ( popupVisible() ) {
 			closeSidebar();
 			return;
@@ -616,16 +602,6 @@ $(function(){
 		var name = $(this).data("name");
 		removeApp(path,name);
 	});
-/* 	
-<?if ( version_compare($unRaidSettings['version'],"6.9.0-beta38","<") ):?>
-	$('.mainArea').on("mouseover",".ca_discord",function() {
-		$(this).attr("src","/plugins/community.applications/images/discord-hover.svg");
-	});
-
-	$('.mainArea').on("mouseleave",".ca_discord",function() {
-		$(this).attr("src","/plugins/community.applications/images/discord-<?=$theme?>.svg");
-	});
-<?endif;?> */
 
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
@@ -1054,11 +1030,11 @@ function clearSearchBox() {
 function popupVisible(el) {
 	var visiblepx = $(".sidenav").css("width");
 	var visible = visiblepx.replace(/[^0-9]/g,'');
-	closeSidebar(true);
+	closeSidebar(true,visible > 0);
 	return visible > 0;
 }
 
-function closeSidebar(cookie=false) {
+function closeSidebar(cookie=false,visible=false) {
 	if ( ! cookie ) {
 		$.cookie("sidebarAppPath","");
 		$.cookie("sidebarAppName","");
@@ -1068,6 +1044,22 @@ function closeSidebar(cookie=false) {
 	$(".back_to_top").removeClass("back_to_top_hide");	
 	$("body").css("overflow","auto");
 	$(".mainArea,.menuItems").removeClass("sidebarMainDim");
+
+	// re-do the context menus after the sidebar is closed that were destroyed when the sidebar opened
+	if ( visible ) {
+		setTimeout(function() {
+			context.init();
+			$('.supportButtonCardContext').each(function() {
+				var supportContext = $(this).data("context");
+				var ID = $(this).attr("id");
+				var opts = [];
+				supportContext.forEach(function(item,index){
+					opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+				});
+				context.attach('#'+ID, opts);
+			});
+		},500);
+	}
 }
 
 function installPlugin(pluginURL,update=false) {
@@ -1079,15 +1071,20 @@ function installPlugin(pluginURL,update=false) {
 }
 
 function OpenSidebarAndRefreshDisplay() {
-	var apppath = $.cookie("sidebarAppPath");
-	var appname = $.cookie("sidebarAppName");
-	appname = stripTags(appname);
-		
-	refreshDisplay();
-	if ( apppath ) {
-		showSidebarApp(apppath,appname);
-	}
-
+	post({action:"onStartupScreen"},function(result) {
+		if (result.status) {
+			window.location.reload();
+		} else {
+			var apppath = $.cookie("sidebarAppPath");
+			var appname = $.cookie("sidebarAppName");
+			appname = stripTags(appname);
+				
+			refreshDisplay();
+			if ( apppath ) {
+				showSidebarApp(apppath,appname);
+			}
+		}
+	});
 }
 
 function showDesc_openBox(cmd,title,height,width,load,func) {
@@ -1521,6 +1518,12 @@ function installMulti() {
 }
 
 function updateDisplay(data) {
+	// This has to be first.  If this doesn't happen, performance gets worse the more you click around
+	$(".supportButtonCardContext").each(function() {
+		var ID = $(this).attr("id");
+		context.destroy("#"+ID);
+	});
+	
 	$("#templates_content").html(data);
 	setToolTip();
  	enableSearch();
@@ -1536,6 +1539,13 @@ function updateDisplay(data) {
 			opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
 		});
 		context.attach('#'+ID, opts);
+	});
+	$(".cardDesc").each(function() {
+		var description = $(this).html();
+		while (isOverflown(this)) {
+			description = description.slice(0,-5);
+			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
+		}
 	});
 		
 	saveState();
@@ -2186,6 +2196,12 @@ function popUpChart(descData) {
 }
 
 function showSidebarApp(apppath,appname) {
+	// destroy the app context menus so that clicking on them doesn't open a menu
+	$(".supportButtonCardContext").each(function() {
+		var ID = $(this).attr("id");
+		context.destroy("#"+ID);
+	});	
+	
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
 	$("#sidenavContent").html("");

@@ -28,10 +28,10 @@ require_once "$docroot/webGui/include/Markdown.php";
 
 $caSettings = parse_plugin_cfg("community.applications");
 
-$caSettings['dockerSearch'] = "yes";
-$caSettings['maxPerPage']    = isMobile() ? 12 : 24;
+$caSettings['dockerSearch']  = "yes";
+$caSettings['maxPerPage']    = 18;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
-$caSettings['favourite'] = str_replace("*","'",$caSettings['favourite']);
+$caSettings['favourite']     = str_replace("*","'",$caSettings['favourite']);
 
 if ( ! is_file($caPaths['warningAccepted']) )
 	$caSettings['NoInstalls'] = true;
@@ -175,6 +175,9 @@ switch ($_POST['action']) {
 		break;
 	case 'javascriptError':
 		javascriptError();
+		break;
+	case 'onStartupScreen':
+		onStartupScreen();
 		break;
 	###############################################
 	# Return an error if the action doesn't exist #
@@ -350,7 +353,7 @@ function DownloadApplicationFeed() {
 		@unlink($caPaths['invalidXML_txt']);
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
-	$ApplicationFeed['categories'][] = ["Cat"=>"spotlight:","Des"=>"Spotlight"];
+//	$ApplicationFeed['categories'][] = ["Cat"=>"spotlight:","Des"=>"Spotlight"];
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
@@ -644,6 +647,15 @@ function get_content() {
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
 			$startupTypes = [
+
+				[
+					"type"=>"onlynew",
+					"text1"=>tr("Recently Added"),
+					"text2"=>tr("Check out these newly added applications from our awesome community"),
+					"cat"=>"All",
+					"sortby"=>"FirstSeen",
+					"sortdir"=>"Down"
+				],
 				[
 					"type"=>"spotlight",
 					"text1"=>tr("Spotlight Apps"),
@@ -652,14 +664,6 @@ function get_content() {
 					"sortby"=> "RecommendedDate",
 					"sortdir"=> "Down",
 					"class"=>"spotlightHome"
-				],
-				[
-					"type"=>"onlynew",
-					"text1"=>tr("Recently Added"),
-					"text2"=>tr("Check out these newly added applications from our awesome community"),
-					"cat"=>"All",
-					"sortby"=>"FirstSeen",
-					"sortdir"=>"Down"
 				],
 				[
 					"type"=>"trending",
@@ -707,7 +711,8 @@ function get_content() {
 					if ( $type['cat'] )
 						$o['display'] .= "<span class='homeMore' data-des='{$type['text1']}' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
 					$o['display'] .= "</div>";
-					$o['display'] .= "<div class='ca_homeTemplates'>".my_display_apps($display,"1")."</div>";
+					$homeClass = $type['type'] == "spotlight" ? "caHomeSpotlight" : "";
+					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);$('.ca_holder').addClass('mobileHolderFix');";
 
 				} else {
@@ -1878,6 +1883,12 @@ function defaultSortOrder() {
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
 	postReturn(['status'=>"ok"]);
+}
+
+function onStartupScreen() {
+	global $caPaths;
+	
+	postReturn(['status'=>is_file($caPaths['startupDisplayed'])]);
 }
 #######################################
 # Logs Javascript errors being caught #
