@@ -54,7 +54,7 @@ switch ($theme) {
 		$swalBackground = "white";
 		$tooltipsterContent = "#101010";
 		$chartGrid = "#dddddd";
-		
+
 		break;
 	case 'gray':
 		$swalBackground = "black";
@@ -82,7 +82,7 @@ $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
 if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
 	$killCookie = "true";
 }
-	
+
 file_put_contents("/tmp/blah",print_r($_COOKIE,true));
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
@@ -154,13 +154,11 @@ $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
 		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
 	}
-});
 
-$(function(){
 	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
 		$.cookie("ca_languageSwitch","");
 	}
-	
+
 	<? if ( $cfg['debugging'] == "yes" ):?>
 		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
 	<?endif;?>
@@ -196,7 +194,7 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-	$("body").append("<div class='sidebar'><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+	$("body").append("<div class='sidebar'><div class='sidebarClose'></div><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -206,8 +204,11 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
-  context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
+	context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
 
+	$(".sidebarClose").on("click",function(e) {
+		closeSidebar();
+	});
 
 	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
 		if (e.which === 13) {
@@ -216,7 +217,7 @@ $(function(){
 			doSearch();
 		}
 	});
-	
+
 	$('body').keydown(function(e) {
 		if (e.which === 27) {
 			closeSidebar();
@@ -226,20 +227,13 @@ $(function(){
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 
-	$(".mainArea").on("click", function() {
-		if ( popupVisible() ) {
-			$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide")
-		}
-	});
-
 	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
-	});		
+	});
 
 	$('.mainArea').on("click",".ca_favouriteRepo",function() {
-		if ( popupVisible(this) ) return;
 		$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
 		$(".ca_holderFav").removeClass("ca_holderFav");
 		$(this).removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
@@ -257,9 +251,8 @@ $(function(){
 			setFavRepoSearch();
 		});
 	});
-	
+
 	$('.mainArea').on("click",".ca_href",function() {
-		if ( popupVisible() ) return;
 		var href = $(this).attr("data-href");
 		var target = $(this).attr("data-target");
 		if ( ! target ) target = "_blank";
@@ -284,7 +277,6 @@ $(function(){
 	});
 
 	$('.favouriteRepo').on("click",function() {
-		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") )
 			return;
 		var repo = $(this).attr("data-repository");
@@ -293,7 +285,6 @@ $(function(){
 	});
 
 	$('body').on("click",".xmlInstall",function() {
-		if ( popupVisible(this) ) return;
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
 
@@ -304,16 +295,13 @@ $(function(){
 			}
 		});
 	});
-	
+
 	$('body').on("click",".displayTags",function() {
-		if ( popupVisible(this) ) return;
 		var id = $(this).data("id");
 		displayTags(id);
 	});
-	
+
 	$('body').on("click",".pluginInstall",function() {
-		if ( !$(this).hasClass("appIconsPopUp") && popupVisible(this) ) return;
-		
 		var plugin = $(this).data("url");
 		var type = $(this).data("update") ? true : false;
 		installPlugin(plugin,type);
@@ -321,7 +309,6 @@ $(function(){
 
 
 	$("body").on("click",".uninstallApp",function() {
-		if ( popupVisible(this) ) return;
 		var type = $(this).data("type");
 		var name = $(this).data("name");
 		var app = $(this).data("app");
@@ -334,24 +321,20 @@ $(function(){
 				break;
 		}
 	});
-				
+
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp", function() {
 		context.destroy("#supportPopup");
 		context.destroy("#actionsPopup");
-		if ( !$(this).hasClass("repoPopup") && popupVisible() ) {
-			closeSidebar();
-			return;
-		}
-		if ( ! popupVisible() ) {
+		if ( ! $(".sidebar").is(":visible") ) {
 			$.cookie("sidebarAppName","");
 			$.cookie("sidebarAppPath","");
 			var fromCard = true;
 		}
-		
+
 		$("#sidenavContent").html("");
 		var repository = $(this).data("repository");
 		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-
+		$(".sidebar").fadeIn();
 		$("body").css("overflow","hidden");
 		post({action:'getRepoDescription',repository:repository},function(data) {
 			$("#sidenavContent").html(data.description);
@@ -359,15 +342,11 @@ $(function(){
 			if (fromCard) {
 				$(".popUpBack").hide();
 			}
-		});		
+		});
 	});
-	
-		
+
+
 	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
-		if ( popupVisible() ) {
-			closeSidebar();
-			return;
-		}
 		if ( $(".dropdown-menu").is(":visible") ) {
 			$(".dropdown-menu").hide();
 			return;
@@ -378,13 +357,12 @@ $(function(){
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
 		appname = stripTags(appname);
-		
+
 		showSidebarApp(apppath,appname);
 
 	});
-	
+
 	$('.menuItems').on("click",'.categoryMenu',function() {
-		if ( popupVisible() ) return;
 		var menu = this;
 		if ( $(menu).hasClass("caMenuDisabled") )
 			return;
@@ -402,7 +380,7 @@ $(function(){
 		scrollToTop();
 		changeCategory(menu,false);
 	});
-	
+
 	$('.menuItems').on("mouseover",".caMenuItem",function() {
 		if ( $(this).hasClass("caMenuEnabled") ) {
 			$(this).addClass("hoverMenu");
@@ -412,7 +390,7 @@ $(function(){
 	$('.menuItems').on("mouseleave",".caMenuItem",function() {
 		$(this).removeClass("hoverMenu");
 	});
-	
+
 	$(".sidebar").on("click",".chartMenu",function() {
 		if ($(this).hasClass("selectedMenu") )
 			return;
@@ -428,9 +406,8 @@ $(function(){
 		var appname = $.cookie("sidebarAppName");
 		showSidebarApp(apppath,appname);
 	});
-	
+
 	$('.menuItems').on("click",".caMenuItem",function() {
-		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
@@ -453,7 +430,6 @@ $(function(){
 	});
 
 	$(".sectionMenu").on("click",function() {
-		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") )
 			return;
 
@@ -491,14 +467,13 @@ $(function(){
 	});
 
 	$(".mainArea").on("click",".homeMore",function() {
-		if ( popupVisible() ) return;
 		var description = $(this).data("des");
 		var category = $(this).data("category");
 
 		var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
 		$('.caMenuItem').removeClass('selectedMenu');
 		$(menuItem).addClass('selectedMenu');
-		
+
 		if ($(this).data("sortby")) {
 			var sortBy = $(this).data("sortby");
 			var sortDir = $(this).data("sortdir");
@@ -514,12 +489,11 @@ $(function(){
 		}
 		$("#CategoryLine").html($(this).data("des"));
 		scrollToTop();
-		//showSortIcons();
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			getContent(false,category,description,false);
 		});
 	});
-	
+
 	$(".debugging").on("click",function() {
 		var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 		var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
@@ -537,16 +511,14 @@ $(function(){
 		}
 	});
 
-	$(".initDockerSearch").click(function()     { if ( popupVisible(this) ) return;initDockerSearch(); });
-	$(".multi_installButton").click(function()  { if ( popupVisible(this) ) return;installMulti(); });
-	$(".multi_installClear").click(function()   { if ( popupVisible(this) ) return;clearMultiInstall(); });
-	$(".multi_deleteButton").click(function()   { if ( popupVisible(this) ) return;deleteMulti(); });
-	$(".multi_installAll").click(function()     { if ( popupVisible(this) ) return;selectAllPrevious(); enableMultiInstall(); });
-	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;hideSortIcons();updateContent(this); });
-	$("#sortIcon").click(function() 						{	if ( popupVisible(this) ) return;	});
-	
+	$(".initDockerSearch").click(function()     { initDockerSearch(); });
+	$(".multi_installButton").click(function()  { installMulti(); });
+	$(".multi_installClear").click(function()   { clearMultiInstall(); });
+	$(".multi_deleteButton").click(function()   { deleteMulti(); });
+	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
+	$(".startupButton").click(function()        { hideSortIcons();updateContent(this); });
+
 	$(".sortIcons").click(function() {
-		if ( popupVisible(this) ) return;
 		$(".sortIcons").removeClass("enabledIcon");
 		$(this).addClass("enabledIcon");
 		data.currentpage = 1;
@@ -566,7 +538,6 @@ $(function(){
 	});
 
 	$('body').on("click",".languageSwitch",function() {
-		if ( popupVisible(this) ) return;
 		CAswitchLanguage($(this).data("language"));
 	});
 
@@ -575,21 +546,18 @@ $(function(){
 	});
 
 	$('body').on("click",".languageRemove",function() {
-		if ( popupVisible(this) ) return;
 		removeLanguage($(this).data("language"));
 	});
 
 	$('body').on("click",".languageUpdate",function() {
-		if ( popupVisible(this) ) return;
 		updateLanguage($(this).data("language"));
 	});
 
 	$("body").on("click",".popUpClose",function() {
 		closeSidebar();
 	});
-	
+
 	$('body').on("click",".deletePrivateApp",function() {
-		if ( popupVisible(this) ) return;
 		var path = $(this).data("path");
 		var name = $(this).data("name");
 		var author = $(this).data("author");
@@ -597,7 +565,6 @@ $(function(){
 	});
 
 	$("body").on("click",".removeApp",function() {
-		if ( popupVisible(this) ) return;
 		var path = $(this).data("path");
 		var name = $(this).data("name");
 		removeApp(path,name);
@@ -797,24 +764,11 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 
 function mySpinner() {
 	$("div.spinner").show();
-
-	swalBackground("transparent");
-	swal({
-		title: "",
-		text: "",
-		allowOutsideClick: false,
-		showConfirmButton: false,
-		showCancelButton: false,
-		animation: false,
-		html: true
-	});
-	swalBackground("transparent"); // Occasional race condition where swal is not initialized at time the initial background change happens
+	$(".spinnerBackground").show();
 }
 
 function myCloseSpinner() {
-	swal.close();
-	$("div.spinner, .sweet-alert").hide();
-	swalBackground("<?=$swalBackground?>");
+	$("div.spinner,.spinnerBackground").hide();
 }
 
 function myCloseAlert() {
@@ -825,8 +779,6 @@ function myCloseAlert() {
 }
 
 function doSearch(button,newSearch) {
-//	hideSortIcons();
-
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
 	}
@@ -834,7 +786,6 @@ function doSearch(button,newSearch) {
 
 	data.docker = "";
 	data.section = "AppStore";
-//	filter = filter.replace(/[^a-z0-9-]/gi,' ')
 	filter = $.trim(filter);
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
@@ -924,10 +875,10 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		}
 
 		if ( (category == "New") || (category == "All") ) { category = ""; }
- 		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
-		var el_tr = $.find(".sortIcons[data-sortby='trending']"); 
+		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
+		var el_tr = $.find(".sortIcons[data-sortby='trending']");
 
- 		if ( category == "repos" ) {
+		if ( category == "repos" ) {
 			$(el_dl).html("<?=tr("Number Of Apps")?>");
 			$(el_tr).html("<?=tr("Average Trend")?>");
 		} else {
@@ -980,7 +931,7 @@ function initDockerSearch() {
 	var filter = $('#searchBox').val();
 	filter = filter.replace(" ","%20");
 	window.open("https://hub.docker.com/search?q="+filter+"&type=image","_blank");
-/* 	
+/*
 	dockerSearch(1);
 	data.docker = "searching docker";
 	data.section = "";
@@ -1027,13 +978,6 @@ function clearSearchBox() {
 	}
 }
 
-function popupVisible(el) {
-	var visiblepx = $(".sidenav").css("width");
-	var visible = visiblepx.replace(/[^0-9]/g,'');
-	closeSidebar(true,visible > 0);
-	return visible > 0;
-}
-
 function closeSidebar(cookie=false,visible=false) {
 	if ( ! cookie ) {
 		$.cookie("sidebarAppPath","");
@@ -1041,9 +985,9 @@ function closeSidebar(cookie=false,visible=false) {
 	}
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("#sidenavContent").html("");
-	$(".back_to_top").removeClass("back_to_top_hide");	
+	$(".back_to_top").removeClass("back_to_top_hide");
 	$("body").css("overflow","auto");
-	$(".mainArea,.menuItems").removeClass("sidebarMainDim");
+	$(".sidebar").fadeOut();
 
 	// re-do the context menus after the sidebar is closed that were destroyed when the sidebar opened
 	if ( visible ) {
@@ -1078,7 +1022,7 @@ function OpenSidebarAndRefreshDisplay() {
 			var apppath = $.cookie("sidebarAppPath");
 			var appname = $.cookie("sidebarAppName");
 			appname = stripTags(appname);
-				
+
 			refreshDisplay();
 			if ( apppath ) {
 				showSidebarApp(apppath,appname);
@@ -1235,6 +1179,7 @@ function uninstallDocker(application,humanName) {
 		if ( isConfirm ) {
 			myAlert("",sprintf(tr("Uninstalling %s"),humanName));
 			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
+				myCloseAlert();
 				enableSearch();
 				previousApps(true,false,data.previousAppsSection);
 			});
@@ -1523,10 +1468,10 @@ function updateDisplay(data) {
 		var ID = $(this).attr("id");
 		context.destroy("#"+ID);
 	});
-	
+
 	$("#templates_content").html(data);
 	setToolTip();
- 	enableSearch();
+	enableSearch();
 	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
@@ -1547,7 +1492,7 @@ function updateDisplay(data) {
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
-		
+
 	saveState();
 }
 
@@ -1726,7 +1671,7 @@ function post(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					
+
 					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!");
 				}
@@ -1899,8 +1844,8 @@ function updateLanguage(language) {
 function postUpdateLanguage() {
 	var languageUpdate = $.cookie("updateLanguage");
 	var currentLanguage = "<?=$_SESSION['locale']?>";
-	
-	if (languageUpdate == currentLanguage) 
+
+	if (languageUpdate == currentLanguage)
 		window.location.reload();
 	else {
 		var apppath = $.cookie("sidebarAppPath");
@@ -1918,7 +1863,7 @@ function removeLanguage(language) {
 function postLanguageRefresh() {
 	var apppath = $.cookie("sidebarAppPath");
 	var appname = $.cookie("sidebarAppName");
-	showSidebarApp(apppath,appname);	
+	showSidebarApp(apppath,appname);
 	refreshDisplay();
 }
 
@@ -1926,7 +1871,7 @@ function updateDocker(container) {
 	closeSidebar();
 	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 	openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
-}	
+}
 
 function setToolTipForFavourite() {
 	$(".ca_fav").each(function(){
@@ -1944,7 +1889,7 @@ function setFavourite(button) {
 	$(button).toggleClass("fav nonfav");
 	var repo = $(button).data("repository");
 	clearTimeout(repoBannerTimer);
-	
+
 	post({action:'toggleFavourite',repository:repo},function(data) {
 		if ( repoBanner !== false )
 			removeBannerWarning(repoBanner);
@@ -1960,7 +1905,7 @@ function setFavourite(button) {
 			repoBanner = false;
 		},5000);
 		$(".favCardBackground").each(function() {
-			if ( $(this).data("repository") == data.fav ) 
+			if ( $(this).data("repository") == data.fav )
 				$(this).show();
 			else
 				$(this).hide();
@@ -1969,41 +1914,16 @@ function setFavourite(button) {
 	});
 }
 
-
-/* 	$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
-	var repo = $(button).data("repository");
-	var apps = $.find('.ca_non_favouriteRepo[data-repository="'+repo+'"]');
-	$(apps).removeClass("ca_non_favouriteRepo").addClass("ca_favouriteRepo");
-	var apps = $.find('.ca_holder[data-repository="'+repo+'"]');
-	$(".ca_holder").removeClass("ca_holderFav");
-	$(apps).addClass("ca_holderFav");
-	setToolTipForFavourite();
-	clearTimeout(repoBannerTimer);
-	post({action:'toggleFavourite',repository:repo},function(data) {
-		if ( repoBanner !== false ) {
-			removeBannerWarning(repoBanner);
-		}
-		var bannerMessage = repo.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
-		repoBanner = addBannerWarning(sprintf("%s set as favourite repository",bannerMessage),false,true);
-		repoBannerTimer = setTimeout(function(){
-			removeBannerWarning(repoBanner);
-			repoBanner = false;
-		},5000);
-		setFavRepoSearch();
-	});
-	setFavRepoSearch(); */
-
-
 function popupInstallXML(xml,type) {
 	saveState();
 	post({action:'createXML',xml:xml,type:type},function(result){
 		if ( result.status == "ok" ) {
 			if (type == "second")
 				type = "default";
-			
+
 			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
-	});	
+	});
 }
 
 function popUpChart(descData) {
@@ -2129,7 +2049,7 @@ function popUpChart(descData) {
 					xAxes: [{
 						gridLines: {
 							color: '<?=$chartGrid?>'
-						},						
+						},
 						ticks: {
 							fontSize: fontSize,
 							fontColor: '<?=$tooltipsterContent?>'
@@ -2172,7 +2092,7 @@ function popUpChart(descData) {
 					yAxes: [{
 						gridLines: {
 							color: '<?=$chartGrid?>'
-						},						
+						},
 						ticks: {
 							callback: function(label,index,labels) {
 								return label.toLocaleString();
@@ -2196,22 +2116,12 @@ function popUpChart(descData) {
 }
 
 function showSidebarApp(apppath,appname) {
-	// destroy the app context menus so that clicking on them doesn't open a menu
-	$(".supportButtonCardContext").each(function() {
-		var ID = $(this).attr("id");
-		context.destroy("#"+ID);
-	});	
-	
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
 	$("#sidenavContent").html("");
-//	$(".sidenav").css("height",0);
-/* 	$(".infoButton,.supportButton").addClass("no_hover");
-	$(".caMenuItem,.mainArea").addClass("no_hoverMenu"); */
+	$(".sidebar").fadeIn();
 	$(".back_to_top").addClass("back_to_top_hide");
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-//	$(".sidenav").css("height",$(window).innerHeight()-50);
-	$(".mainArea,.menuItems").addClass("sidebarMainDim");
 	setTimeout(function() {
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
@@ -2255,7 +2165,7 @@ function checkSortOrder() {
 		});
 	}
 }
-			
+
 </script>
 
 <?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>

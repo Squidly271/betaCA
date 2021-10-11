@@ -256,7 +256,7 @@ function DownloadApplicationFeed() {
 			$des = str_replace("\n","  ",$des);
 			$des = html_entity_decode($des);
 		}
-		
+
 /* 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
  */
 /* 		if ( $o['IconHTTPS'] )
@@ -510,7 +510,7 @@ function appOfDay($file) {
 				}
 			}
 			break;
-			
+
 	}
 	return $appOfDay ?: array();
 }
@@ -528,7 +528,7 @@ function checkRandomApp($test,$info=array(),$random=false) {
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
 	if ( $random ) return ! appInstalled($test,$info);
-	
+
 	return true;
 }
 ##############################################################
@@ -700,7 +700,7 @@ function get_content() {
 					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
 					$spot = $file[$appsOfDay[$i]];
 					$spot['class'] = $type['class'];
-					
+
 					$displayApplications['community'][] = $spot;
 					$display[] = $spot;
 				}
@@ -738,7 +738,7 @@ function get_content() {
 				}
 			}
 			@unlink($caPaths['community-templates-allSearchResults']);
-			@unlink($caPaths['community-templates-catSearchResults']);			
+			@unlink($caPaths['community-templates-catSearchResults']);
 			writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 			postReturn($o);
 			return;
@@ -788,7 +788,7 @@ function get_content() {
 		}
 		if ( $category == "/spotlight:/i" )
 			$template['class'] = "spotlightHome";
-		
+
 		if ( $displayPrivates && ! $template['Private'] ) continue;
 
 		if ($filter) {
@@ -1142,7 +1142,7 @@ function previous_apps() {
 							if ($o['testrepo']) continue;
 							$displayed[] = $o;
 						}
-					}					
+					}
 				}
 			}
 		} else {
@@ -1190,7 +1190,7 @@ function previous_apps() {
 								break;
 							}
 						}
-					
+
 						if ( ! $o['Blacklist'] )
 							$displayed[] = $o;
 					}
@@ -1804,9 +1804,9 @@ function toggleFavourite() {
 	global $caPaths, $caSettings;
 
 	$repository = html_entity_decode(getPost("repository",""),ENT_QUOTES);
-	if ( $caSettings['favourite'] == $repository ) 
+	if ( $caSettings['favourite'] == $repository )
 		$repository = "";
-	
+
 	$caSettings['favourite'] = $repository;
 	write_ini_file($caPaths['pluginSettings'],$caSettings);
 	postReturn(['status'=>"ok",'fav'=>$repository]);
@@ -1887,7 +1887,7 @@ function defaultSortOrder() {
 
 function onStartupScreen() {
 	global $caPaths;
-	
+
 	postReturn(['status'=>is_file($caPaths['startupDisplayed'])]);
 }
 #######################################
