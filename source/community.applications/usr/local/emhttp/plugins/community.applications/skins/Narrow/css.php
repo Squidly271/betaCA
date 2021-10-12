@@ -135,6 +135,9 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appLanguage::before{font-family:'Unraid';content:'\e987';}
 .appDriver{float:right;font-size:1.8rem;opacity:0.7;margin-left:1rem;}
 .appDriver::before{content:"\f085";font-family:fontAwesome;}
+.appsPerPage{float:right;}
+.appsPerPage::before{content:"\f009";font-family:fontAwesome;}
+.appsPerPage:hover{color:<?=$unRaid66color?>;}
 .appPlugin{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appPlugin::before{font-family:'Unraid';content:'\e986';}
 .appRepository{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
@@ -147,13 +150,12 @@ body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing
 body{scrollbar-gutter:stable;}
 .caChangeLog {cursor:pointer;}
 .caChart {display:none;border:none;}
-.caHelpIconSpacing {display:inline-block;width:7rem;height:3rem;}
+. {display:inline-block;width:7rem;height:3rem;}
 .caHighlight {color:#d27676;}
 .caHomeSpotlight{height:29rem !important;}
 .caMenuDisabled {cursor:default;opacity:0.5;}
 .caMenuEnabled {cursor:pointer;opacity:1;}
-.ca_applicationInfo {display:inline-block;position:absolute;width:25rem;}
-.ca_applicationName {font-size:2rem;max-height:6rem;overflow:hidden;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;overflow-wrap:anywhere;}
+.ca_applicationName {font-size:2rem;max-height:6rem;overflow:hidden;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_appPopup {cursor:pointer;}
 div.ca_appPopup{cursor:pointer;}
@@ -171,7 +173,6 @@ a.ca_categories {text-decoration:none;color:inherit;}
 .ca_discord::before{content:"\e988";font-family:Unraid;}
 .ca_discord_popup::before{content:"\e988";font-family:Unraid;font-size:2.2rem;vertical-align:middle;}
 img.ca_displayIcon{height:8rem;width:8rem;}
-.ca_donate {position:relative;margin-left:18rem;}
 .ca_fa-delete {color:#882626;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-0.25rem;cursor:pointer;float:right;}
@@ -226,9 +227,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_repoSearch {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .ca_repoSearch::after {content:"\f002";font-family:fontAwesome;}
 .ca_repoSearchPopup {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
-.ca_repository::before {content:"\f2be";font-family:fontAwesome;}
 .ca_serverWarning {color:#cecc31}
-.ca_showRepo::before {content:"\f002";font-family:fontAwesome;}
 .ca_stat {color:coral; font-size:1.5rem;line-height:1.7rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
@@ -298,9 +297,6 @@ input[type=button][disabled]{background:none;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .myReadmoreButton {color:#6363ca;}
 .notice.shift {margin-top:0px;}
-.no_hoverMenu:hover{color:initial !important; cursor:default !important;}
-.no_hover:hover{important;background:<?=$donateBackground?> !important; pointer-events:none;cursor:default !important}
-.no_hover a:hover{background:<?=$donateBackground?> !important;pointer-events:none;cursor:default !important}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
@@ -339,7 +335,7 @@ img.popupIcon {width:10rem;height:10rem;padding:0.3rem;margin-top:2.2rem;border-
 .popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
-.popupName{display:block;font-size:3rem;line-height:4rem;font-weight:bold;}
+.popupName{display:block;font-size:3rem;line-height:4rem;font-weight:bold;max-height:4rem;overflow:hidden;}
 .popupProfile {margin-right:1rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .popupProfile:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 .popupRepoDescription{font-size:1.5rem;margin-bottom:1rem;}
@@ -363,7 +359,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .repoRight{text-align:right;}
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
-.searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative; top:-6px;padding-top:1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;vertical-align:-50%;}
+.searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative;padding-top:1.1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;}
 #searchBox{margin-left:0rem;margin-right:0;margin-bottom:1rem;top:-.6rem;border:none;padding:0.6rem;background:<?=$templateHoverBackground?>;padding-right:0.5rem;}
 #searchButton:hover{color:<?=$unRaid66color?>;}
 .sidebar{z-index:998;position:fixed;top:0;right:0;bottom:1.6rem;margin-bottom:10px;width:100%;height:100vh;display:none;background-color:<?=$sidebarCloseBackground?>;}
@@ -412,8 +408,6 @@ table {background-color:transparent;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
 .unpinned:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 .unraidIcon {margin-top:4rem;}
-.warning-red {color:#882626;}
-.warning-yellow {color:#FF8C2F;}
 #warningNotAccepted {display:none;}
 
 .awesomplete [hidden] {display: none;}

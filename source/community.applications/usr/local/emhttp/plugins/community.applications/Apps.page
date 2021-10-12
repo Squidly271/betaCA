@@ -291,6 +291,9 @@ $(function(){
 		saveState();
 		post({action:'createXML',xml:xml,type:type},function(result){
 			if ( result.status == "ok" ) {
+				if (type == "second")
+					type = "default"
+				
 				openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 			}
 		});
@@ -783,10 +786,13 @@ function doSearch(button,newSearch) {
 		$('#searchBox').val(newSearch);
 	}
 	var filter = $('#searchBox').val();
+	filter = $.trim(filter);
+	if ( ! filter )
+		return;
 
 	data.docker = "";
 	data.section = "AppStore";
-	filter = $.trim(filter);
+
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
 
@@ -983,27 +989,16 @@ function closeSidebar(cookie=false,visible=false) {
 		$.cookie("sidebarAppPath","");
 		$.cookie("sidebarAppName","");
 	}
+	context.destroy("#supportPopup");
+	context.destroy("#actionsPopup");
+	
+
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("#sidenavContent").html("");
 	$(".back_to_top").removeClass("back_to_top_hide");
 	$("body").css("overflow","auto");
 	$(".sidebar").fadeOut();
 
-	// re-do the context menus after the sidebar is closed that were destroyed when the sidebar opened
-	if ( visible ) {
-		setTimeout(function() {
-			context.init();
-			$('.supportButtonCardContext').each(function() {
-				var supportContext = $(this).data("context");
-				var ID = $(this).attr("id");
-				var opts = [];
-				supportContext.forEach(function(item,index){
-					opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
-				});
-				context.attach('#'+ID, opts);
-			});
-		},500);
-	}
 }
 
 function installPlugin(pluginURL,update=false) {
@@ -1088,6 +1083,9 @@ function removeApp(application, humanName) {
 			enableMultiInstall(); // update the count
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
+				$(".caMenuItem").removeClass("selectedMenu");
+				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+				$(menuItem).addClass("selectedMenu");
 				previousApps(false,true,data.previousAppsSection);
 			});
 		} else {
@@ -1181,6 +1179,10 @@ function uninstallDocker(application,humanName) {
 			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
 				myCloseAlert();
 				enableSearch();
+				$(".caMenuItem").removeClass("selectedMenu");
+				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+				$(menuItem).addClass("selectedMenu");
+
 				previousApps(true,false,data.previousAppsSection);
 			});
 		} else {
@@ -1490,6 +1492,17 @@ function updateDisplay(data) {
 		while (isOverflown(this)) {
 			description = description.slice(0,-5);
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
+		}
+	});
+	$(".ca_applicationName").each(function() {
+		while (isOverflown(this)) {
+			var existingSize = $(this).css("font-size");
+			var size = existingSize.replace("px","");
+			var newSize = size - 1;
+			if (newSize == 0)
+				return false;
+			
+			$(this).css("font-size",newSize+"px");
 		}
 	});
 
@@ -1918,8 +1931,9 @@ function popupInstallXML(xml,type) {
 	saveState();
 	post({action:'createXML',xml:xml,type:type},function(result){
 		if ( result.status == "ok" ) {
-			if (type == "second")
+			if (type == "second") {
 				type = "default";
+			}
 
 			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
@@ -2147,6 +2161,17 @@ function showSidebarApp(apppath,appname) {
 				});
 				context.attach("#actionsPopup",opts);
 			}
+			$(".popupName").each(function() {
+				while (isOverflown(this)) {
+					var existingSize = $(this).css("font-size");
+					var size = existingSize.replace("px","");
+					var newSize = size - 1;
+					if (newSize == 0)
+						return false;
+
+					$(this).css("font-size",newSize+"px");
+				}
+			});
 		})
 	},500);
 }

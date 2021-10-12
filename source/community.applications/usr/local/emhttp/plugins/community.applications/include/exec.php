@@ -809,7 +809,7 @@ function get_content() {
 					$searchResults['extraHit'][] = $template;
 				else
 					$searchResults['nameHit'][] = $template;
-			} elseif ( filterMatch($filter,array($template['Author'],$template['CardDescription'],$template['translatedCategories'])) ) {
+			} elseif ( filterMatch($filter,array($template['Author'],$template['Overview'],$template['translatedCategories'])) ) {
 				if ( $template['RepoName'] == $caSettings['favourite'] ) {
 					$searchResults['nameHit'][] = $template;
 				} else {

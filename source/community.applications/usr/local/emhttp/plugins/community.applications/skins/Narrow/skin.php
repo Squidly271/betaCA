@@ -63,7 +63,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 
 
-	$iconClass = "displayIcon";
 
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 
@@ -87,9 +86,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
 			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
 
-			$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
+/* 			$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
 			$template['display_repoSearch'] = "<span class='appIcons ca_tooltip ca_repoSearch' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='".tr("Search for apps in repository")."'></span>";
-			$ct .= displayCard($template);
+	 */		$ct .= displayCard($template);
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		} else {
@@ -102,8 +101,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
 
-			if ( ! $Plugin && ! $Language )
-				$template['DockerInfo'] = $info[$template['Name']];
+/* 			if ( ! $Plugin && ! $Language )
+				$template['DockerInfo'] = $info[$template['Name']]; */
 
 	# Entries created.  Now display it
 			$ct .= displayCard($template);
@@ -497,106 +496,6 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 
-/* 	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
-	$templateDescription .= "<a class='popUpLink ca_repoSearchPopUp' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ";
-	$templateDescription .= str_ireplace("Repository","",$template['RepoName']).tr("Repository")."</a>";
-	if ( ($template['Repo'] == str_replace("*","'",$caSettings['favourite'])) && $caSettings['favourite'] )
-		$templateDescription .= "&nbsp;<span class='ca_favourite' title='".tr("Favourite Repository")."'></span>";
-
-	$templateDescription .= "</td></tr>";
-	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><span class='modComment'>Private Repository</span></td></tr>" : "";
-	$templateDescription .= ( $caSettings['dev'] == "yes"  && $templateURL) ? "<tr><td></td><td><a class='popUpLink' href='$templateURL' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
-	if ( $template['Category'] ) {
-		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
-		$templateDescription .= "</td></tr>";
-	}
-	if ( $template['Language'] ) {
-		$templateDescription .= "<tr><td>".tr("Language").":</td><td>{$template['Language']}";
-		if ( $template['LanguageLocal'] )
-			$templateDescription .= " - {$template['LanguageLocal']}";
-		$templateDescription .= "</td></tr>";
-		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>$countryCode</td></tr>";
-		if ( ! $countryCode || $countryCode == "en_US" )
-			$templateDescription .= "<tr><td></td><td>&nbsp;</td></tr>";
-	}
-	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) )
-		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
-
-	$templateDescription .= $template['stars'] ? "<tr><td nowrap>".tr("DockerHub Stars:")."</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
-
-	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" && $countryCode != "en_US")
-		$templateDescription .= "<tr><td>".tr("Added to CA:")."</td><td>".tr(date("F",$template['FirstSeen']),0).date(" j, Y",$template['FirstSeen'])."</td></tr>";
-
-	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
-	if ( $template['Date'] && $template['Plugin'] ) {
-		$niceDate = tr(date("F",$template['Date']),0).date(" j, Y",$template['Date']);
-		$templateDescription .= "<tr><td nowrap>".tr("Date Updated:")."</td><td>$niceDate</td></tr>";
-	}
-	if ( $template['Plugin'] ) {
-		$template['pluginVersion'] = $template['pluginVersion'] ?: tr("unknown");
-		$templateDescription .= "<tr><td nowrap>".tr("Current Version:")."</td><td>{$template['pluginVersion']}</td></tr>";
-	}
-	if ($template['Language'] && $template['LanguageURL']) {
-		$templateDescription .= "<tr><td nowrap>".tr("Current Version:")."</td><td>{$template['Version']}</td></tr>";
-		if ( is_file("{$caPaths['installedLanguages']}/dynamix.$countryCode.xml") ) {
-			$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/language Version /var/log/plugins/lang-$countryCode.xml");
-			$templateDescription .= "<tr><td nowrap>".tr("Installed Version:")."</td><td>$installedVersion</td></tr>";
-		}
-	}
- */
-/* 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
-	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>Unraid v".$template['MinVer']."</td></tr>" : "";
-
-	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
-	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>".tr("Max OS:")."</td><td>Unraid v".$template['MaxVer']."</td></tr>" : "";
-
-	$downloads = getDownloads($template['downloads']);
-
-	$templateDescription .= $template['Licence'] ? "<tr><td>".tr("Licence:")."</td><td>".$template['Licence']."</td></tr>" : "";
-	if ( $template['trending'] ) {
-		$templateDescription .= "<tr><td>".tr("30 Day Trend:")."</td><td>".sprintf(tr("Ranked #%s"),$trendRank);
-		if (is_array($template['trends']) && (count($template['trends']) > 1) ){
-			$templateDescription .= "  ".sprintf(tr("Trending %s"), (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>");
-		}
-		$templateDescription .= "<tr><td></td><td>".sprintf(tr("(As of %s)"),tr(date("F",$template['LastUpdateScan']),0).date(" j, Y  g:i a",$template['LastUpdateScan']),0)."</td></tr>";
-		$templateDescription .= "</td></tr>";
-	}
-	$templateDescription .= "</table>";
-
-	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
-	if ($template['Blacklist'])
-		$templateDescription .= tr("This application / template has been blacklisted")."<br>";
-
-	if ($template['Deprecated'])
-		$templateDescription .= tr("This application / template has been deprecated")."<br>";
-
-	if ( !$template['Compatible'] )
-		$templateDescription .= tr("This application is not compatible with your version of Unraid")."<br>";
-
-	$templateDescription .= "</span></div>";
-	$templateDescription .= "<div class='ca_hr'></div>";
-	if ( ! $Displayed )
-		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available")."</font></div>";
-
-
-	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold modComment'>".tr("Moderator Comments:")."</span> ".$template['ModeratorComment'] : "";
-	$templateDescription .= "</p><br><div class='ca_center'>";
-
-
-/* 	$templateDescription .= "</div>";
-	if ($template['Plugin']) {
-		$dupeList = readJsonFile($caPaths['pluginDupes']);
-		if ( $dupeList[basename($template['Repository'])] == 1 ){
-			$allTemplates = readJsonFile($caPaths['community-templates-info']);
-			foreach ($allTemplates as $testTemplate) {
-				if ($testTemplate['Repository'] == $template['Repository']) continue;
-
-				if ($testTemplate['Plugin'] && (basename($testTemplate['Repository']) == basename($template['Repository'])))
-					$duplicated .= $testTemplate['Author']." - ".$testTemplate['Name'];
-			}
-			$templateDescription .= "<br>".sprintf(tr("This plugin has a duplicated name from another plugin %s.  This will impact your ability to install both plugins simultaneously"),$duplicated)."<br>";
-		}
-	} */
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		if ( $template['downloadtrend'] ) {
 			$templateDescription .= "<div><canvas id='trendChart{$template['ID']}' class='caChart' height=1 width=3></canvas></div>";
@@ -1022,12 +921,16 @@ function displayPopup($template) {
 			</div>
 		";
 	}
+	$appType = $Plugin ? tr("Plugin") : tr("Docker");
+	$appType = $Language ? tr("Language") : $appType;
+	
 	$card .= "
 		<div>
 		<div class='popupInfoSection'>
 			<div class='popupInfoLeft'>
 			<div class='rightTitle'>".tr("Details")."</div>
 			<table style='display:initial;'>
+				<tr><td class='popupTableLeft'>".tr("Application Type")."</td><td class='popupTableRight'>$appType</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
 	";
