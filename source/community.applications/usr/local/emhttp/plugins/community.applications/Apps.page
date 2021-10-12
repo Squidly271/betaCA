@@ -378,6 +378,9 @@ $(function(){
 			}
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
+		if ( ! data.searchFlag ) {
+			$("#searchBox").val("");
+		}
 		checkSortOrder();
 		showSortIcons();
 		scrollToTop();
@@ -787,8 +790,10 @@ function doSearch(button,newSearch) {
 	}
 	var filter = $('#searchBox').val();
 	filter = $.trim(filter);
-	if ( ! filter )
+	if ( ! filter ) {
+		$("#searchBox").val(filter);
 		return;
+	}
 
 	data.docker = "";
 	data.section = "AppStore";
@@ -992,7 +997,6 @@ function closeSidebar(cookie=false,visible=false) {
 	context.destroy("#supportPopup");
 	context.destroy("#actionsPopup");
 	
-
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("#sidenavContent").html("");
 	$(".back_to_top").removeClass("back_to_top_hide");
