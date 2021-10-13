@@ -1215,6 +1215,16 @@ function previous_apps() {
 				}
 			}
 		}
+		$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
+		foreach ($installedLanguages as $language) {
+			$index = searchArray($file,"LanguagePack",$language);
+			if ( $index !== false ) {
+				$tmpL = $file[$index];
+				$tmpL['Uninstall'] = true;
+				$displayed[] = $tmpL;
+			}
+		}
+			
 	} else {
 		if ( ! $filter || $filter == "plugins" ) {
 			$all_plugs = array_merge(glob("/boot/config/plugins-error/*.plg"),glob("/boot/config/plugins-removed/*.plg"));

@@ -29,10 +29,22 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
 	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
 
-	$info = getRunningContainers();
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
 
+	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+		$caSettings['dockerRunning'] = "true";
+		$DockerTemplates = new DockerTemplates();
+		$DockerClient = new DockerClient();
+		$info = $DockerTemplates->getAllInfo();
+		$dockerRunning = $DockerClient->getDockerContainers();
+		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+	} else {
+		unset($caSettings['dockerRunning']);
+		$info = array();
+		$dockerRunning = array();
+		$dockerUpdateStatus = array();
+	}
 
 	if ( ! $selectedApps )
 		$selectedApps = array();
@@ -100,10 +112,27 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Discord'] = $repositories[$template['RepoName']]['Discord'];
 
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
+			
+			if ( ! $template['Plugin'] ) {
+				$tmpRepo = $template['Repository'];
+				if ( ! strpos($tmpRepo,"/") ) {
+					$tmpRepo = "library/$tmpRepo";
+				}
+				foreach ($dockerRunning as $testDocker) {
+					if ( $tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image'] && $template['Name'] == $testDocker['Name']  && ! $template['Uninstall']) {
+						$template['Installed'] = true;
+						break;
+					}
+				}
+			} else {
+				$pluginName = basename($template['PluginURL']);
+				$template['Installed'] = checkInstalledPlugin($template) && ! $template['Uninstall'];
 
-/* 			if ( ! $Plugin && ! $Language )
-				$template['DockerInfo'] = $info[$template['Name']]; */
-
+			}
+			
+			if ( $template['Language'] ) {
+				$template['Installed'] = is_dir("{$caPaths['languageInstalled']}{$template['LanguagePack']}") && ! $template['Uninstall'];
+			}
 	# Entries created.  Now display it
 			$ct .= displayCard($template);
 			$count++;
@@ -305,18 +334,11 @@ function getPopupDescriptionSkin($appNumber) {
 			$template['Repository'] = "library/{$template['Repository']}";
 		}
 		foreach ($dockerRunning as $testDocker) {
-			if ( $template['Repository'] == $testDocker['Image'] || "{$template['Repository']}:latest" == $testDocker['Image'] ) {
+			if ( ($template['Repository'] == $testDocker['Image'] || "{$template['Repository']}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
 				$selected = true;
 				$name = $testDocker['Name'];
 				break;
 			}
-/* 			$templateRepo = explode(":",$template['Repository']);
-			$testRepo = explode(":",$testDocker['Image']);
-			if ($templateRepo[0] == $testRepo[0]) {
-				$selected = true;
-				$name = $testDocker['Name'];
-				break;
-			} */
 		}
 	} else
 		$pluginName = basename($template['PluginURL']);
@@ -674,6 +696,7 @@ function getRepoDescriptionSkin($repository) {
 ###########################
 function displayCard($template) {
 	global $caSettings;
+	
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
@@ -816,7 +839,11 @@ function displayCard($template) {
 		";
 	}
 	$card .= "</div>";
-	if ( $Beta ) {
+	if ( $Installed ) {
+		$card .= "<div class='installedCardBackground'>";
+		$card .= "<div class='installedCardText'>".tr("INSTALLED")."</div>";
+		$card .= "</div>";
+	} else if ( $Beta ) {
 		$card .= "<div class='betaCardBackground'>";
 		$card .= "<div class='betaPopupText'>".tr("BETA")."</div>";
 		$card .= "</div>";
@@ -892,7 +919,7 @@ function displayPopup($template) {
 /* 	if ( ! $Displayed )
 		$ModeratorComment .= "<br>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available");
  */	$ModeratorComment .= $caComment;
-	if ( $Language && $countryCode !== "en_US" ) {
+	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
 

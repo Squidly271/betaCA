@@ -83,7 +83,6 @@ if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
 	$killCookie = "true";
 }
 
-file_put_contents("/tmp/blah",print_r($_COOKIE,true));
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( $cfg['updateCheck'] == "yes" ) {
@@ -1844,14 +1843,12 @@ function CAswitchLanguage(language) {
 }
 
 function installLanguage(languageURL,language) {
-	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"postLanguageRefresh");
 }
 
 function updateLanguage(language) {
-	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
 	$.cookie("updateLanguage",language);
@@ -1873,15 +1870,29 @@ function postUpdateLanguage() {
 }
 function removeLanguage(language) {
 	closeSidebar();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRefresh");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRemove");
 
 }
 
 function postLanguageRefresh() {
+
+	
 	var apppath = $.cookie("sidebarAppPath");
 	var appname = $.cookie("sidebarAppName");
-	showSidebarApp(apppath,appname);
+	if ( apppath ) {
+		showSidebarApp(apppath,appname);
+	}
 	refreshDisplay();
+}
+
+function postLanguageRemove() {
+	var cat = $(".selectedMenu").data("category");
+	if ( cat == "installed_apps" || cat == "inst_plugins" || cat == "inst_docker" ) {
+		
+		postUninstallPlugin();
+		return;
+	}
+	postLanguageRefresh();
 }
 
 function updateDocker(container) {
