@@ -27,15 +27,13 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 }
 
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
-	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
+	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder, $DockerTemplates, $DockerClient;
 
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
-		$DockerTemplates = new DockerTemplates();
-		$DockerClient = new DockerClient();
 		$info = $DockerTemplates->getAllInfo();
 		$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);

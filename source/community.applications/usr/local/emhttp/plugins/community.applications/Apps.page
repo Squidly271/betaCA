@@ -36,6 +36,9 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
 }
 
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) )
+	$writeTest = @file_put_contents($caPaths['dockerWriteTest'],"Oscar");
+	
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
 
@@ -179,6 +182,24 @@ $(function(){
 		});
 		return;
 	<?endif;?>
+	
+	//abort execution if a write to the docker image failed
+	<? if ( $writeTest === false ): ?>
+		$(".mainArea,.menuItems").html("");
+		swal({
+			title: "<?tr("Fatal Docker Image Error")?>",
+			text: "<?tr("Your docker image or folder is either read-only or completely full.  Issues will result because of this.  You should create a new post in the Unraid forums and include your diagnostics")?>",
+			html: true,
+			type: 'error',
+			showCancelButton: false,
+			showConfirmationButton: true,
+			confirmButtonText: "<?tr("OK")?>"
+		}, function (isConfirm) {
+			location.replace("/Main");
+		});
+		return;
+	<?endif;?>
+	
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
