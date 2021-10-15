@@ -839,11 +839,11 @@ function displayCard($template) {
 	$card .= "</div>";
 	if ( $Installed ) {
 		$card .= "<div class='installedCardBackground'>";
-		$card .= "<div class='installedCardText'>".tr("INSTALLED")."</div>";
+		$card .= "<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>";
 		$card .= "</div>";
 	} else if ( $Beta ) {
 		$card .= "<div class='betaCardBackground'>";
-		$card .= "<div class='betaPopupText'>".tr("BETA")."</div>";
+		$card .= "<div class='betaPopupText ca_center'>".tr("BETA")."</div>";
 		$card .= "</div>";
 	} else if ( $RecommendedDate ) {
 		$card .= "<div class='spotlightCardBackground'>";
@@ -1028,7 +1028,7 @@ function displayPopup($template) {
 	if ( $Beta ) {
 		$card .= "
 			<div class='betaPopupBackground'>
-			<div class='betaPopupText'>".tr("BETA")."</div></div>
+			<div class='betaPopupText ca_center'>".tr("BETA")."</div></div>
 		";
 	} elseif ( $RecommendedDate ) {
 		$card .= "

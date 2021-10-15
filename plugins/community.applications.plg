@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.14">
-<!ENTITY md5       "d8f78aa554647e618f1513ac4085c426">
+<!ENTITY version   "2021.10.15">
+<!ENTITY md5       "a1968c8fa303606f7b704dac94cfcf7d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/betaCA">
@@ -33,6 +33,7 @@
 - Added: Identification of apps which are currently installed
 - Fixed: Second instance would show up within Previous Apps (and give installed options) if original instance was installed, then second instance was not installed and both used the same tag
 - Added: Fatal error if docker image / folder is either completely full or mounted read-only
+- Fixed: Hover area / click area of left menus extended into blank area to the right
 
 ###2021.08.31
 - Security updates
