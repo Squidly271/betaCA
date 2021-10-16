@@ -60,6 +60,7 @@ if ($caSettings['debugging'] == "yes") {
 		$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
 
 		file_put_contents($caPaths['logging'],"Community Applications Version: $caVersion\n");
+		file_put_contents($caPaths['logging'],"Unraid version: {$caSettings['unRaidVersion']}\n\n",FILE_APPEND);
 		file_put_contents($caPaths['logging'],"MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5")."\n",FILE_APPEND);
 		$lingo = $_SESSION['locale'] ?: "en_US";
 		file_put_contents($caPaths['logging'],"Language: $lingo\n\n",FILE_APPEND);
@@ -1118,8 +1119,6 @@ function previous_apps() {
 				}
 			}
 		}
-
-			
 	} else {
 		if ( ! $filter || $filter == "plugins" ) {
 			$all_plugs = array_merge(glob("/boot/config/plugins-error/*.plg"),glob("/boot/config/plugins-removed/*.plg"));

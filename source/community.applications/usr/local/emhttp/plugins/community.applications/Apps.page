@@ -1902,7 +1902,6 @@ function popupInstallXML(xml,type) {
 			if (type == "second") {
 				type = "default";
 			}
-
 			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
 	});
