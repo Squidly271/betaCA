@@ -54,8 +54,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 
-/* 	$displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
- */
 	$columnNumber = 0;
 	$appCount = 0;
 	$startingApp = ($pageNumber -1) * $caSettings['maxPerPage'] + 1;
@@ -70,9 +68,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $startingAppCounter < $startingApp ) continue;
 		$displayedTemplates[] = $template;
 	}
-
-
-
 
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 
@@ -96,9 +91,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
 			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
 
-/* 			$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
-			$template['display_repoSearch'] = "<span class='appIcons ca_tooltip ca_repoSearch' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='".tr("Search for apps in repository")."'></span>";
-	 */		$ct .= displayCard($template);
+			$ct .= displayCard($template);
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
 		} else {
@@ -140,11 +133,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$ct .= getPageNavigation($pageNumber,count($file),false,true)."<br><br><br>";
 
-/* 	if ( $specialCategoryComment ) {
-		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>".tr("This display is informational ONLY.")."</div><br>";
-		$displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
-	} */
-
 	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
 
@@ -156,9 +144,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 
 	if ( $caSettings['maxPerPage'] < 0 ) return;
 	$swipeScript = "<script>";
-	$my_function = $dockerSearch ? "dockerSearch" : "changePage";
-	if ( $dockerSearch )
-		$caSettings['maxPerPage'] = 25;
+
 	$totalPages = ceil($totalApps / $caSettings['maxPerPage']);
 
 	if ($totalPages == 1) return;
@@ -169,80 +155,41 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 		$endApp = $totalApps;
 
 	$o = "</div><div class='ca_center'>";
-	if ( ! $dockerSearch && $displayCount)
+	if ($displayCount)
 		$o .= "<span class='pageNavigation'>".sprintf(tr("Displaying %s - %s (of %s)"),$startApp,$endApp,$totalApps)."</span><br>";
 
 	$o .= "<div class='pageNavigation'>";
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='{$my_function}(&quot;$previousPage&quot;)'></span>";
+	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='changePage(&quot;$previousPage&quot;)'></span>";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
 	if ($startingPage < 3 )
 		$startingPage = 1;
 	else
-		$o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
+		$o .= "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
 
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages )
 		$endingPage = $totalPages;
 
 	for ($i = $startingPage; $i <= $endingPage; $i++)
-		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$i&quot;);'>$i</a>";
+		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;$i&quot;);'>$i</a>";
 
 	if ( $endingPage != $totalPages) {
 		if ( ($totalPages - $pageNumber ) > 6)
 			$o .= "<span class='pageNumber pageDots'></span>";
 
 		if ( ($totalPages - $pageNumber ) >5 )
-			$o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a>";
+			$o .= "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;$totalPages&quot;);'>$totalPages</a>";
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='{$my_function}(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
+	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='changePage(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
-	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
 	$o .= "</div></div><script>data.currentpage = $pageNumber;</script>";
 	return $o.$swipeScript;
 }
 
-/* ########################################################################################
-# function used to display the navigation (page up/down buttons) for dockerHub results #
-########################################################################################
-function dockerNavigate($num_pages, $pageNumber) {
-	return getPageNavigation($pageNumber,$num_pages * 25, true);
-} */
-
-##############################################################
-# function that actually displays the results from dockerHub #
-##############################################################
-function displaySearchResults($pageNumber) {
-	global $caPaths, $caSettings, $plugin;
-
-	$tempFile = readJsonFile($caPaths['dockerSearchResults']);
-	$num_pages = $tempFile['num_pages'];
-	$file = $tempFile['results'];
-	$templates = readJsonFile($caPaths['community-templates-info']);
-
-	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";
-	$ct .= "<div class='ca_templatesDisplay'>";
-
-	$columnNumber = 0;
-	foreach ($file as $result) {
-		$result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
-		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='".tr("Search for similar containers")."'>{$result['Name']}</a>";
-		$result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerText);' title='".sprintf(tr("Search For Containers From %s"),$result['Author'])."'>{$result['Author']}</a>";
-		$result['Category'] = "Docker Hub Search";
-		$result['display_iconClickable'] = "<i class='displayIcon fa fa-docker'></i>";
-		$result['Description'] = $result['Description'] ?: "No description present";
-		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons ca_href' title='Go to dockerHub page' data-target='_blank' data-href='{$result['DockerHub']}'></a>";
-		$result['display_dockerInstallIcon'] = $caSettings['NoInstalls'] ? "" : "<a class='ca_tooltip ca_fa-install appIcons' title='".tr("Click to install")."' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
-		$ct .= displayCard($result);
-		$count++;
-	}
-	$ct .= "</div>";
-
-	return $ct.dockerNavigate($num_pages,$pageNumber);
-}
 
 ######################################
 # Generate the display for the popup #
@@ -281,7 +228,21 @@ function getPopupDescriptionSkin($appNumber) {
 	else
 		$displayed = readJsonFile($caPaths['community-templates-displayed']);
 
-	$index = searchArray($displayed['community'],"Path",$appNumber);
+	$index = searchArray($displayed['community'],"InstallPath",$appNumber);
+	if ( $index === false ) {
+		$index = searchArray($displayed['community'],"Path",$appNumber);
+		$ind = $index;
+		while ( true ) {
+			if ( $template['Name'] == $displayed['community'][$ind]['Name'] ) {
+				$index = $ind;
+				break;
+			}
+			$ind = searchArray($displayed['community'],"Path",$ind+1);
+			if ( $ind === false )
+				break;
+		}
+	}
+			
 	if ( $index !== false ) {
 /* 		$Displayed = true;
  */		$template = $displayed['community'][$index];
@@ -296,10 +257,8 @@ function getPopupDescriptionSkin($appNumber) {
 			return;
 		}
 		$template = $file[$index];
-/* 		$Displayed = true;
- */	}
-/* 	$template['Displayed'] = $Displayed;
- */	$currentServer = file_get_contents($caPaths['currentServer']);
+	}
+	$currentServer = file_get_contents($caPaths['currentServer']);
 
 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
@@ -377,7 +336,6 @@ function getPopupDescriptionSkin($appNumber) {
 			download_url($templateURL,$caPaths['pluginTempDownload']);
 			$xml = readXmlFile($caPaths['pluginTempDownload']);
 			$template['Changes'] = $xml['Changes'];
-
 		}
 	}
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
@@ -425,10 +383,10 @@ function getPopupDescriptionSkin($appNumber) {
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
 							$actionsContext[] = array("divider"=>true);
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
-						}
-						else {
+						}	else {
 							if ( ! $template['BranchID'] ) {
 								$template['newInstallAction'] = "popupInstallXML('".addslashes($template['Path'])."','default');";
+
 							} else {
 								$template['newInstallAction'] = "displayTags('{$template['ID']}');";
 							}
@@ -563,11 +521,9 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	$template['actionsContext'] = $actionsContext;
 	$template['supportContext'] = $supportContext;
-/* 	$templateDescription = "<div class='popupHolder'>$templateDescription<br><br><br><br><br><br><br><br><br></div>";
- */	@unlink($caPaths['pluginTempDownload']);
-/* 	return array("description"=>$templateDescription,;
- */
- return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext);
+	@unlink($caPaths['pluginTempDownload']);
+
+	return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext);
 }
 
 #####################################
@@ -714,6 +670,9 @@ function displayCard($template) {
 	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;
 	$appType = $RepositoryTemplate ? "appRepository" : $appType;
 
+	if ($InstallPath)
+		$Path = $InstallPath;
+
 	$Category = explode(" ",$Category)[0];
 	$Category = explode(":",$Category)[0];
 
@@ -817,7 +776,6 @@ function displayCard($template) {
 		</div>
 		";
 	if ( $class=='spotlightHome' ) {
-
 		$ovr = html_entity_decode($Overview);
 		$ovr = trim($ovr);
 		$ovr = str_replace(["[","]"],["<",">"],$ovr);
@@ -850,9 +808,6 @@ function displayCard($template) {
 		$card .= "<div class='spotlightPopupText'></div>";
 		$card .= "</div>";
 	}
-
-
-
 	return str_replace(["\t","\n"],"",$card);
 }
 
@@ -914,9 +869,8 @@ function displayPopup($template) {
 		$ModeratorComment .= "<br>".tr("This application is not compatible with your version of Unraid");
 	if ( $Blacklist )
 		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
-/* 	if ( ! $Displayed )
-		$ModeratorComment .= "<br>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available");
- */	$ModeratorComment .= $caComment;
+
+	$ModeratorComment .= $caComment;
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
@@ -973,10 +927,7 @@ function displayPopup($template) {
 		if ( $MaxVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Max OS")."</td><td class='popupTableRight'>$MaxVer</td></tr>";
 	}
-	$card .=
-	"
-				</table>
-	";
+	$card .= "</table>";
 	if ( $Repo || $Private ) {
 		$card .= "
 			</div>
@@ -988,7 +939,6 @@ function displayPopup($template) {
 					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 					<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
 					<div class='ca_favouriteRepo $favRepoClass' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Favourite")."</div>
-
 		";
 	}
 

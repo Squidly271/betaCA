@@ -89,12 +89,6 @@ switch ($_POST['action']) {
 	case 'display_content':
 		display_content();
 		break;
-/* 	case 'convert_docker':
-		convert_docker();
-		break;
-	case 'search_dockerhub':
-		search_dockerhub();
-		break; */
 	case 'dismiss_warning':
 		dismiss_warning();
 		break;
@@ -257,11 +251,6 @@ function DownloadApplicationFeed() {
 			$des = html_entity_decode($des);
 		}
 
-/* 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
- */
-/* 		if ( $o['IconHTTPS'] )
-			$o['IconHTTPS'] = $caPaths['iconHTTPSbase'] .$o['IconHTTPS'];
- */
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -353,7 +342,6 @@ function DownloadApplicationFeed() {
 		@unlink($caPaths['invalidXML_txt']);
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
-//	$ApplicationFeed['categories'][] = ["Cat"=>"spotlight:","Des"=>"Spotlight"];
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
@@ -373,6 +361,7 @@ function getConvertedTemplates() {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 
 	if ( empty($templates) ) return false;
+	exec("logger getConvertedTemplates");
 
 	foreach ($templates as $template) {
 		if ( ! $template['Private'] )
@@ -382,7 +371,10 @@ function getConvertedTemplates() {
 	$i = $appCount;
 	unset($Repos);
 
-	if ( ! is_dir($caPaths['convertedTemplates']) ) return;
+	if ( ! is_dir($caPaths['convertedTemplates']) ) {
+		writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+		return;
+	}
 
 	$privateTemplates = glob($caPaths['convertedTemplates']."*/*.xml");
 	foreach ($privateTemplates as $template) {
@@ -402,7 +394,6 @@ function getConvertedTemplates() {
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
 	}
-	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	return true;
 }
 
@@ -629,10 +620,8 @@ function get_content() {
 
 	$newAppTime = strtotime($caSettings['timeNew']);
 
-	if ( file_exists($caPaths['addConverted']) ) {
-		@unlink($caPaths['addConverted']);
-		getConvertedTemplates();
-	}
+	getConvertedTemplates();
+
 	if ( strpos($category,":") && $filter ) {
 		$disp = readJsonFile($caPaths['community-templates-allSearchResults']);
 		$file = $disp['community'];
@@ -713,7 +702,7 @@ function get_content() {
 					$o['display'] .= "</div>";
 					$homeClass = $type['type'] == "spotlight" ? "caHomeSpotlight" : "";
 					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
-					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);$('.ca_holder').addClass('mobileHolderFix');";
+					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();$('.ca_holder').addClass('mobileHolderFix');";
 
 				} else {
 					switch ($caSettings['startup']) {
@@ -730,7 +719,7 @@ function get_content() {
 					}
 
 					$o['display'] .=  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
-					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
+					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();";
 
 					writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 					postReturn($o);
@@ -949,97 +938,6 @@ function display_content() {
 	postReturn($o);
 }
 
-/* #######################################################################
-# convert_docker - called when system adds a container from dockerHub #
-#######################################################################
-function convert_docker() {
-	global $caPaths;
-
-	$dockerID = getPost("ID","");
-
-	$file = readJsonFile($caPaths['dockerSearchResults']);
-	$docker = $file['results'][$dockerID];
-	$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
-	@unlink($caPaths['Dockerfile']);
-
-	$dockerfile['Name'] = $docker['Name'];
-	$dockerfile['Support'] = $docker['DockerHub'];
-	$dockerfile['Description'] = $docker['Description']."   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container";
-	$dockerfile['Overview'] = $dockerfile['Description'];
-	$dockerfile['Registry'] = $docker['DockerHub'];
-	$dockerfile['Repository'] = $docker['Repository'];
-	$dockerfile['BindTime'] = "true";
-	$dockerfile['Privileged'] = "false";
-	$dockerfile['Networking']['Mode'] = "bridge";
-	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
-	$dockerXML = makeXML($dockerfile);
-
-	$xmlFile = $caPaths['convertedTemplates']."DockerHub/";
-	@mkdir($xmlFile,0777,true);
-	$xmlFile .= str_replace("/","-",$docker['Repository']).".xml";
-	file_put_contents($xmlFile,$dockerXML);
-	file_put_contents($caPaths['addConverted'],"Dante");
-	postReturn(['xml'=>$xmlFile]);
-} */
-
-/* #########################################################
-# search_dockerhub - returns the results from dockerHub #
-#########################################################
-function search_dockerhub() {
-	global $caPaths;
-
-	$filter     = getPost("filter","");
-	$pageNumber = getPost("page","1");
-
-	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
-	$filter = str_replace(" ","%20",$filter);
-	$filter = str_replace("/","%20",$filter);
-	$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
-	$pageresults = json_decode($jsonPage,true);
-	$num_pages = $pageresults['num_pages'];
-
-	if ($pageresults['num_results'] == 0) {
-		$o['display'] = "<div class='ca_NoDockerAppsFound'>".tr("No Matching Applications Found On Docker Hub")."</div>";
-		$o['script'] = "$('#dockerSearch').hide();hideSortIcons();";
-		postReturn($o);
-		@unlink($caPaths['dockerSerchResults']);
-		return;
-	}
-
-	$i = 0;
-	foreach ($pageresults['results'] as $result) {
-		unset($o);
-		$o['Repository'] = $result['name'];
-		$details = explode("/",$result['name']);
-		$o['Author'] = $details[0];
-		$o['Name'] = $details[1];
-		$o['Description'] = $result['description'];
-		$o['CardDescription'] = $o['Description'];
-		$o['Automated'] = $result['is_automated'];
-		$o['Stars'] = $result['star_count'];
-		$o['Official'] = $result['is_official'];
-		$o['Trusted'] = $result['is_trusted'];
-		if ( $o['Official'] ) {
-			$o['DockerHub'] = "https://hub.docker.com/_/".$result['name']."/";
-			$o['Name'] = $o['Author'];
-		} else
-			$o['DockerHub'] = "https://hub.docker.com/r/".$result['name']."/";
-
-		$o['ID'] = $i;
-		$searchName = str_replace("docker-","",$o['Name']);
-		$searchName = str_replace("-docker","",$searchName);
-
-		$dockerResults[$i] = $o;
-		$i=++$i;
-	}
-	$dockerFile['num_pages'] = $num_pages;
-	$dockerFile['page_number'] = $pageNumber;
-	$dockerFile['results'] = $dockerResults;
-
-	writeJsonFile($caPaths['dockerSearchResults'],$dockerFile);
-	postReturn(['display'=>displaySearchResults($pageNumber)]);
-} */
-
 #####################################################################
 # dismiss_warning - dismisses the warning from appearing at startup #
 #####################################################################
@@ -1064,7 +962,6 @@ function previous_apps() {
 
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
-//	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
 	@unlink($caPaths['community-templates-allSearchResults']);
@@ -1122,9 +1019,6 @@ function previous_apps() {
 										$o['CardDescription'] = $tmpOvr;
 										$o['InstallPath'] = $tempPath;
 										$o['SortName'] = str_replace("-"," ",$installedName);
-/* 										if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
-											$o['UpdateAvailable'] = true;
-										} */
 									}
 									break;
 								}
@@ -1404,7 +1298,7 @@ function statistics() {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	pluginDupe($templates);
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
-
+	$statistics['private'] = 0;
 	foreach ($templates as $template) {
 		if ( $template['Deprecated'] && ! $template['Blacklist'] && ! $template['BranchID']) $statistics['totalDeprecated']++;
 
@@ -1453,27 +1347,126 @@ function statistics() {
 
 	$statistics['invalidXML'] = @count($invalidXML) ?: tr("unknown");
 	$statistics['repositories'] = @count($repositories) ?: tr("unknown");
-	$o =  "<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>";
-	$o .= "<table style='margin-top:1rem;'>";
-	$o .= "<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>";
-	$o .= "<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>";
-	$o .= "<tr><td class='ca_table'>".tr("Last Change To Application Feed")."</td><td class='ca_stat'>$updateTime<br>".tr($currentServer)."</td></tr>";
-	$o .= "<tr><td class='ca_table'>".tr("Number Of Docker Applications")."</td><td class='ca_stat'>{$statistics['docker']}</td></tr>";
-	$o .= "<tr><td class='ca_table'>".tr("Number Of Plugin Applications")."</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>";
-	$o .= "<tr><td class='ca_table'>".tr("Number Of Templates")."</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repository List")."&quot;);' style='cursor:pointer;' class='popUpLink'>".tr("Number Of Repositories")."</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>";
+	
+	$o =  "
+		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
+			<table style='margin-top:1rem;'>
+				<tr style='height:6rem;'>
+					<td colspan='2'>
+						<div class='ca_center'>
+							<i class='fa fa-users' style='font-size:6rem;'></i>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'>
+						<div class='ca_center'>
+							<font size='5rem;'>Community Applications</font>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						".tr("Last Change To Application Feed")."
+					</td>
+					<td class='ca_stat'>
+						$updateTime<br>".tr($currentServer)."
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						".tr("Docker Applications")."
+					</td>
+					<td class='ca_stat'>
+						{$statistics['docker']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						".tr("Plugin Applications")."
+					</td>
+					<td class='ca_stat'>
+						{$statistics['plugin']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						".tr("Templates")."
+					</td>
+					<td class='ca_stat'>
+						{$statistics['totalApplications']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repositories")."&quot;);' style='cursor:pointer;' class='popUpLink'>".tr("Repositories")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['repositories']}
+					</td>
+				</tr>
+				";
 	if ($statistics['private']) {
-		$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
+		$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
 	}
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("All Invalid Templates Found")."&quot;);' style='cursor:pointer'>".tr("Number Of Invalid Templates")."</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Number Of Template Errors")."</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Incompatible Applications")."</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Deprecated Applications")."</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("All Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
-	$o .= "<tr><td class='ca_table'><a class='popUpLink' href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a class='popUpLink' href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
-	$o .= "</table>";
-	$o .= "<div class='ca_center'><a class='popUpLink' href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
+	$o .= "
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("Invalid Templates")."&quot;);' style='cursor:pointer'>".tr("Invalid Templates")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['invalidXML']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Template Errors")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['caFixed']}+
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Blacklisted Apps")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['blacklist']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Incompatible Applications")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['totalIncompatible']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Deprecated Applications")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['totalDeprecated']}
+					</td>
+				</tr>
+				<tr>
+					<td class='ca_table'>
+						<a class='popUpLink' onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Moderation Entries")."</a>
+					</td>
+					<td class='ca_stat'>
+						{$statistics['totalModeration']}+
+					</td>
+				</tr>
+				<tr>
+				<td class='ca_table'>
+					<a class='popUpLink' href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a class='popUpLink' href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a>
+				</td>
+			</tr>
+		</table>
+	<div class='ca_center'>
+		<a class='popUpLink' href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a>
+	</div>";
 
 	postReturn(['statistics'=>$o]);
 }

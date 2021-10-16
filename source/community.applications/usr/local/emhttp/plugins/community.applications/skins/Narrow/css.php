@@ -281,8 +281,11 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
+.initDockerSearch{cursor:pointer;text-decoration:none;font-size:1.5rem;}
+.initDockerSearch:hover{color:<?=$unRaid66color?>}
+a.initDockerSearch{cursor:pointer;text-decoration:none;color:unset;}
 .installedCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
-.installedCardText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:1.5rem;position:absolute;top:2.25rem;right:-1rem;width:90%;overflow:hidden;height:2rem;}
+.installedCardText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:1.5rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
 
 input[type=checkbox] {width:2rem;height:2rem;margin-left:0rem;}
 input[type=button]{background:none;font-size:1.5rem;}
@@ -399,7 +402,7 @@ ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer
 .supportButton a {text-decoration:none;}
 .supportButton:hover{background:<?=$unRaid66color?>;border-color:<?=$unRaid66color?>;}
 .supportLink {color:inherit;padding-left:.5rem;padding-right:.5rem;}
-.supportPopup a {text-decoration:none;color:initial;cursor:pointer;}
+.supportPopup a {text-decoration:none;color:inherit;cursor:pointer;}
 .supportPopup {margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  padding: 1px 10px 1px 10px;border-style:solid;border-width:1px;}
 .supportPopup:hover{background-color:<?=$unRaid66color?>;}
 .sweet-alert table{margin-top:0px}

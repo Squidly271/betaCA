@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.15">
-<!ENTITY md5       "a1968c8fa303606f7b704dac94cfcf7d">
+<!ENTITY version   "2021.10.16">
+<!ENTITY md5       "28eda51704303023b247a556205462af">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/betaCA">
@@ -34,6 +34,9 @@
 - Fixed: Second instance would show up within Previous Apps (and give installed options) if original instance was installed, then second instance was not installed and both used the same tag
 - Added: Fatal error if docker image / folder is either completely full or mounted read-only
 - Fixed: Hover area / click area of left menus extended into blank area to the right
+- Fixed: Deleting the entire private repository storage location (/boot/config/plugins/community.applications/private) would result in the private applications still appearing until the next appfeed update
+- Fixed: Various issues related to installing 2nd instances
+- Rediscovered: A profound appreciation of the phrase 'Nothing takes 5 minutes'
 
 ###2021.08.31
 - Security updates
