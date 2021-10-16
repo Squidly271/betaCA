@@ -1108,16 +1108,17 @@ function previous_apps() {
 					$displayed[] = $template;
 				}
 			}
-		}
-		$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
-		foreach ($installedLanguages as $language) {
-			$index = searchArray($file,"LanguagePack",$language);
-			if ( $index !== false ) {
-				$tmpL = $file[$index];
-				$tmpL['Uninstall'] = true;
-				$displayed[] = $tmpL;
+			$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
+			foreach ($installedLanguages as $language) {
+				$index = searchArray($file,"LanguagePack",$language);
+				if ( $index !== false ) {
+					$tmpL = $file[$index];
+					$tmpL['Uninstall'] = true;
+					$displayed[] = $tmpL;
+				}
 			}
 		}
+
 			
 	} else {
 		if ( ! $filter || $filter == "plugins" ) {
