@@ -434,16 +434,6 @@ function appOfDay($file) {
 			}
 			writeJsonFile($caPaths['appOfTheDay'],$appOfDay);
 			break;
-		case "new":
-			$sortOrder['sortBy'] = "Date";
-			$sortOrder['sortDir'] = "Down";
-			usort($file,"mySort");
-			foreach ($file as $template) {
-				if ( ! checkRandomApp($template) ) continue;
-				$appOfDay[] = $template['ID'];
-				if (count($appOfDay) == 25) break;
-			}
-			break;
 		case "onlynew":
 			$sortOrder['sortBy'] = "FirstSeen";
 			$sortOrder['sortDir'] = "Down";
@@ -462,12 +452,16 @@ function appOfDay($file) {
 			$sortOrder['sortBy'] = "trending";
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
+			$repos = [];
 			foreach ($file as $template) {
 				if ( ! is_array($template['trends']) ) continue;
 				if ( count($template['trends']) < 6 ) continue;
 				if ( startsWith($template['Repository'],"ich777/steamcmd") ) continue; // because a ton of apps all use the same repo
 				if ( $template['trending'] && ($template['downloads'] > 100000) ) {
 					if ( checkRandomApp($template) ) {
+						if ( in_array($template['Repository'],$repos) )
+							continue;
+						$repos[] = $template['Repository'];
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
 					}
@@ -478,11 +472,15 @@ function appOfDay($file) {
 			$sortOrder['sortBy'] = "trendDelta";
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
+			$repos = [];
 			foreach ($file as $template) {
 				if ( count($template['trends'] ) < 3 ) continue;
 				if ( startsWith($template['Repository'],"ich777/steamcmd") ) continue; // because a ton of apps all use the same repo`
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
 					if ( checkRandomApp($template) ) {
+						if ( in_array($template['Repository'],$repos) )
+							continue;
+						$repos[] = $template['Repository'];						
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
 					}
