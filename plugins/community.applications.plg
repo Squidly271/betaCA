@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.16d">
-<!ENTITY md5       "02ffcbdb16dce22b230a71db0fd8f163">
+<!ENTITY version   "2021.10.17">
+<!ENTITY md5       "dd0637273c503aff09ecc4f2d8b4ac6b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/betaCA">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.17
+BETA SERIES IS NOW OVER.  UNINSTALL THIS PLUGIN AND REINSTALL COMMUNITY APPLICATIONS PROPER.  THANK YOU FOR PARTICIPATING
+
 ### TBD
 - Complete overhaul of GUI
 - Fixed: Disable categories after performing a dockerHub search
